@@ -21,41 +21,35 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.htmlunit.MockMvcWebClientBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
 import com.berzenin.university.model.university.Group;
 import com.berzenin.university.service.group.GroupService;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(GroupController.class)
+@SpringBootTest
 public class GroupsRepositoryIntegrationTest {
 	
 	@Autowired
+	WebApplicationContext context;
+	
 	private MockMvc mockMvc;
 	
-//	@Autowired	
-//	private WebClient webClient;
+	@Before
+	public void init() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+	}
 	
-	@MockBean
-	private GroupService groupService;
-	
-	private List<Group> groups = Arrays.asList(new Group(1, "test"), new Group(2, "test2"));
-	
-//	@Before
-//	public void init() {
-//		when(groupService.getGroupsRepository().findAll()).thenReturn(groups);
-//		webClient = MockMvcWebClientBuilder.mockMvcSetup(mockMvc)
-//				.useMockMvcForHosts("univer.com", "test.ua")
-//				.build();
-//	}
-	
-	@Test 
-	public void requestForHtnlPageTitle () throws Exception {
+	@Test
+	public void allGroupsFromDatabaseAvailableOnWeb() throws Exception {
 		this.mockMvc.perform(get("/groups")
-				.accept(MediaType.parseMediaType("text/html;charset=UTF-8")))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType("text/html;charset=UTF-8"))
-				.andExpect(content().string(
-						containsString("test")
-						));
+			.accept(MediaType.parseMediaType("text/html;charset=UTF-8")))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType("text/html;charset=UTF-8"))
+			.andExpect(content().string(
+					containsString("test")
+					));
 	}
 
 }

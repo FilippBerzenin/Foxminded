@@ -5,19 +5,19 @@
 <title>University web-service</title>
 </head>
 <body>
-		<div>
+	<div>
 		<form method="post">
 			<input	type="text" name="newGroup" placeholder="Groups name">
 			<button type="submit">Add new group</button>
 		</form>
 	</div>
 	<div>Groups: </div>
-	<form method="post" action="filter">
+<!-- <form method="post" action="filter">
 		<input type="text" name="filter">
 		<button type="submit">Найти</button>
-	</form>
+	</form> -->
 	<div>Groups: </div>
-	{{#groups}}
+	{{#allGroups}}
 	<div>
 		<b>{{id}}</b> 
 		<span>{{name}}</span>
@@ -28,6 +28,6 @@
 				</form>
 			</div>
 	</div>
-	{{/groups}}
+	{{/allGroups}}
 </body>
 </html>

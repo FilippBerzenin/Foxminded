@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.berzenin.university.model.university.Group;
 import com.berzenin.university.service.group.GroupService;
 
-@Controller
 public class GroupController {
 	
 	@Autowired

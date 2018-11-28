@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,8 +26,10 @@ import lombok.SneakyThrows;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class GroupControllerTest {
+
+	/*TODO: Протестировать каждый endpoint и каждый HTTP метод */
 	
-	@Autowired
+	@Autowired /*TODO: Why do we need this here?*/
 	private GroupController groupController;
 	
 	@Autowired
@@ -40,23 +43,21 @@ public class GroupControllerTest {
 	}
 	
 	@Sql(scripts = "/sqlInject/web/groupControllerSql.sql")
-	@SneakyThrows
 	@Test
-	public void getAllTest() {
+	public void getAllTest() throws Exception {
 		this.mockMvc.perform(get("/groups")
 				.accept(MediaType.parseMediaType("text/html;charset=UTF-8")))
 				.andExpect(status().isOk())
-				.andExpect(content().contentType("text/html;charset=UTF-8"))
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andExpect(content().string(allOf(
 						containsString("first"),
 						containsString("second")
 						)));
 	}
-	
+
 	@Sql(scripts = "/sqlInject/web/groupControllerSql.sql")
-	@SneakyThrows
 	@Test
-	public void addNewItemTest() {
+	public void addNewItemTest() throws Exception {
 		this.mockMvc.perform(post("/groups")
 				.accept(MediaType.parseMediaType("text/html;charset=UTF-8")))
 				.andExpect(status().isOk())
@@ -66,5 +67,5 @@ public class GroupControllerTest {
 						containsString("second")
 						)));
 	}
-
+/*FIXME*/
 }

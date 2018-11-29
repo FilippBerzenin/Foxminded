@@ -34,11 +34,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mustache</artifactId>
 		</dependency>
-		<dependency> <!--TODO:  Как мы его используем?-->
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -58,8 +53,6 @@
 			<artifactId>postgresql</artifactId>
 		</dependency>		
 	</dependencies>
-
-	<!--TODO: remove maven wrapper if do not use them-->
 
 	<build>
 		<plugins>

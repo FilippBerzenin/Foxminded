@@ -2,6 +2,7 @@ package com.berzenin.university.web;
 
 import com.berzenin.university.dao.StudentRepository;
 import com.berzenin.university.model.persons.Student;
+import com.berzenin.university.web.exception.StudentNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.Before;
@@ -22,6 +23,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
 public class StudentRestEndpointIntegrationTest {
-
+	
 	@Autowired
 	MockMvc subject;
 
@@ -75,7 +77,7 @@ public class StudentRestEndpointIntegrationTest {
 		Student student = new Student("Some", "Name");
 		when(studentRepository.save(any())).thenReturn(new Student(1, "Some", "Name"));
 
-		subject.perform(post("/students")
+		subject.perform(post("/students/add")
 			.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 			.content(mapper.writeValueAsBytes(student)))
 			.andDo(print())
@@ -89,19 +91,32 @@ public class StudentRestEndpointIntegrationTest {
 	
 	@Test
 	public void testFindStudentById() throws Exception {
-		Long id = new Long(1);
+		Long id = 1L;
 		when(studentRepository.findById(id)).thenReturn(Optional.ofNullable(new Student(1, "Fil", "Berzenin")));		
 		subject.perform(get("/students/"+id)
 			.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 			.andDo(print())
 			.andExpect(status().isOk());
 
-			verify(studentRepository).getOne(id);
+			verify(studentRepository).findById(id);
 	}
+	
+//	@Test
+//	public void notFindById() throws Exception {
+//		Long id = 1L;
+//		when(studentRepository.findById(id)).thenThrow(StudentNotFoundException.class);
+//		
+//		subject.perform(get("/students/", id))
+//			.andExpect(status()
+//			.isNotFound());
+//
+//		verify(studentRepository).findById(id);
+//		verifyNoMoreInteractions(studentRepository);
+//	}
 
 	@Test
 	public void testUpdateStudent() throws Exception {
-		Long id = new Long(1);
+		Long id = 1L;
 		Student studentForUpdate = new Student(1, "Tima", "Berzenin");
 		Student studentWithOldParam = new Student("Tima", "Berzen");
 		when(studentRepository.findById(id)).thenReturn(Optional.ofNullable(studentWithOldParam));
@@ -120,7 +135,7 @@ public class StudentRestEndpointIntegrationTest {
 	
 	@Test
 	public void testDeleteStudentsById() throws Exception {
-		Long id = new Long(1);
+		Long id = 1L;
 		Student studentForDelete = new Student(1, "Tima", "Berzenin");
 		when(studentRepository.findById(id)).thenReturn(Optional.ofNullable(studentForDelete));
 		subject.perform(delete("/students/delete/"+id)
@@ -128,6 +143,6 @@ public class StudentRestEndpointIntegrationTest {
 				.andDo(print())
 				.andExpect(status().isNoContent());
 		
-		verify(studentRepository).getOne(id);
+		verify(studentRepository).findById(id);
 	}
 }

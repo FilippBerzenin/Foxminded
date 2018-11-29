@@ -1,6 +1,7 @@
 package com.berzenin.university.web;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,13 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.berzenin.university.dao.StudentRepository;
 import com.berzenin.university.model.persons.Student;
+import com.berzenin.university.web.exception.StudentNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 public class StudentController {
-
+	
 	
 	@Autowired
 	private final StudentRepository studentRepository;
@@ -37,12 +39,16 @@ public class StudentController {
 	@GetMapping(
 			value = "/students/{id}", 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	Student getStudentsById(@PathVariable("id") long id) {
-		return studentRepository.getOne(id);
+	Student getStudentsById(@PathVariable long id) throws StudentNotFoundException {
+		Optional<Student> student = studentRepository.findById(id);
+		if (!student.isPresent()) {
+			throw new StudentNotFoundException();	
+		}
+		return student.get();
 	}
 
 	@PostMapping(
-			value = "/students", 
+			value = "/students/add", 
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
@@ -55,18 +61,24 @@ public class StudentController {
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	Student updateStudent(@RequestBody Student student, @PathVariable("id") long id) {
-		Student studentForUpdate = studentRepository.findById(id).get();
-		studentForUpdate.setName(student.getName());
-		studentForUpdate.setSurename(student.getSurename());
-		return studentRepository.save(studentForUpdate);
+	Student updateStudent(@RequestBody Student student, @PathVariable("id") long id) throws StudentNotFoundException {
+		Optional<Student> studentForUpdate = studentRepository.findById(id);
+		if (!studentForUpdate.isPresent()) {
+			throw new StudentNotFoundException();	
+		}
+		studentForUpdate.get().setName(student.getName());
+		studentForUpdate.get().setSurename(student.getSurename());
+		return studentRepository.save(studentForUpdate.get());
 	}
 	
 	@DeleteMapping(value = "/students/delete/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	Student deleteStudentByEntity (@PathVariable("id") long id) {
-		Student student = studentRepository.getOne(id);
-		studentRepository.delete(student);
-		return student;
+	Student deleteStudentByEntity (@PathVariable("id") long id) throws StudentNotFoundException {
+		Optional<Student> student = studentRepository.findById(id);
+		if (!student.isPresent()) {
+			throw new StudentNotFoundException();	
+		}
+		studentRepository.delete(student.get());
+		return student.get();
 	}
 }

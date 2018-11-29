@@ -29,8 +29,8 @@ public class GroupControllerTest {
 
 	/*TODO: Протестировать каждый endpoint и каждый HTTP метод */
 	
-	@Autowired /*TODO: Why do we need this here?*/
-	private GroupController groupController;
+//	@Autowired /*TODO: Why do we need this here?*/
+//	private GroupController groupController;
 	
 	@Autowired
 	private WebApplicationContext context;

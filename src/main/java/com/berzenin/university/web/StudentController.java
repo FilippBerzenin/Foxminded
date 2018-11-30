@@ -30,7 +30,7 @@ public class StudentController {
 	private final StudentRepository studentRepository;
 
 	@GetMapping(
-			value = "/students", 
+			value = "/students/all", 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	List<Student> getAll() {
 		return studentRepository.findAll();
@@ -39,12 +39,8 @@ public class StudentController {
 	@GetMapping(
 			value = "/students/{id}", 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	Student getStudentsById(@PathVariable long id) throws StudentNotFoundException {
-		Optional<Student> student = studentRepository.findById(id);
-		if (!student.isPresent()) {
-			throw new StudentNotFoundException();	
-		}
-		return student.get();
+	Student getStudentsById(@PathVariable long id) {
+		return returnStudentisPresent(id);
 	}
 
 	@PostMapping(
@@ -61,24 +57,26 @@ public class StudentController {
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	Student updateStudent(@RequestBody Student student, @PathVariable("id") long id) throws StudentNotFoundException {
-		Optional<Student> studentForUpdate = studentRepository.findById(id);
-		if (!studentForUpdate.isPresent()) {
-			throw new StudentNotFoundException();	
-		}
-		studentForUpdate.get().setName(student.getName());
-		studentForUpdate.get().setSurename(student.getSurename());
-		return studentRepository.save(studentForUpdate.get());
+	Student updateStudent(@RequestBody Student student, @PathVariable("id") long id) {
+		Student studentForUpdate = returnStudentisPresent(id);
+		studentForUpdate.setName(student.getName());
+		studentForUpdate.setSurename(student.getSurename());
+		return studentRepository.save(studentForUpdate);
 	}
 	
 	@DeleteMapping(value = "/students/delete/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	Student deleteStudentByEntity (@PathVariable("id") long id) throws StudentNotFoundException {
+	Student deleteStudentByEntity (@PathVariable("id") long id) {
+		Student student = returnStudentisPresent(id);
+		studentRepository.delete(student);
+		return student;
+	}
+	
+	private Student returnStudentisPresent(long id) {
 		Optional<Student> student = studentRepository.findById(id);
 		if (!student.isPresent()) {
-			throw new StudentNotFoundException();	
+			throw new StudentNotFoundException("Student Not Found "+id);	
 		}
-		studentRepository.delete(student.get());
 		return student.get();
 	}
 }

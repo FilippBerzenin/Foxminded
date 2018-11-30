@@ -1,18 +1,20 @@
 package com.berzenin.university.model.persons;
 
-import java.io.Serializable;
-
-import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.berzenin.university.model.university.Group;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 public class Student extends Person {
-
+	
 	public Student() {
 		super();
 	}
@@ -23,5 +25,8 @@ public class Student extends Person {
 	public Student(long id, String name, String surename) {
 		super(id, name, surename);
 	}
-
+	
+	@ManyToOne (fetch = FetchType.EAGER)
+	@JoinColumn(name = "group_id")
+	private Group group;
 }

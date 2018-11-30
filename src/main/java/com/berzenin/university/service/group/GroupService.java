@@ -1,19 +1,13 @@
 package com.berzenin.university.service.group;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.berzenin.university.dao.GroupsRepository;
-
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class GroupService {
 	
-	@Autowired
-	private GroupsRepository groupsRepository;
+//	@Autowired
+//	private GroupsRepository groupsRepository;
 
 }

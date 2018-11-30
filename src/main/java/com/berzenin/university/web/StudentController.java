@@ -23,17 +23,16 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-public class StudentController {
-	
+public class StudentController {	
 	
 	@Autowired
-	private final StudentRepository studentRepository;
+	private final StudentRepository repository;
 
 	@GetMapping(
 			value = "/students/all", 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	List<Student> getAll() {
-		return studentRepository.findAll();
+		return repository.findAll();
 	}
 	
 	@GetMapping(
@@ -49,7 +48,7 @@ public class StudentController {
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	Student addStudent(@RequestBody Student student) {
-		return studentRepository.save(student);
+		return repository.save(student);
 	}
 	
 	@PutMapping(
@@ -61,19 +60,19 @@ public class StudentController {
 		Student studentForUpdate = returnStudentisPresent(id);
 		studentForUpdate.setName(student.getName());
 		studentForUpdate.setSurename(student.getSurename());
-		return studentRepository.save(studentForUpdate);
+		return repository.save(studentForUpdate);
 	}
 	
 	@DeleteMapping(value = "/students/delete/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	Student deleteStudentByEntity (@PathVariable("id") long id) {
 		Student student = returnStudentisPresent(id);
-		studentRepository.delete(student);
+		repository.delete(student);
 		return student;
 	}
 	
 	private Student returnStudentisPresent(long id) {
-		Optional<Student> student = studentRepository.findById(id);
+		Optional<Student> student = repository.findById(id);
 		if (!student.isPresent()) {
 			throw new StudentNotFoundException("Student Not Found "+id);	
 		}

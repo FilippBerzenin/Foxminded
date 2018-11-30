@@ -25,7 +25,7 @@ import lombok.SneakyThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class GroupControllerTest {
+public class GroupControllerOldTest {
 
 	/*TODO: Протестировать каждый endpoint и каждый HTTP метод */
 	

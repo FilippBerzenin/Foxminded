@@ -1,23 +1,10 @@
 package com.berzenin.university.model.university;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.berzenin.university.model.persons.Student;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import javax.persistence.*;
+import java.util.List;
 
 
 @Data
@@ -25,9 +12,8 @@ import lombok.NonNull;
 @Entity
 @AllArgsConstructor
 @Table(name= "groups")
-public class Group implements Comparable<Group>, Serializable {
-
-	private static final long serialVersionUID = 1L;
+@EqualsAndHashCode(exclude = "students")
+public class Group  {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,12 +24,11 @@ public class Group implements Comparable<Group>, Serializable {
 
 	@OneToMany(
 			targetEntity = Student.class,
-			mappedBy = "group", 
-			fetch = FetchType.EAGER)
+			mappedBy = "group")
 	private List<Student> students;
 
-	@Override
-	public int compareTo(Group o) {
-		return name.compareTo(o.name);
+	public Group(long id, String name) {
+		this.id = id;
+		this.name = name;
 	}
 }

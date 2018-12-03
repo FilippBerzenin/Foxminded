@@ -1,49 +1,40 @@
 package com.berzenin.university.web;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.dao.StudentRepository;
 import com.berzenin.university.model.persons.Student;
-import com.berzenin.university.web.exception.StudentNotFoundException;
-
+import com.berzenin.university.model.university.Group;
+import com.berzenin.university.web.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class StudentController {	
 	
-	@Autowired
 	private final StudentRepository studentRepository;
+	private final GroupRepository groupRepository;
 	
 	@GetMapping(
-			value = "/group/{id}/students/all", 
+			value = "/students",
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	List<Student> getAll(@PathVariable long id) {
-		
-		return studentRepository.findByGroupId(id);
+	List<Student> getAll() {
+		return studentRepository.findAll();
 	}
 	
 	@GetMapping(
 			value = "/students/{id}", 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	Student getStudentsById(@PathVariable long id) {
-		return returnStudentisPresent(id);
+		return returnStudentIfPresent(id);
 	}
 
 	@PostMapping(
-			value = "/students/add", 
+			value = "/students",
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
@@ -52,27 +43,35 @@ public class StudentController {
 	}
 	
 	@PutMapping(
-			value = "/students/update/{id}",
+			value = "/students/{id}",
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	Student updateStudent(@RequestBody Student student, @PathVariable("id") long id) {
-		Student studentForUpdate = returnStudentisPresent(id);
+		Student studentForUpdate = returnStudentIfPresent(id);
 		studentForUpdate.setName(student.getName());
 		studentForUpdate.setSurename(student.getSurename());
 		return studentRepository.save(studentForUpdate);
 	}
 	
-	@DeleteMapping(value = "/students/delete/{id}")
+	@DeleteMapping(value = "/students/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	Student deleteStudentByEntity (@PathVariable("id") long id) {
-		Student student = returnStudentisPresent(id);
+		Student student = returnStudentIfPresent(id);
 		studentRepository.delete(student);
 		return student;
 	}
+
+	@PostMapping(value = "/students/{id}")
+	void addStudent(@PathVariable("id") Long id, @RequestParam("groupId") Long groupId) {
+		Student student = returnStudentIfPresent(id);
+		Group group = groupRepository.findById(id).orElseThrow(NotFoundException::new);
+		student.setGroup(group);
+		studentRepository.save(student);
+	}
 	
-	private Student returnStudentisPresent(long id) {
+	private Student returnStudentIfPresent(long id) {
 		return studentRepository.findById(id)
-				.orElseThrow(() -> new StudentNotFoundException());
+				.orElseThrow(NotFoundException::new);
 	}
 }

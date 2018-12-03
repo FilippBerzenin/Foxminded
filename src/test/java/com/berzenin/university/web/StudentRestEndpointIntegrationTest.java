@@ -53,12 +53,13 @@ public class StudentRestEndpointIntegrationTest {
 
 	@Test
 	public void testGetAllStudents() throws Exception {
-		when(studentRepository.findAll())
+		Long id =1L;
+		when(studentRepository.findByGroupId(id))
 				.thenReturn(Arrays.asList(
 						new Student(1, "Alex", "Ro"), 
 						new Student(2, "Mary", "Bo")));
 
-		subject.perform(get("/students/all"))
+		subject.perform(get("/group/"+id+"/students/all"))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -92,11 +93,14 @@ public class StudentRestEndpointIntegrationTest {
 	@Test
 	public void testFindStudentById() throws Exception {
 		Long id = 1L;
-		when(studentRepository.findById(id)).thenReturn(Optional.ofNullable(new Student(1, "Fil", "Berzenin")));		
+		when(studentRepository.findById(id)).thenReturn(Optional.of(new Student(1, "Fil", "Berzenin")));		
 		subject.perform(get("/students/"+id)
 			.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 			.andDo(print())
-			.andExpect(status().isOk());
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id").value(1))
+			.andExpect(jsonPath("$.name").value("Fil"))
+			.andExpect(jsonPath("$.surename").value("Berzenin"));
 
 			verify(studentRepository).findById(id);
 	}
@@ -120,25 +124,28 @@ public class StudentRestEndpointIntegrationTest {
 		Long id = 1L;
 		Student studentForUpdate = new Student(1, "Tima", "Berzenin");
 		Student studentWithOldParam = new Student("Tima", "Berzen");
-		when(studentRepository.findById(id)).thenReturn(Optional.ofNullable(studentWithOldParam));
+		when(studentRepository.findById(id)).thenReturn(Optional.of(studentWithOldParam));
 		when(studentRepository.save(any())).thenReturn(studentForUpdate);
 
 		subject.perform(put("/students/update/"+id)
 			.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 			.content(mapper.writeValueAsBytes(studentForUpdate)))
 			.andDo(print())
-			.andExpect(status().isCreated())
+			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.id").value(id))
 			.andExpect(jsonPath("$.name").value("Tima"))
 			.andExpect(jsonPath("$.surename").value("Berzenin"))
 			.andReturn();
+		
+		verify(studentRepository).findById(id);
+		verify(studentRepository).save(new Student(0, "Tima", "Berzenin"));
 	}
 	
 	@Test
 	public void testDeleteStudentsById() throws Exception {
 		Long id = 1L;
 		Student studentForDelete = new Student(1, "Tima", "Berzenin");
-		when(studentRepository.findById(id)).thenReturn(Optional.ofNullable(studentForDelete));
+		when(studentRepository.findById(id)).thenReturn(Optional.of(studentForDelete));
 		subject.perform(delete("/students/delete/"+id)
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andDo(print())

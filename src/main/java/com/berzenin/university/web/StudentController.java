@@ -1,7 +1,6 @@
 package com.berzenin.university.web;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,13 +25,14 @@ import lombok.RequiredArgsConstructor;
 public class StudentController {	
 	
 	@Autowired
-	private final StudentRepository repository;
-
+	private final StudentRepository studentRepository;
+	
 	@GetMapping(
-			value = "/students/all", 
+			value = "/group/{id}/students/all", 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	List<Student> getAll() {
-		return repository.findAll();
+	List<Student> getAll(@PathVariable long id) {
+		
+		return studentRepository.findByGroupId(id);
 	}
 	
 	@GetMapping(
@@ -48,34 +48,31 @@ public class StudentController {
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	Student addStudent(@RequestBody Student student) {
-		return repository.save(student);
+		return studentRepository.save(student);
 	}
 	
 	@PutMapping(
 			value = "/students/update/{id}",
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseStatus(HttpStatus.OK)
 	Student updateStudent(@RequestBody Student student, @PathVariable("id") long id) {
 		Student studentForUpdate = returnStudentisPresent(id);
 		studentForUpdate.setName(student.getName());
 		studentForUpdate.setSurename(student.getSurename());
-		return repository.save(studentForUpdate);
+		return studentRepository.save(studentForUpdate);
 	}
 	
 	@DeleteMapping(value = "/students/delete/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	Student deleteStudentByEntity (@PathVariable("id") long id) {
 		Student student = returnStudentisPresent(id);
-		repository.delete(student);
+		studentRepository.delete(student);
 		return student;
 	}
 	
 	private Student returnStudentisPresent(long id) {
-		Optional<Student> student = repository.findById(id);
-		if (!student.isPresent()) {
-			throw new StudentNotFoundException("Student Not Found "+id);	
-		}
-		return student.get();
+		return studentRepository.findById(id)
+				.orElseThrow(() -> new StudentNotFoundException());
 	}
 }

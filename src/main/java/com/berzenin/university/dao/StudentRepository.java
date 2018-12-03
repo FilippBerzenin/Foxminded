@@ -9,6 +9,7 @@ import com.berzenin.university.model.persons.Student;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
-
+	
 	List<Student> findByGroupId(Long id);
+
 }

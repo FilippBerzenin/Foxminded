@@ -1,9 +1,12 @@
 package com.berzenin.university.web;
 
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
 public class GroupController {
-	
-//	@Autowired
-//	private final GroupsRepository groupsRepository;
 //	
 //	@GetMapping(
 //			value = "groups/all",

@@ -74,7 +74,7 @@ public class GroupRestEndpointIntegrationTest {
 		.andExpect(jsonPath("$[1].name").value("second"));
 	}
 	
-	@Test //Todo
+	@Test
 	public void testAddNewGroup() throws Exception {
 		Group group = new Group("first"); 
 		when(repository.save(any())).thenReturn(new Group(2, "first", null));
@@ -87,8 +87,6 @@ public class GroupRestEndpointIntegrationTest {
 				.andDo(print())
 				.andExpect(jsonPath("$.id").value(2))
 				.andExpect(jsonPath("$.name").value("first"));
-		
-//		verify(repository).save(new Group(2, "First", null));
 	}
 	
 	@Test
@@ -101,6 +99,8 @@ public class GroupRestEndpointIntegrationTest {
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.id").value(0))
 		.andExpect(jsonPath("$.name").value("first"));
+		
+		verify(repository).findById(1L);
 	}
 	
 	@Test

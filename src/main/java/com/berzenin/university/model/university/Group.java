@@ -1,6 +1,5 @@
 package com.berzenin.university.model.university;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -13,27 +12,18 @@ import javax.persistence.Table;
 import com.berzenin.university.model.persons.Student;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString(exclude = "students")
-//@Data
-//@Builder
+@Data
+@Builder
 @Entity
 @AllArgsConstructor
 @Table(name= "groups")
 @EqualsAndHashCode(exclude = "students")
-public class Group implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Group {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

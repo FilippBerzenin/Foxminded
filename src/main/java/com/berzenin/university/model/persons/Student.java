@@ -1,33 +1,24 @@
 package com.berzenin.university.model.persons;
 
-import com.berzenin.university.model.university.Group;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.berzenin.university.model.university.Group;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Student extends Person implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public Student() {
-		super();
-	}
-//	public Student(String name, String surename) {
-//		super(0, name, surename);
-//	}
+public class Student extends Person {
 	
 	public Student(String name, String surename) {
 	super(name, surename);

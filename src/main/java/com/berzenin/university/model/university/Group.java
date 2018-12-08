@@ -32,9 +32,7 @@ public class Group {
 	@NonNull
 	private String name;
 
-	@OneToMany(
-			targetEntity = Student.class,
-			mappedBy = "group")
+	@OneToMany
 	private List<Student> students;
 
 	public Group(String name) {

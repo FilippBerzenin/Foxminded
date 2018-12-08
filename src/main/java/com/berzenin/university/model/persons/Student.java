@@ -4,7 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.berzenin.university.model.university.Group;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -34,6 +38,9 @@ public class Student extends Person {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "group_id")
-	private Group group;
+	@JoinColumn(name = "groups_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private Group group;	
+
 }

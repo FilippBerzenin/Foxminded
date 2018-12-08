@@ -42,8 +42,8 @@ public class GroupController {
 	@ResponseStatus(HttpStatus.CREATED)
 	Group addGroups(@RequestBody Group group) {
 		return groupRepository.save(group);
-	}
-
+	}	
+	
 	@GetMapping(
 			value = "/groups/{id}/students",
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

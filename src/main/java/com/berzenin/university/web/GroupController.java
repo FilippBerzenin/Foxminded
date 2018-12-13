@@ -24,25 +24,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GroupController {
 
-    private final GroupRepository groupRepository;
-    
-    @GetMapping(
-			value = "/groups",
-			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	private final GroupRepository groupRepository;
+	
+	@GetMapping(value = "/groups", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Group> getAll () {
+	public List<Group> getAll() {
 		return groupRepository.findAll();
 	}
-    
-    
-	@PostMapping(
-			value = "/groups",
-			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
-			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	
+	@PostMapping(value = "/groups", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	Group addGroups(@RequestBody Group group) {
-		return groupRepository.save(group);
-	}	
+	Group addGroups(@RequestBody Group newGroup) {
+		return groupRepository.saveAndFlush(newGroup);
+	}
 	
 	@GetMapping(
 			value = "/groups/{id}/students",
@@ -79,6 +73,7 @@ public class GroupController {
 	}
 	
 	private Group returnGroupIfPresent(long id) {
+		System.out.println(groupRepository.findById(id));
 		return groupRepository.findById(id)
 				.orElseThrow(NotFoundException::new);
 	}

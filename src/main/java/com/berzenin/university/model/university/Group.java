@@ -15,18 +15,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
 @Builder
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name= "groups")
 @EqualsAndHashCode(exclude = "students")
 public class Group {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	private long id;
 
 	@NonNull
@@ -35,7 +37,12 @@ public class Group {
 	@OneToMany
 	private List<Student> students;
 
-	public Group(String name) {
+	public Group(long id, String name) {
+		this.id = id;
 		this.name = name;
 	}
+	
+	public Group(String name) {
+		this.name = name;
+	}	
 }

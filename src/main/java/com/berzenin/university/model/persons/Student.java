@@ -36,6 +36,11 @@ public class Student extends Person {
 		super(id, name, surename);
 		this.group = group;
 	}
+	
+	public Student(String name, String surename, Group group) {
+		super(name, surename);
+		this.group = group;
+	}
 
 	@ManyToOne
 	@JoinColumn(name = "groups_id")

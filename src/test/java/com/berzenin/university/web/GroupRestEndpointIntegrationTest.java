@@ -77,7 +77,7 @@ public class GroupRestEndpointIntegrationTest {
 	@Test
 	public void testAddNewGroup() throws Exception {
 		Group group = new Group("first"); 
-		when(repository.save(any())).thenReturn(new Group(2, "first", null));
+		when(repository.saveAndFlush(any())).thenReturn(new Group(2, "first", null));
 
 		subject.perform(post("/groups")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)

@@ -1,0 +1,36 @@
+body {
+	background-color: #E3EDEE;
+}
+
+
+.head-block{
+    height:134px;
+    background:url(../images/head.jpg)left center no-repeat;
+}
+
+.title {
+	font-size: 80px;
+	color: #2ABC95;
+	font-weight: bolder;
+}
+
+.textH2 {
+	font-size: 50px;
+	color: #1B44D7;
+	font-style: italic;
+}
+
+td {
+	text-align: left;	
+}
+
+#top {
+	text-align: center;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+#atCenter {
+	text-align: center;
+	font-style: oblique;;
+}

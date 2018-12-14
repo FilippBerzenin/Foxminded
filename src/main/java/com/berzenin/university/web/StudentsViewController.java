@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.dao.StudentRepository;
 import com.berzenin.university.model.persons.Student;
+import com.berzenin.university.model.university.Group;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,19 +29,36 @@ public class StudentsViewController {
 		return "students";		
 	}
 	
-	@RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/create/{id}")
 	public String createNewStudents(@PathVariable("id") Long id, @RequestParam String studentsName, @RequestParam String studentsSurename, Model model) {
-		Student student = new Student (studentsName, studentsSurename, groupRepository.getOne(id));
+		Group group = groupRepository.getOne(id);
+		Student student = new Student (studentsName, studentsSurename, group);
 		studentRepository.saveAndFlush(student);
 		returnAllStudents(id, model);
 		return "students";		
 	}
 	
+	@RequestMapping(value="/delete/{id}")
+	public String deleteStudentsById(@PathVariable("id") Long id, Model model) {
+		Long group_id = studentRepository.findById(id).get().getGroup().getId();
+		studentRepository.deleteById(id);
+		returnAllStudents(group_id, model);
+		return "students";
+	}
+	
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
+	public String updateGroup(@PathVariable("id") Long id, @RequestParam String newStudentGroup,  @RequestParam String newStudentSurename, @RequestParam String newStudentName, Model model) {
+		Student student = studentRepository.findById(id).get();
+		student.setName(newStudentName);
+		student.setSurename(newStudentSurename);
+		student.setGroup(groupRepository.findByName(newStudentGroup).get());
+		studentRepository.saveAndFlush(student);
+		returnAllStudents(student.getGroup().getId(), model);
+		return "students";		
+	}
+	
 	private Model returnAllStudents(Long id, Model model) {
-		model.addAttribute("group.id", id);
-		return model.addAttribute("studentsList", groupRepository
-				.findById(id)
-				.get()
-				.getStudents());
+		model.addAttribute("group_id", id);
+		return model.addAttribute("studentsList", studentRepository.findAllStudentsByGroup(id));
 	}
 }

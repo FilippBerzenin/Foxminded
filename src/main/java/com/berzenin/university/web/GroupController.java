@@ -41,7 +41,7 @@ public class GroupController {
 	@GetMapping(
 			value = "/groups/{id}/students",
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public List<Student> students(@PathVariable("id") Long groupId){
+	public List<Student> students(@PathVariable("id") long groupId){
     	return getGroupsById(groupId).getStudents();
 	}
 	
@@ -49,7 +49,7 @@ public class GroupController {
 			value = "/groups/{id}", 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	Group getGroupsById(@PathVariable long id) {
+	Group getGroupsById(@PathVariable("id") long id) {
 		return returnGroupIfPresent(id);
 	}
 	
@@ -73,7 +73,6 @@ public class GroupController {
 	}
 	
 	private Group returnGroupIfPresent(long id) {
-		System.out.println(groupRepository.findById(id));
 		return groupRepository.findById(id)
 				.orElseThrow(NotFoundException::new);
 	}

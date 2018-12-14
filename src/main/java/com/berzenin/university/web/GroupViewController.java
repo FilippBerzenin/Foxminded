@@ -14,41 +14,48 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(value="/group_")
+@RequestMapping(value="/groups")
 public class GroupViewController {
 
 	private final GroupRepository groupRepository;
 
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(value="/show/all", method=RequestMethod.GET)
 	public String getGroupsList(Model model) {
 		returnAllGroups(model);
 		return "groups";
 	}
 	
-	@RequestMapping(method=RequestMethod.POST)
+	@RequestMapping(value="/create", method=RequestMethod.POST)
 	public String addNewGroup(@RequestParam String newGroupsName, Model model) {
 		groupRepository.saveAndFlush(Group.builder().name(newGroupsName).build());
 		returnAllGroups(model);
 		return "groups";		
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public String deleteGroup(@PathVariable("id") Long id, Model model) {
 		groupRepository.deleteById(id);
 		returnAllGroups(model);
 		return "groups";		
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
 	public String updateGroup(@PathVariable("id") Long id, @RequestParam String newGroupName, Model model) {
-		System.out.println("start");
 		Group group = groupRepository.findById(id).get();
 		group.setName(newGroupName);
 		groupRepository.saveAndFlush(group);
 		returnAllGroups(model);
 		return "groups";		
 	}
+	// TODO
+	@RequestMapping(value = "/show/{id}/students", method = RequestMethod.POST)
+	public String getAllStudentsFromGroup(@PathVariable("id") Long id, Model model) {
+//		groupRepository.
+//		model.addAttribute(attributeValue)
+		return "students";
+	}
 	
+	// TODO
 	private Model returnAllGroups(Model model) {
 		return model.addAttribute("groupsList", groupRepository.findAll());
 	}

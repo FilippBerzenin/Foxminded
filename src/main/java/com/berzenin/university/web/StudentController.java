@@ -28,6 +28,7 @@ public class StudentController {
 	
 	@GetMapping(
 			value = "/students/{id}", 
+			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	Student getStudentsById(@PathVariable long id) {
 		return returnStudentIfPresent(id);

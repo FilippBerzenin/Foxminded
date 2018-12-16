@@ -1,11 +1,13 @@
 package com.berzenin.university.web;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.model.university.Group;
@@ -33,8 +35,9 @@ public class GroupViewController {
 	}
 	
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public String deleteGroup(@PathVariable("id") Long id, Model model) {
-		groupRepository.deleteById(id);
+		groupRepository.delete(groupRepository.findById(id).get());;
 		returnAllGroups(model);
 		return "groups";		
 	}
@@ -55,7 +58,6 @@ public class GroupViewController {
 		return "students";
 	}
 	
-	// TODO
 	private Model returnAllGroups(Model model) {
 		return model.addAttribute("groupsList", groupRepository.findAll());
 	}

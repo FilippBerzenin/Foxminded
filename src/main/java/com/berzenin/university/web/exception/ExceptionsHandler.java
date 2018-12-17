@@ -16,6 +16,6 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(NotFoundException.class)
 	@ResponseBody
 	protected void handleThereIsStudentNotFoundException() {
-		log.error("Student Not Found");;
+		log.error("Student Not Found");
 	}
 }

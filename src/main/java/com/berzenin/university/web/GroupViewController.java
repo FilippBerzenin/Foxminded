@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.model.university.Group;
+import com.berzenin.university.web.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,14 +23,18 @@ public class GroupViewController {
 	private final GroupRepository groupRepository;
 
 	@RequestMapping(value="/show/all", method=RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
 	public String getGroupsList(Model model) {
 		returnAllGroups(model);
 		return "groups";
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
 	public String addNewGroup(@RequestParam String newGroupsName, Model model) {
-		groupRepository.saveAndFlush(Group.builder().name(newGroupsName).build());
+		if (!groupRepository.findByName(newGroupsName).isPresent()) {
+			groupRepository.saveAndFlush(Group.builder().name(newGroupsName).build());
+		}
 		returnAllGroups(model);
 		return "groups";		
 	}
@@ -37,29 +42,28 @@ public class GroupViewController {
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public String deleteGroup(@PathVariable("id") Long id, Model model) {
-		groupRepository.delete(groupRepository.findById(id).get());;
+		groupRepository.delete(returnGroupIfPresent(id));;
 		returnAllGroups(model);
 		return "groups";		
 	}
 	
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-	public String updateGroup(@PathVariable("id") Long id, @RequestParam String newGroupName, Model model) {
-		Group group = groupRepository.findById(id).get();
+	@ResponseStatus(HttpStatus.OK)
+	public String updateGroup(@PathVariable("id") Long id, @RequestParam(value="newGroupName") String newGroupName, Model model) {
+		Group group = returnGroupIfPresent(id);
 		group.setName(newGroupName);
 		groupRepository.saveAndFlush(group);
 		returnAllGroups(model);
 		return "groups";		
 	}
-	// TODO
-	@RequestMapping(value = "/show/{id}/students", method = RequestMethod.POST)
-	public String getAllStudentsFromGroup(@PathVariable("id") Long id, Model model) {
-//		groupRepository.
-//		model.addAttribute(attributeValue)
-		return "students";
-	}
 	
 	private Model returnAllGroups(Model model) {
 		return model.addAttribute("groupsList", groupRepository.findAll());
+	}
+	
+	private Group returnGroupIfPresent(long id) {
+		return groupRepository.findById(id)
+				.orElseThrow(NotFoundException::new);
 	}
 
 }

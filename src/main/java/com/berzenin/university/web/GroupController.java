@@ -41,6 +41,7 @@ public class GroupController {
 	@GetMapping(
 			value = "/groups/{id}/students",
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseStatus(HttpStatus.OK)
 	public List<Student> students(@PathVariable("id") long groupId){
     	return getGroupsById(groupId).getStudents();
 	}

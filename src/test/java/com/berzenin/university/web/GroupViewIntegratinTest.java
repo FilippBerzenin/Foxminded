@@ -50,10 +50,15 @@ public class GroupViewIntegratinTest {
 		// Given
 		when(groupRepository.findAll()).thenReturn(Arrays.asList(new Group(1, "first"), new Group(2, "second")));
 		// Then
-		subject.perform(get("/groups/show/all")).andDo(print()).andExpect(status().isOk())
-				.andExpect(forwardedUrl("groups")).andExpect(view().name("groups"))
-				.andExpect(model().attribute("groupsList", hasSize(2)))
-				.andExpect(model().attributeExists("groupsList"));
+		subject.perform(get("/groups/show/all"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("groups"))
+			.andExpect(view().name("groups"))
+			.andExpect(model().attribute("groupsList", hasSize(2)))
+			.andExpect(model().attributeExists("groupsList"));
+		// When
+		verify(groupRepository).findAll();
 
 		List<Group> groups = groupRepository.findAll();
 		assertThat(groups.get(0).getId(), is(1L));
@@ -84,12 +89,14 @@ public class GroupViewIntegratinTest {
 		// Given
 		Long id = 1L;
 		Group groupsForDelete = new Group(id, "test", null);
-		// Then
 		when(groupRepository.findById(id)).thenReturn(Optional.of(groupsForDelete));
-
-		subject.perform(get("/groups/delete/{id}", id)).andExpect(view().name("groups")).andDo(print())
-				.andExpect(status().isNoContent());
+		// Then
+		subject.perform(get("/groups/delete/{id}", id))
+			.andExpect(view().name("groups"))
+			.andDo(print())
+			.andExpect(status().isNoContent());
 		// When
+		verify(groupRepository).findById(id);
 	}
 
 	@Test

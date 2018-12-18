@@ -59,13 +59,14 @@ public class StudentViewIntegratinTest {
 			.andExpect(view().name("students"))
 			.andExpect(model().attribute("studentsList", hasSize(2)))
 			.andExpect(model().attributeExists("studentsList"));
-
+		// When
+		verify(studentRepository).findAllStudentsByGroup(id);
+		
 		List<Student> students = studentRepository.findAllStudentsByGroup(id);
 		assertThat(students.get(0).getName(), is("first"));
 		assertThat(students.get(1).getName(), is("second"));
 		assertThat(students.get(0).getSurename(), is("first"));
 		assertThat(students.get(1).getSurename(), is("second"));
-
 	}
 
 	@Test
@@ -93,14 +94,15 @@ public class StudentViewIntegratinTest {
 		// Given
 		Long id = 1L;
 		Student studentsForDelete = new Student("name", "surename", new Group(1L, "Group"));
-		// Then
 		when(studentRepository.findById(id)).thenReturn(Optional.of(studentsForDelete));
-
+		// Then
 		subject.perform(get("/students/delete/{id}", id))
 			.andExpect(view()
 			.name("students"))
 			.andDo(print())
 			.andExpect(status().isNoContent());
+		// When
+		verify(studentRepository).findById(id);
 	}
 
 	@Test

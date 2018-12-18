@@ -54,12 +54,13 @@ public class StudentRestEndpointIntegrationTest {
 
 	@Test
 	public void testGetAllStudents() throws Exception {
+		// Given
 		when(studentRepository.findAll())
 				.thenReturn(Arrays.asList(
 						new Student(1, "Alex", "Ro"), 
 						new Student(2, "Mary", "Bo")));
-
-		subject.perform(get("/students"))
+		// Then
+		subject.perform(get("/api/students"))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -71,14 +72,17 @@ public class StudentRestEndpointIntegrationTest {
 				.andExpect(jsonPath("$[1].id").value(2))
 				.andExpect(jsonPath("$[1].name").value("Mary"))
 				.andExpect(jsonPath("$[1].surename").value("Bo"));
+		// When
+		verify(studentRepository).findAll();
 	}
 
 	@Test
 	public void testAddStudent() throws Exception {
+		// Given
 		Student student = new Student("Some", "Name");
 		when(studentRepository.save(any())).thenReturn(new Student(1, "Some", "Name"));
-
-		subject.perform(post("/students")
+		// Then
+		subject.perform(post("/api/students")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.content(mapper.writeValueAsBytes(student)))
 				.andDo(print())
@@ -86,49 +90,53 @@ public class StudentRestEndpointIntegrationTest {
 				.andExpect(jsonPath("$.id").value(1))
 				.andExpect(jsonPath("$.name").value("Some"))
 				.andExpect(jsonPath("$.surename").value("Name"));
-
+		// When
 		verify(studentRepository).save(new Student("Some", "Name"));
 	}
 
 	@Test
 	public void testFindStudentById() throws Exception {
+		// Given
 		Long id = 1L;
 		when(studentRepository.findById(any())).thenReturn(Optional.of(
 				new Student(id, "Fil", "Berzenin", null)));
-		subject.perform(get("/students/" + id)
+		// Then
+		subject.perform(get("/api/students/" + id)
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id").value(id))
 				.andExpect(jsonPath("$.name").value("Fil"))
 				.andExpect(jsonPath("$.surename").value("Berzenin"));
-
+		// When
 		verify(studentRepository).findById(id);
 	}
 
 	@Test()
 	public void notFindById() throws Exception {
+		// Given
 		Long id = 2L;
 		when(studentRepository.findById(id)).thenThrow(new NotFoundException());
-
-		subject.perform(get("/students/" + id)
+		// Then
+		subject.perform(get("/api/students/" + id)
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andDo(print())
 				.andExpect(status().isNotFound())
 				.andExpect(status().reason(containsString("Student Not Found")));
-
+		// When
 		verify(studentRepository).findById(id);
 	}
 
 	@Test
 	public void testUpdateStudent() throws Exception {
+		// Given
 		Long id = 1L;
 		Student studentForUpdate = new Student(1, "Tima", "Berzenin");
 		Student studentWithOldParam = new Student("Tima", "Berzen");
 		when(studentRepository.findById(id)).thenReturn(Optional.of(studentWithOldParam));
 		when(studentRepository.save(any())).thenReturn(studentForUpdate);
-
-		subject.perform(put("/students/" + id)
+		// Then
+		subject.perform(put("/api/students/" + id)
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.content(mapper.writeValueAsBytes(studentForUpdate)))
 				.andDo(print())
@@ -136,31 +144,34 @@ public class StudentRestEndpointIntegrationTest {
 				.andExpect(jsonPath("$.id").value(id))
 				.andExpect(jsonPath("$.name").value("Tima"))
 				.andExpect(jsonPath("$.surename").value("Berzenin")).andReturn();
-
+		// When
 		verify(studentRepository).findById(id);
 		verify(studentRepository).save(new Student(0, "Tima", "Berzenin"));
 	}
 
 	@Test
 	public void testDeleteStudentsById() throws Exception {
+		// Given
 		Long id = 1L;
 		Student studentForDelete = new Student(1, "Tima", "Berzenin");
 		when(studentRepository.findById(id)).thenReturn(Optional.of(studentForDelete));
-		subject.perform(delete("/students/" + id)
+		// Then
+		subject.perform(delete("/api/students/" + id)
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)).andDo(print())
 				.andExpect(status().isNoContent());
-
+		// When
 		verify(studentRepository).findById(id);
 	}
 
 	@Test
 	public void testAddStudentToGroup() throws Exception {
+		// Given
 		when(groupRepository.findById(1L)).thenReturn(Optional.of(new Group(1L, "Some Group", null)));
 		when(studentRepository.findById(1L)).thenReturn(Optional.of(new Student(1L, "Some", "Name")));
-
-		subject.perform(post("/students/1?groupId=1"))
+		// Then
+		subject.perform(post("/api/students/1?groupId=1"))
 		.andExpect(status().isOk());
-
+		// When
 		verify(studentRepository).save(new Student(1L, "Some", "Name", new Group(1L, "Some Group", null)));
 	}
 }

@@ -59,10 +59,12 @@ public class GroupRestEndpointIntegrationTest {
 	
 	@Test	
 	public void testGetAllGroups () throws Exception {
+		// Given
 		when(repository.findAll()).thenReturn(Arrays.asList(
 				new Group(1, "test", null),
 				new Group(2, "second", null)));
-		subject.perform(get("/groups"))
+		// Then
+		subject.perform(get("/api/groups"))
 		.andDo(print())
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -72,14 +74,17 @@ public class GroupRestEndpointIntegrationTest {
 		.andExpect(jsonPath("$[0].name").value("test"))
 		.andExpect(jsonPath("$[1].id").value(2))
 		.andExpect(jsonPath("$[1].name").value("second"));
+		// When
+		verify(repository).findAll();
 	}
 	
 	@Test
 	public void testAddNewGroup() throws Exception {
+		// Given
 		Group group = new Group("first"); 
 		when(repository.saveAndFlush(any())).thenReturn(new Group(2, "first", null));
-
-		subject.perform(post("/groups")
+		// Then
+		subject.perform(post("/api/groups")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.content(mapper.writeValueAsBytes(group))
 				)
@@ -87,45 +92,50 @@ public class GroupRestEndpointIntegrationTest {
 				.andDo(print())
 				.andExpect(jsonPath("$.id").value(2))
 				.andExpect(jsonPath("$.name").value("first"));
+		// When
+		verify(repository).saveAndFlush(new Group(0, "first", null));
 	}
 	
 	@Test
 	public void testFindGroupById () throws Exception {
+		// Given
 		when(repository.findById(1L)).thenReturn(Optional.of(new Group("first")));
-		
-		subject.perform(get("/groups/"+1L)
+		// Then
+		subject.perform(get("/api/groups/"+1L)
 		.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 		.andDo(print())
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.id").value(0))
 		.andExpect(jsonPath("$.name").value("first"));
-		
+		// When
 		verify(repository).findById(1L);
 	}
 	
 	@Test
 	public void notFindById() throws Exception {
+		// Given
 		Long id = 2L;
 		when(repository.findById(id)).thenThrow(new NotFoundException());
-
-		subject.perform(get("/groups/" + id)
+		// Then
+		subject.perform(get("/api/groups/" + id)
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andDo(print())
 				.andExpect(status().isNotFound())
 				.andExpect(status().reason(containsString("Student Not Found")));
-
+		// When
 		verify(repository).findById(id);
 	}
 	
 	@Test
 	public void testUpdateGroup() throws Exception {
+		// Given
 		Long id = 1L;
 		Group groupForUpdate = new Group(id, "First", null);
 		Group groupWithOldParam = new Group(id, "Fir", null);
 		when(repository.findById(id)).thenReturn(Optional.of(groupWithOldParam));
 		when(repository.save(any())).thenReturn(groupForUpdate);
-
-		subject.perform(put("/groups/1")
+		// Then
+		subject.perform(put("/api/groups/1")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.content(mapper.writeValueAsBytes(groupForUpdate)))
 				.andDo(print())
@@ -133,19 +143,20 @@ public class GroupRestEndpointIntegrationTest {
 				.andExpect(jsonPath("$.id").value(id))
 				.andExpect(jsonPath("$.name").value("First"))
 				.andReturn();
-
+		// When
 		verify(repository).findById(id);
 		verify(repository).save(new Group(id, "First", null));
 	}
 	
 	@Test
 	public void testGetAllStudentsFromGroup () throws Exception {
+		// Given
 		when(repository.findById(1L)).thenReturn(Optional.of(new Group(1L, "test", 
 				Arrays.asList(new Student(1, "Alex", "Ro", new Group(1L, "test", null)), 
 							  new Student(2, "Mary", "Bo", new Group(1L, "test", null)))
 				)));
-
-		subject.perform(get("/groups/"+1L+"/students"))
+		// Then
+		subject.perform(get("/api/groups/"+1L+"/students"))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -157,20 +168,22 @@ public class GroupRestEndpointIntegrationTest {
 			.andExpect(jsonPath("$[1].id").value(2))
 			.andExpect(jsonPath("$[1].name").value("Mary"))
 			.andExpect(jsonPath("$[1].surename").value("Bo"));
-		
+		// When
 		verify(repository).findById(1L);
 	}
 	
 	@Test
 	public void testDeleteGroupsById() throws Exception {
+		// Given
 		Long id = 1L;
 		Group groupsForDelete = new Group(id, "test", null);
 		when(repository.findById(id)).thenReturn(Optional.of(groupsForDelete));
-		subject.perform(delete("/groups/" + id)
+		// Then
+		subject.perform(delete("/api/groups/" + id)
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andDo(print())
 				.andExpect(status().isNoContent());
-
+		// When
 		verify(repository).findById(id);
 	}
 }

@@ -50,7 +50,7 @@ public class StudentViewIntegratinTest {
 	public void getStudentsListTest() throws Exception {
 		// Given
 		Long id = 1L;
-		when(studentRepository.findAllStudentsByGroup(id)).thenReturn(Arrays.asList(new Student("first", "first"), new Student("second", "second")));
+		when(studentRepository.findByGroupId(id)).thenReturn(Arrays.asList(new Student("first", "first"), new Student("second", "second")));
 		// Then
 		subject.perform(get("/students/{id}", id))
 			.andDo(print())
@@ -60,9 +60,9 @@ public class StudentViewIntegratinTest {
 			.andExpect(model().attribute("studentsList", hasSize(2)))
 			.andExpect(model().attributeExists("studentsList"));
 		// When
-		verify(studentRepository).findAllStudentsByGroup(id);
+		verify(studentRepository).findByGroupId(id);
 		
-		List<Student> students = studentRepository.findAllStudentsByGroup(id);
+		List<Student> students = studentRepository.findByGroupId(id);
 		assertThat(students.get(0).getName(), is("first"));
 		assertThat(students.get(1).getName(), is("second"));
 		assertThat(students.get(0).getSurename(), is("first"));

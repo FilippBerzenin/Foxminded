@@ -26,7 +26,13 @@
 			</div>
 		</div>
 		<br />
+		<div>Search groups by name</div>
+		<form action="/groups/search" method="post">
+			<input type="text" name="filter" placeholder="Groups name for serch">
+			<button type="submit">Search</button>
+		</form>
 		<h1>Groups list</h1>
+			<a href="${pageContext.request.contextPath}/groups/show/all">Get all groups</a>
 		<div class="form-group">
 			<table border="1">
 				<tr>

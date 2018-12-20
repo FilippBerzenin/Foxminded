@@ -1,5 +1,8 @@
 package com.berzenin.university.web;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.model.university.Group;
+import com.berzenin.university.web.exception.MyException;
 import com.berzenin.university.web.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,17 @@ public class GroupViewController {
 	@ResponseStatus(HttpStatus.OK)
 	public String getGroupsList(Model model) {
 		returnAllGroups(model);
+		return "groups";
+	}
+
+	@RequestMapping(value="/search", method=RequestMethod.POST)
+	public String findGroupByName(@RequestParam String filter, Model model) {
+ 		if (filter != null && !filter.isEmpty()) {
+			model.addAttribute("groupsList", Arrays.asList(groupRepository.findByName(filter)
+					.orElseThrow(NotFoundException::new)));
+		} else {
+				returnAllGroups(model);
+		}
 		return "groups";
 	}
 	
@@ -65,5 +80,4 @@ public class GroupViewController {
 		return groupRepository.findById(id)
 				.orElseThrow(NotFoundException::new);
 	}
-
 }

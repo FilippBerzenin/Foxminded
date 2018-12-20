@@ -67,7 +67,7 @@ public class StudentsViewController {
 	
 	private Model returnAllStudents(Long id, Model model) {
 		model.addAttribute("group_id", id);
-		return model.addAttribute("studentsList", studentRepository.findAllStudentsByGroup(id));
+		return model.addAttribute("studentsList", studentRepository.findByGroupId(id));
 	}
 	
 	private Student returnStudentIfPresent(long id) {

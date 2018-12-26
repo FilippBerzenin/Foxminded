@@ -1,4 +1,4 @@
-package com.berzenin.university.web;
+package com.berzenin.university.web.restController;
 
 import java.util.List;
 

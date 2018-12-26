@@ -1,7 +1,4 @@
-package com.berzenin.university.web;
-
-import java.io.IOException;
-import java.util.Arrays;
+package com.berzenin.university.web.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -12,10 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.model.university.Group;
-import com.berzenin.university.web.exception.MyException;
-import com.berzenin.university.web.exception.NotFoundException;
+import com.berzenin.university.service.controller.GroupService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value="/groups")
 public class GroupViewController {
 
-	private final GroupRepository groupRepository;
+	private final GroupService groupService;
 
 	@RequestMapping(value="/show/all", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
@@ -35,21 +30,14 @@ public class GroupViewController {
 
 	@RequestMapping(value="/search", method=RequestMethod.POST)
 	public String findGroupByName(@RequestParam String filter, Model model) {
- 		if (filter != null && !filter.isEmpty()) {
-			model.addAttribute("groupsList", Arrays.asList(groupRepository.findByName(filter)
-					.orElseThrow(NotFoundException::new)));
-		} else {
-				returnAllGroups(model);
-		}
+		model.addAttribute("groupsList", groupService.searchGroupByName(filter));
 		return "groups";
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public String addNewGroup(@RequestParam String newGroupsName, Model model) {
-		if (!groupRepository.findByName(newGroupsName).isPresent()) {
-			groupRepository.saveAndFlush(Group.builder().name(newGroupsName).build());
-		}
+		groupService.addNewGroup(newGroupsName);
 		returnAllGroups(model);
 		return "groups";		
 	}
@@ -57,7 +45,7 @@ public class GroupViewController {
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public String deleteGroup(@PathVariable("id") Long id, Model model) {
-		groupRepository.delete(returnGroupIfPresent(id));;
+		groupService.delete(id);;
 		returnAllGroups(model);
 		return "groups";		
 	}
@@ -65,19 +53,14 @@ public class GroupViewController {
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public String updateGroup(@PathVariable("id") Long id, @RequestParam(value="newGroupName") String newGroupName, Model model) {
-		Group group = returnGroupIfPresent(id);
+		Group group = groupService.returnGroupIfPresent(id);
 		group.setName(newGroupName);
-		groupRepository.saveAndFlush(group);
+		groupService.save(group);
 		returnAllGroups(model);
 		return "groups";		
 	}
 	
 	private Model returnAllGroups(Model model) {
-		return model.addAttribute("groupsList", groupRepository.findAll());
-	}
-	
-	private Group returnGroupIfPresent(long id) {
-		return groupRepository.findById(id)
-				.orElseThrow(NotFoundException::new);
+		return model.addAttribute("groupsList", groupService.findAll());
 	}
 }

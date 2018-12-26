@@ -30,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.dao.StudentRepository;
 import com.berzenin.university.model.university.Group;
+import com.berzenin.university.service.controller.GroupService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = UniversityWebServiceTestApplication.class)
@@ -44,11 +45,14 @@ public class GroupViewIntegratinTest {
 
 	@MockBean
 	StudentRepository studentRepository;
+	
+	@MockBean
+	GroupService groupService;
 
 	@Test
 	public void getGroupsListTest() throws Exception {
 		// Given
-		when(groupRepository.findAll()).thenReturn(Arrays.asList(new Group(1, "first"), new Group(2, "second")));
+		when(groupService.findAll()).thenReturn(Arrays.asList(new Group(1, "first"), new Group(2, "second")));
 		// Then
 		subject.perform(get("/groups/show/all"))
 			.andDo(print())
@@ -58,9 +62,9 @@ public class GroupViewIntegratinTest {
 			.andExpect(model().attribute("groupsList", hasSize(2)))
 			.andExpect(model().attributeExists("groupsList"));
 		// When
-		verify(groupRepository).findAll();
+		verify(groupService).findAll();
 
-		List<Group> groups = groupRepository.findAll();
+		List<Group> groups = groupService.findAll();
 		assertThat(groups.get(0).getId(), is(1L));
 		assertThat(groups.get(1).getId(), is(2L));
 		assertThat(groups.get(0).getName(), is("first"));
@@ -71,8 +75,7 @@ public class GroupViewIntegratinTest {
 	public void addNewGroupTest() throws Exception {
 		// Given
 		String newGroupsName = "First";
-		Group groupForAdd = new Group(newGroupsName);
-		when(groupRepository.save(any())).thenReturn(groupForAdd);
+		when(groupService.addNewGroup(newGroupsName)).thenReturn(true);
 		// Then
 		subject.perform(post("/groups/create")
 			.param("newGroupsName", newGroupsName))
@@ -81,7 +84,7 @@ public class GroupViewIntegratinTest {
 			.andExpect(view().name("groups"))
 			.andExpect(status().isCreated());
 		// When
-		verify(groupRepository).saveAndFlush(groupForAdd);
+		verify(groupService).addNewGroup(newGroupsName);
 	}
 
 	@Test
@@ -89,16 +92,16 @@ public class GroupViewIntegratinTest {
 		// Given
 		Long id = 1L;
 		Group groupsForDelete = new Group(id, "test", null);
-		when(groupRepository.findById(id)).thenReturn(Optional.of(groupsForDelete));
+		when(groupService.findById(id)).thenReturn(groupsForDelete);
 		// Then
 		subject.perform(get("/groups/delete/{id}", id))
 			.andExpect(view().name("groups"))
 			.andDo(print())
 			.andExpect(status().isNoContent());
 		// When
-		verify(groupRepository).findById(id);
+//		verify(groupRepository).findById(id);
 	}
-
+//
 	@Test
 	public void updateGroupTest() throws Exception {
 		// Given
@@ -106,14 +109,18 @@ public class GroupViewIntegratinTest {
 		String newName = "First";
 		Group groupForUpdate = new Group(id, "First", null);
 		Group groupWithOldParam = new Group(id, "Fir", null);
-		when(groupRepository.findById(id)).thenReturn(Optional.of(groupWithOldParam));
-		when(groupRepository.save(groupForUpdate)).thenReturn(groupForUpdate);
+		when(groupService.findById(id)).thenReturn(groupWithOldParam);
+		when(groupService.save(groupForUpdate)).thenReturn(groupForUpdate);
 		// Then
-		subject.perform(post("/groups/update/{id}", id).param("newGroupName", newName)).andDo(print())
-				.andExpect(forwardedUrl("groups")).andExpect(view().name("groups")).andExpect(status().isOk());
+		subject.perform(post("/groups/update/{id}", id)
+				.param("newGroupName", newName))
+		.andDo(print())
+				.andExpect(forwardedUrl("groups"))
+				.andExpect(view().name("groups"))
+				.andExpect(status().isOk());
 		// When
-		verify(groupRepository).findById(id);
-		verify(groupRepository).saveAndFlush(new Group(id, "First", null));
+//		verify(groupService).findById(id);
+//		verify(groupService).saveAndFlush(new Group(id, "First", null));
 	}
 
 }

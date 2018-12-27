@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.berzenin.university.model.university.Group;
 import com.berzenin.university.service.controller.GroupService;
+import com.berzenin.university.web.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,43 +25,48 @@ public class GroupViewController {
 	@RequestMapping(value="/show/all", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public String getGroupsList(Model model) {
-		returnAllGroups(model);
+		setGroupsToModel(model);
 		return "groups";
 	}
 
 	@RequestMapping(value="/search", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
 	public String findGroupByName(@RequestParam String filter, Model model) {
-		model.addAttribute("groupsList", groupService.searchGroupByName(filter));
-		return "groups";
+		try {
+			model.addAttribute("groupsList", groupService.searchGroupsByName(filter));
+			return "groups";	
+		} catch (NotFoundException e) {
+			return "error";
+		}
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public String addNewGroup(@RequestParam String newGroupsName, Model model) {
 		groupService.addNewGroup(newGroupsName);
-		returnAllGroups(model);
+		setGroupsToModel(model);
 		return "groups";		
 	}
 	
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public String deleteGroup(@PathVariable("id") Long id, Model model) {
-		groupService.delete(id);;
-		returnAllGroups(model);
+		groupService.delete(id);
+		setGroupsToModel(model);
 		return "groups";		
 	}
 	
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public String updateGroup(@PathVariable("id") Long id, @RequestParam(value="newGroupName") String newGroupName, Model model) {
-		Group group = groupService.returnGroupIfPresent(id);
+		Group group = groupService.findById(id);
 		group.setName(newGroupName);
 		groupService.save(group);
-		returnAllGroups(model);
+		setGroupsToModel(model);
 		return "groups";		
 	}
 	
-	private Model returnAllGroups(Model model) {
-		return model.addAttribute("groupsList", groupService.findAll());
+	private void setGroupsToModel(Model model) {
+		model.addAttribute("groupsList", groupService.findAll());
 	}
 }

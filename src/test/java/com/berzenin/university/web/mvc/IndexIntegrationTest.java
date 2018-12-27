@@ -1,4 +1,4 @@
-package com.berzenin.university.web;
+package com.berzenin.university.web.mvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -9,33 +9,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
-import com.berzenin.university.dao.GroupRepository;
-import com.berzenin.university.dao.StudentRepository;
+import com.berzenin.university.web.rest.RestIntegrationTest;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = UniversityWebServiceTestApplication.class)
-@AutoConfigureMockMvc
-public class IndexIntegrationTest {
-
-	@Autowired
-	MockMvc object;
-	
-	@MockBean
-	GroupRepository groupRepository;
-
-	@MockBean
-	StudentRepository studentRepository;
+public class IndexIntegrationTest  extends RestIntegrationTest{
 	
 	@Test
 	public void initIndexView() throws Exception {
-		object.perform(get("/"))
+		subject.perform(get("/"))
 			.andExpect(status().isOk())
 			.andDo(print())
 			.andExpect(forwardedUrl("index"))

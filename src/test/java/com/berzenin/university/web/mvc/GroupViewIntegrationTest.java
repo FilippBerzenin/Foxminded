@@ -1,9 +1,8 @@
-package com.berzenin.university.web;
+package com.berzenin.university.web.mvc;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -16,38 +15,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
-import com.berzenin.university.dao.GroupRepository;
-import com.berzenin.university.dao.StudentRepository;
 import com.berzenin.university.model.university.Group;
-import com.berzenin.university.service.controller.GroupService;
+import com.berzenin.university.web.IntegrationTest;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = UniversityWebServiceTestApplication.class)
-@AutoConfigureMockMvc
-public class GroupViewIntegratinTest {
-
-	@Autowired
-	MockMvc subject;
-
-	@MockBean
-	GroupRepository groupRepository;
-
-	@MockBean
-	StudentRepository studentRepository;
-	
-	@MockBean
-	GroupService groupService;
+public class GroupViewIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void getGroupsListTest() throws Exception {
@@ -70,7 +47,45 @@ public class GroupViewIntegratinTest {
 		assertThat(groups.get(0).getName(), is("first"));
 		assertThat(groups.get(1).getName(), is("second"));
 	}
-
+	
+	@Test
+	public void findGroupByName() throws Exception {
+		//Given
+		long id = 1L;
+		String name = "test";
+		Group group = new Group(id, name);
+		when(groupService.searchGroupsByName(name)).thenReturn(Arrays.asList(group));
+		when(groupService.findAll()).thenReturn(Arrays.asList(group));
+		//Then
+		subject.perform(post("/groups/search")
+			.param("filter", name))
+			.andDo(print())
+			.andExpect(forwardedUrl("groups"))
+			.andExpect(view().name("groups"))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("groupsList"))
+			.andExpect(model().attribute("groupsList", hasSize(1)));
+		//When
+			verify(groupService).searchGroupsByName(name);
+	}
+	
+	//TODO
+//	@Test
+//	public void notFindById() throws Exception {
+//		// Given
+//		String name = "test";
+//		when(groupService.searchGroupByName(name)).thenThrow(new NotFoundException());
+//		// Then
+//		subject.perform(post("/groups/search")
+//				.param("filter", "test"))
+//				.andExpect(forwardedUrl("error"))
+//				.andExpect(view().name("error"))
+//				.andExpect(status().isNotFound())
+//				.andExpect(status().reason(containsString("Items Not Found")));
+//		// When
+//		verify(groupService).searchGroupByName(name);
+//	}
+	
 	@Test
 	public void addNewGroupTest() throws Exception {
 		// Given
@@ -99,9 +114,9 @@ public class GroupViewIntegratinTest {
 			.andDo(print())
 			.andExpect(status().isNoContent());
 		// When
-//		verify(groupRepository).findById(id);
+		verify(groupService).delete(id);
 	}
-//
+
 	@Test
 	public void updateGroupTest() throws Exception {
 		// Given
@@ -119,8 +134,7 @@ public class GroupViewIntegratinTest {
 				.andExpect(view().name("groups"))
 				.andExpect(status().isOk());
 		// When
-//		verify(groupService).findById(id);
-//		verify(groupService).saveAndFlush(new Group(id, "First", null));
+		verify(groupService).findById(id);
+		verify(groupService).save(new Group(id, "First", null));
 	}
-
 }

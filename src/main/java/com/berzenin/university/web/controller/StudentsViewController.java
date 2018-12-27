@@ -1,5 +1,7 @@
 package com.berzenin.university.web.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.berzenin.university.model.persons.Student;
+import com.berzenin.university.model.university.Group;
 import com.berzenin.university.service.controller.GroupService;
 import com.berzenin.university.service.controller.StudentService;
 
@@ -55,14 +58,15 @@ public class StudentsViewController {
 		Student student = studentService.getStudentIfPresent(id);
 		student.setName(newStudentName);
 		student.setSurename(newStudentSurename);
-		student.setGroup(groupService.searchGroupByName(newStudentGroup).get(0));
-		studentService.saveStudent(student);
+		List<Group> groupForStudent = groupService.searchGroupsByName(newStudentGroup);
+		student.setGroup(groupForStudent.get(0));
+		studentService.save(student);
 		getAllStudents(student.getGroup().getId(), model);
 		return "students";		
 	}
 	
 	private Model setAllStudents(Long id, Model model) {
 		model.addAttribute("group_id", id);
-		return model.addAttribute("studentsList", studentService.getAllStudents(id));
+		return model.addAttribute("studentsList", studentService.findAll(id));
 	}
 }

@@ -1,4 +1,4 @@
-package com.berzenin.university.web.restController;
+package com.berzenin.university.web.restсontroller;
 
 import java.util.List;
 
@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.model.persons.Student;
 import com.berzenin.university.model.university.Group;
-import com.berzenin.university.web.exception.NotFoundException;
+import com.berzenin.university.service.controller.GroupService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,19 +24,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping(value="/api/groups")
 public class GroupController {
-
-	private final GroupRepository groupRepository;
+	
+	private final GroupService groupService;
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<Group> getAll() {
-		return groupRepository.findAll();
+		return groupService.findAll();
 	}
 	
 	@PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	Group addGroups(@RequestBody Group newGroup) {
-		return groupRepository.saveAndFlush(newGroup);
+		return groupService.save(newGroup);
 	}
 	
 	@GetMapping(
@@ -64,19 +63,18 @@ public class GroupController {
 	Group updateStudent(@RequestBody Group group, @PathVariable("id") long id) {
 		Group groupForUpdate = returnGroupIfPresent(id);
 		groupForUpdate.setName(group.getName());
-		return groupRepository.save(groupForUpdate);
+		return groupService.save(groupForUpdate);
 	}
 	
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	Group deleteGroupsByEntity (@PathVariable("id") long id) {
 		Group group = returnGroupIfPresent(id);
-		groupRepository.delete(group);
+		groupService.delete(group);
 		return group;
 	}
 	
 	private Group returnGroupIfPresent(long id) {
-		return groupRepository.findById(id)
-				.orElseThrow(NotFoundException::new);
+		return groupService.findById(id);
 	}
 }

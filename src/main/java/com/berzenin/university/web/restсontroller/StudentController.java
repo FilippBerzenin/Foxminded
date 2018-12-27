@@ -1,4 +1,4 @@
-package com.berzenin.university.web.restController;
+package com.berzenin.university.web.restсontroller;
 
 import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.dao.StudentRepository;

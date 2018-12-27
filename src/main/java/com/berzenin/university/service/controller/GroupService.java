@@ -10,26 +10,30 @@ import com.berzenin.university.model.university.Group;
 import com.berzenin.university.web.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GroupService {
 	
-	final GroupRepository groupRepository;
+	private final GroupRepository groupRepository;
 	
 	public List<Group> findAll() {
 		return groupRepository.findAll();
 	}
 	
 	public boolean addNewGroup(String newGroupsName) {
-		if (!groupRepository.findByName(newGroupsName).isPresent()) {
-			groupRepository.saveAndFlush(Group.builder().name(newGroupsName).build());
+		if (groupRepository.findByName(newGroupsName)
+				.orElse(new Group("Empty"))
+				.getName().equals("Empty")) {
+			save(Group.builder().name(newGroupsName).build());
 			return true;
 		}
 		return false;
 	}
 	
-	public List<Group> searchGroupByName (String nameFoSearch) {
+	public List<Group> searchGroupsByName (String nameFoSearch) {
  		if (nameFoSearch != null && !nameFoSearch.isEmpty()) {
 			 return Arrays.asList(groupRepository.findByName(nameFoSearch)
 					.orElseThrow(NotFoundException::new));
@@ -48,13 +52,24 @@ public class GroupService {
 		
 	}
 	
-	public void delete(Long id) {
-		groupRepository.delete(returnGroupIfPresent(id));
+	public String delete(Long id) {
+		try {
+			groupRepository.delete(findById(id));
+			return id+ " Successfully deleted.";
+		}catch (RuntimeException e) {
+			log.info("Error with delete" + e);
+			return id+ " Dosn't deleted.";
+		}
 	}
 	
-	
-	public Group returnGroupIfPresent(Long id) {
-		return groupRepository.findById(id).get();
+	public String delete(Group group) {
+		try {
+			groupRepository.delete(group);
+			return group.getId()+ " Successfully deleted.";
+		} catch (RuntimeException e) {
+			log.info("Error with delete" + e);
+			return group.getId()+ " Dosn't deleted.";
+		}
 	}
-
+	
 }

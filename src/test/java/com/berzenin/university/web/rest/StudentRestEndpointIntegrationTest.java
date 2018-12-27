@@ -1,24 +1,4 @@
-package com.berzenin.university.web;
-
-import com.berzenin.university.dao.GroupRepository;
-import com.berzenin.university.dao.StudentRepository;
-import com.berzenin.university.model.persons.Student;
-import com.berzenin.university.model.university.Group;
-import com.berzenin.university.web.exception.NotFoundException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Arrays;
-import java.util.Optional;
+package com.berzenin.university.web.rest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -26,26 +6,35 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Arrays;
+import java.util.Optional;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.berzenin.university.model.persons.Student;
+import com.berzenin.university.model.university.Group;
+import com.berzenin.university.web.UniversityWebServiceTestApplication;
+import com.berzenin.university.web.exception.NotFoundException;
 
 @SpringBootTest(classes = UniversityWebServiceTestApplication.class)
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class StudentRestEndpointIntegrationTest {
-
-	@Autowired
-	MockMvc subject;
-
-	@Autowired
-	ObjectMapper mapper;
-
-	@MockBean
-	StudentRepository studentRepository;
-
-	@MockBean
-	GroupRepository groupRepository;
+public class StudentRestEndpointIntegrationTest extends RestIntegrationTest {
 
 	@Before
 	public void setUp() {
@@ -122,7 +111,7 @@ public class StudentRestEndpointIntegrationTest {
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andDo(print())
 				.andExpect(status().isNotFound())
-				.andExpect(status().reason(containsString("Student Not Found")));
+				.andExpect(status().reason(containsString("Items Not Found")));
 		// When
 		verify(studentRepository).findById(id);
 	}

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.berzenin.university.dao.StudentRepository;
 import com.berzenin.university.model.persons.Student;
-import com.berzenin.university.model.university.Group;
 import com.berzenin.university.web.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;

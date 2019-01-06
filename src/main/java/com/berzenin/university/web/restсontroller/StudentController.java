@@ -1,4 +1,4 @@
-package com.berzenin.university.web;
+package com.berzenin.university.web.restсontroller;
 
 import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.dao.StudentRepository;
@@ -14,20 +14,20 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value="/api/students")
 public class StudentController {	
 	
 	private final StudentRepository studentRepository;
 	private final GroupRepository groupRepository;
 	
 	@GetMapping(
-			value = "/students",
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	List<Student> getAll() {
 		return studentRepository.findAll();
 	}
 	
 	@GetMapping(
-			value = "/students/{id}", 
+			value = "/{id}", 
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	Student getStudentsById(@PathVariable long id) {
@@ -35,7 +35,6 @@ public class StudentController {
 	}
 
 	@PostMapping(
-			value = "/students",
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
@@ -44,7 +43,7 @@ public class StudentController {
 	}
 	
 	@PutMapping(
-			value = "/students/{id}",
+			value = "/{id}",
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
@@ -55,7 +54,7 @@ public class StudentController {
 		return studentRepository.save(studentForUpdate);
 	}
 	
-	@DeleteMapping(value = "/students/{id}")
+	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	Student deleteStudentByEntity (@PathVariable("id") long id) {
 		Student student = returnStudentIfPresent(id);
@@ -63,7 +62,7 @@ public class StudentController {
 		return student;
 	}
 
-	@PostMapping(value = "/students/{id}")
+	@PostMapping(value = "/{id}")
 	void addStudent(@PathVariable("id") Long id, @RequestParam("groupId") Long groupId) {
 		Student student = returnStudentIfPresent(id);
 		Group group = groupRepository.findById(id).orElseThrow(NotFoundException::new);

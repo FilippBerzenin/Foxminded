@@ -1,7 +1,8 @@
-package com.berzenin.university.web;
+package com.berzenin.university.web.rest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,42 +16,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import com.berzenin.university.dao.GroupRepository;
-import com.berzenin.university.dao.StudentRepository;
+
 import com.berzenin.university.model.persons.Student;
 import com.berzenin.university.model.university.Group;
 import com.berzenin.university.web.exception.NotFoundException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SpringBootTest(classes = UniversityWebServiceTestApplication.class)
-@AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-public class GroupRestEndpointIntegrationTest {
-	
-	@Autowired
-	MockMvc subject;
-
-	@Autowired
-	ObjectMapper mapper;
-
-	@MockBean
-	GroupRepository repository;
-
-	@MockBean
-	StudentRepository studentRepository;
+public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 
 	@Before
 	public void setUp() {
@@ -59,10 +37,12 @@ public class GroupRestEndpointIntegrationTest {
 	
 	@Test	
 	public void testGetAllGroups () throws Exception {
-		when(repository.findAll()).thenReturn(Arrays.asList(
+		// Given
+		when(groupService.findAll()).thenReturn(Arrays.asList(
 				new Group(1, "test", null),
 				new Group(2, "second", null)));
-		subject.perform(get("/groups"))
+		// Then
+		subject.perform(get("/api/groups"))
 		.andDo(print())
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -72,14 +52,17 @@ public class GroupRestEndpointIntegrationTest {
 		.andExpect(jsonPath("$[0].name").value("test"))
 		.andExpect(jsonPath("$[1].id").value(2))
 		.andExpect(jsonPath("$[1].name").value("second"));
+		// When
+		verify(groupService).findAll();
 	}
 	
 	@Test
 	public void testAddNewGroup() throws Exception {
+		// Given
 		Group group = new Group("first"); 
-		when(repository.saveAndFlush(any())).thenReturn(new Group(2, "first", null));
-
-		subject.perform(post("/groups")
+		when(groupService.save(any())).thenReturn(new Group(2, "first", null));
+		// Then
+		subject.perform(post("/api/groups")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.content(mapper.writeValueAsBytes(group))
 				)
@@ -87,45 +70,50 @@ public class GroupRestEndpointIntegrationTest {
 				.andDo(print())
 				.andExpect(jsonPath("$.id").value(2))
 				.andExpect(jsonPath("$.name").value("first"));
+		// When
+		verify(groupService).save(new Group(0, "first", null));
 	}
 	
 	@Test
 	public void testFindGroupById () throws Exception {
-		when(repository.findById(1L)).thenReturn(Optional.of(new Group("first")));
-		
-		subject.perform(get("/groups/"+1L)
+		// Given
+		when(groupService.findById(1L)).thenReturn(new Group("first"));
+		// Then
+		subject.perform(get("/api/groups/"+1L)
 		.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 		.andDo(print())
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.id").value(0))
 		.andExpect(jsonPath("$.name").value("first"));
-		
-		verify(repository).findById(1L);
+		// When
+		verify(groupService).findById(1L);
 	}
-	
+	//TODO
 	@Test
 	public void notFindById() throws Exception {
+		// Given
 		Long id = 2L;
-		when(repository.findById(id)).thenThrow(new NotFoundException());
-
-		subject.perform(get("/groups/" + id)
+		when(groupService.findById(id)).thenThrow(new NotFoundException());
+		// Then
+		subject.perform(get("/api/groups/" + id)
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andDo(print())
 				.andExpect(status().isNotFound())
-				.andExpect(status().reason(containsString("Student Not Found")));
-
-		verify(repository).findById(id);
+				.andExpect(status().reason(containsString("Items Not Found")));
+		// When
+		verify(groupService).findById(id);
 	}
 	
 	@Test
 	public void testUpdateGroup() throws Exception {
+		// Given
 		Long id = 1L;
 		Group groupForUpdate = new Group(id, "First", null);
 		Group groupWithOldParam = new Group(id, "Fir", null);
-		when(repository.findById(id)).thenReturn(Optional.of(groupWithOldParam));
-		when(repository.save(any())).thenReturn(groupForUpdate);
-
-		subject.perform(put("/groups/1")
+		when(groupService.findById(id)).thenReturn(groupWithOldParam);
+		when(groupService.save(any())).thenReturn(groupForUpdate);
+		// Then
+		subject.perform(put("/api/groups/1")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
 				.content(mapper.writeValueAsBytes(groupForUpdate)))
 				.andDo(print())
@@ -133,19 +121,20 @@ public class GroupRestEndpointIntegrationTest {
 				.andExpect(jsonPath("$.id").value(id))
 				.andExpect(jsonPath("$.name").value("First"))
 				.andReturn();
-
-		verify(repository).findById(id);
-		verify(repository).save(new Group(id, "First", null));
+		// When
+		verify(groupService).findById(id);
+		verify(groupService).save(new Group(id, "First", null));
 	}
 	
 	@Test
 	public void testGetAllStudentsFromGroup () throws Exception {
-		when(repository.findById(1L)).thenReturn(Optional.of(new Group(1L, "test", 
+		// Given
+		when(groupService.findById(1L)).thenReturn(new Group(1L, "test", 
 				Arrays.asList(new Student(1, "Alex", "Ro", new Group(1L, "test", null)), 
 							  new Student(2, "Mary", "Bo", new Group(1L, "test", null)))
-				)));
-
-		subject.perform(get("/groups/"+1L+"/students"))
+				));
+		// Then
+		subject.perform(get("/api/groups/"+1L+"/students"))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
@@ -157,20 +146,22 @@ public class GroupRestEndpointIntegrationTest {
 			.andExpect(jsonPath("$[1].id").value(2))
 			.andExpect(jsonPath("$[1].name").value("Mary"))
 			.andExpect(jsonPath("$[1].surename").value("Bo"));
-		
-		verify(repository).findById(1L);
+		// When
+		verify(groupService).findById(1L);
 	}
 	
 	@Test
 	public void testDeleteGroupsById() throws Exception {
+		// Given
 		Long id = 1L;
 		Group groupsForDelete = new Group(id, "test", null);
-		when(repository.findById(id)).thenReturn(Optional.of(groupsForDelete));
-		subject.perform(delete("/groups/" + id)
+		when(groupService.findById(id)).thenReturn(groupsForDelete);
+		// Then
+		subject.perform(delete("/api/groups/" + id)
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andDo(print())
 				.andExpect(status().isNoContent());
-
-		verify(repository).findById(id);
+		// When
+		verify(groupService).findById(id);
 	}
 }

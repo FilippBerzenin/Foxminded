@@ -1,4 +1,4 @@
-package com.berzenin.university.web;
+package com.berzenin.university.web.restсontroller;
 
 import java.util.List;
 
@@ -10,43 +10,45 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.model.persons.Student;
 import com.berzenin.university.model.university.Group;
-import com.berzenin.university.web.exception.NotFoundException;
+import com.berzenin.university.service.controller.GroupService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value="/api/groups")
 public class GroupController {
-
-	private final GroupRepository groupRepository;
 	
-	@GetMapping(value = "/groups", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	private final GroupService groupService;
+	
+	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public List<Group> getAll() {
-		return groupRepository.findAll();
+		return groupService.findAll();
 	}
 	
-	@PostMapping(value = "/groups", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	Group addGroups(@RequestBody Group newGroup) {
-		return groupRepository.saveAndFlush(newGroup);
+		return groupService.save(newGroup);
 	}
 	
 	@GetMapping(
-			value = "/groups/{id}/students",
+			value = "/{id}/students",
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseStatus(HttpStatus.OK)
 	public List<Student> students(@PathVariable("id") long groupId){
     	return getGroupsById(groupId).getStudents();
 	}
 	
 	@GetMapping(
-			value = "/groups/{id}", 
+			value = "/{id}", 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	Group getGroupsById(@PathVariable("id") long id) {
@@ -54,26 +56,25 @@ public class GroupController {
 	}
 	
 	@PutMapping(
-			value = "/groups/{id}",
+			value = "/{id}",
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	Group updateStudent(@RequestBody Group group, @PathVariable("id") long id) {
 		Group groupForUpdate = returnGroupIfPresent(id);
 		groupForUpdate.setName(group.getName());
-		return groupRepository.save(groupForUpdate);
+		return groupService.save(groupForUpdate);
 	}
 	
-	@DeleteMapping(value = "/groups/{id}")
+	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	Group deleteGroupsByEntity (@PathVariable("id") long id) {
 		Group group = returnGroupIfPresent(id);
-		groupRepository.delete(group);
+		groupService.delete(group);
 		return group;
 	}
 	
 	private Group returnGroupIfPresent(long id) {
-		return groupRepository.findById(id)
-				.orElseThrow(NotFoundException::new);
+		return groupService.findById(id);
 	}
 }

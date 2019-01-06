@@ -14,6 +14,5 @@
 	<h2>${message}</h2>	
 	<a href="${pageContext.request.contextPath}/groups/show/all">Groups List</a>
 	</div>
-
 </body>
 </html>

@@ -15,6 +15,7 @@ import com.berzenin.university.model.persons.Student;
 import com.berzenin.university.model.university.Group;
 import com.berzenin.university.service.controller.GroupService;
 import com.berzenin.university.service.controller.StudentService;
+import com.berzenin.university.web.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -58,9 +59,13 @@ public class StudentsViewController {
 		Student student = studentService.getStudentIfPresent(id);
 		student.setName(newStudentName);
 		student.setSurename(newStudentSurename);
-		List<Group> groupForStudent = groupService.searchGroupsByName(newStudentGroup);
-		student.setGroup(groupForStudent.get(0));
-		studentService.save(student);
+		try {
+			List<Group> groupForStudent = groupService.searchGroupsByName(newStudentGroup);
+			student.setGroup(groupForStudent.get(0));
+			studentService.save(student);
+		} catch (NotFoundException e) {
+			return "error";
+		}
 		getAllStudents(student.getGroup().getId(), model);
 		return "students";		
 	}

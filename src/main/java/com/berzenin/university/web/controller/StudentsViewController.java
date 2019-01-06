@@ -44,7 +44,7 @@ public class StudentsViewController {
 	}
 	
 	@RequestMapping(value="/delete/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(HttpStatus.OK)
 	public String deleteStudentsById(@PathVariable("id") Long id, Model model) {
 		Long group_id = studentService.getStudentIfPresent(id).getGroup().getId();
 		studentService.deleteStudentsById(id);

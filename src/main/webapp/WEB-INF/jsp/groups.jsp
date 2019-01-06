@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -32,22 +32,26 @@
 			<button type="submit">Search</button>
 		</form>
 		<h1>Groups list</h1>
-			<a href="${pageContext.request.contextPath}/groups/show/all">Get all groups</a>
-		<div class="form-group">
-			<table border="1">
+		<a href="${pageContext.request.contextPath}/groups/show/all">Get
+			all groups</a>
+		<table class="table  table-sm">
+			<thead class="table-info">
 				<tr>
 					<th>#</th>
 					<th>ID</th>
 					<th>Groups name</th>
-					<th>Options</th>
+					<th>Delete</th>
+					<th>Update</th>
+					<th>Students page</th>
 				</tr>
+			</thead>
+			<tbody>
 				<c:forEach var="group" items="${groupsList}" varStatus="counter">
 					<tr>
 						<td>${counter.count}</td>
 						<td>${group.id}</td>
 						<td>${group.name}</td>
-						<td><a
-							href="${prefix}/groups/delete/${group.id}"
+						<td><a href="${prefix}/groups/delete/${group.id}"
 							onclick="return confirm('Are you sure?')">Delete</a></td>
 						<td>
 							<button type="button" class="btn btn-primary dropdown-toggle"
@@ -64,14 +68,11 @@
 								</form>
 							</div>
 						</td>
-						<td><a
-							href="${prefix}/students/${group.id}">Students
-								page</a></td>
+						<td><a href="${prefix}/students/${group.id}">Students page</a></td>
 					</tr>
 				</c:forEach>
-			</table>
-		</div>
-		<br /> <br />
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>

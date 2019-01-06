@@ -43,19 +43,20 @@ public class GroupViewController {
 	@RequestMapping(value="/create", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public String addNewGroup(@RequestParam String newGroupsName, Model model) {
-		groupService.addNewGroup(newGroupsName);
+		if (newGroupsName != null && newGroupsName.length()>0 && groupService.addNewGroup(newGroupsName)) {
+		}
 		setGroupsToModel(model);
 		return "groups";		
 	}
 	
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(HttpStatus.OK)
 	public String deleteGroup(@PathVariable("id") Long id, Model model) {
 		groupService.delete(id);
 		setGroupsToModel(model);
 		return "groups";		
 	}
-	
+
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public String updateGroup(@PathVariable("id") Long id, @RequestParam(value="newGroupName") String newGroupName, Model model) {

@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<a href="${prefix}/groups/show/all">Back</a> <br />
 	<h1>Error</h1>
 </body>
 </html>

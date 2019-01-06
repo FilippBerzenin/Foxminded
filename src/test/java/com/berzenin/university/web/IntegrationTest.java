@@ -10,7 +10,6 @@ import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.dao.StudentRepository;
 import com.berzenin.university.service.controller.GroupService;
 import com.berzenin.university.service.controller.StudentService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest(classes = UniversityWebServiceTestApplication.class)
 @AutoConfigureMockMvc

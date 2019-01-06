@@ -112,7 +112,7 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 		subject.perform(get("/groups/delete/{id}", id))
 			.andExpect(view().name("groups"))
 			.andDo(print())
-			.andExpect(status().isNoContent());
+			.andExpect(status().isOk());
 		// When
 		verify(groupService).delete(id);
 	}

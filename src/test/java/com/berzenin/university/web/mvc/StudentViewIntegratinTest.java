@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -84,11 +83,10 @@ public class StudentViewIntegratinTest extends IntegrationTest  {
 		Group group = new Group(1L, "Group");
 		Student studentsForDelete = new Student("name", "surename", group);
 		when(studentService.getStudentIfPresent(id)).thenReturn(studentsForDelete);
-		doNothing().when(groupService).delete(id);
 		// Then
 		subject.perform(get("/students/delete/{id}", id))
 			.andDo(print())
-			.andExpect(status().isNoContent());
+			.andExpect(status().isOk());
 		// When
 		verify(studentService).deleteStudentsById(id);
 	}

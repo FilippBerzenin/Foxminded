@@ -113,22 +113,20 @@ public class GroupServiceTest extends IntegrationTest{
 	public void deleteGroupByGroup () {
 		// Given
 		Group first = new Group(1L, "First");
-		when(groupService.delete(first)).thenReturn(first.getId()+ " Successfully deleted.");
 		//Then
-		assertThat(groupService.delete(first), is(first.getId()+ " Successfully deleted."));
-		// When
-		verify(groupService).delete(first);
+	    groupService.delete(new Group(1L, "First"));
+		// When	  
+	    verify(groupService).delete(first);
 	}
 	
 	@Test
 	public void deleteGroupById () {
 		// Given
-		Group first = new Group(1L, "First");
-		when(groupService.delete(first.getId())).thenReturn(first.getId()+ " Successfully deleted.");
+		long id = 1L;
 		//Then
-		assertThat(groupService.delete(first.getId()), is(first.getId()+ " Successfully deleted."));
-		// When
-		verify(groupService).delete(first.getId());
+	    groupService.delete(id);
+		// When	  
+	    verify(groupService).delete(1L);
 	}
 
 }

@@ -32,6 +32,9 @@
 			<button type="submit">Search</button>
 		</form>
 		<h1>Groups list</h1>
+		<c:if test="${not empty message}">
+			<div class="alert alert-success">${message}</div>
+		</c:if>
 		<a href="${pageContext.request.contextPath}/groups/show/all">Get
 			all groups</a>
 		<table class="table  table-sm">

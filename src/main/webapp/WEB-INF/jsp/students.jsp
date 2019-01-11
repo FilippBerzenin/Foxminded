@@ -29,6 +29,9 @@
 		</div>
 		<br />
 		<h1>Students list</h1>
+				<c:if test="${not empty message}">
+			<div class="alert alert-success">${message}</div>
+		</c:if>
 		<table class="table  table-sm">
 			<thead class="table-info">
 				<tr>

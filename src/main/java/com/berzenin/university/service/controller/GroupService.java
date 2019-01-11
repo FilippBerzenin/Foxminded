@@ -10,9 +10,7 @@ import com.berzenin.university.model.university.Group;
 import com.berzenin.university.web.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GroupService {
@@ -34,12 +32,8 @@ public class GroupService {
 	}
 	
 	public List<Group> searchGroupsByName (String nameFoSearch) {
- 		if (nameFoSearch != null && !nameFoSearch.isEmpty()) {
 			 return Arrays.asList(groupRepository.findByName(nameFoSearch)
 					.orElseThrow(NotFoundException::new));
-		} else {
-				return findAll();
-		}
 	}
 	
 	public Group findById(Long id) {
@@ -48,28 +42,15 @@ public class GroupService {
 	}
 	
 	public Group save(Group group) {
-		return groupRepository.saveAndFlush(group);
+		return groupRepository.save(group);
 		
 	}
 	
-	public String delete(Long id) {
-		try {
+	public void delete(Long id) {
 			groupRepository.delete(findById(id));
-			return id+ " Successfully deleted.";
-		}catch (RuntimeException e) {
-			log.info("Error with delete" + e);
-			return id+ " Dosn't deleted.";
-		}
 	}
 	
-	public String delete(Group group) {
-		try {
+	public void delete(Group group) {
 			groupRepository.delete(group);
-			return group.getId()+ " Successfully deleted.";
-		} catch (RuntimeException e) {
-			log.info("Error with delete" + e);
-			return group.getId()+ " Dosn't deleted.";
 		}
-	}
-	
 }

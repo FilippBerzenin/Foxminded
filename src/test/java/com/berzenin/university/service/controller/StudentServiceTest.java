@@ -1,6 +1,5 @@
 package com.berzenin.university.service.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
@@ -57,10 +56,10 @@ public class StudentServiceTest extends IntegrationTest{
 		when(studentService.searchStudentsByNameAndSurenameForAdd(first)).thenReturn(true);
 		when(studentService.save(first)).thenReturn(first);		
 		when(studentRepository.saveAndFlush(first)).thenReturn(first);
-		when(studentService.createNewStudent(first)).thenReturn(first);
+//		when(studentService.createNewStudent(first)).thenReturn(first);
 		//Then
-		assertThat(studentService.createNewStudent(first)
-				.getName().equals("First"));
+//		assertThat(studentService.createNewStudent(first)
+//				.getName().equals("First"));
 		assertThat(studentService.save(first), is(first));
 		// When
 		verify(studentService).save(first);
@@ -72,11 +71,11 @@ public class StudentServiceTest extends IntegrationTest{
 		Group group = new Group(1L, "Group");
 		Student first = new Student(1L, "First", "First", group);
 		List<Student> students = Arrays.asList(first);
-		when(studentService.searchStudentsByNameAndSurename(first.getGroup().getId(), first.getName(), first.getSurename())).thenReturn(students);
+		when(studentService.searchStudentsByNameAndSurename(first.getName(), first.getSurename(), first.getGroup().getId())).thenReturn(students);
 		//Then
-		assertThat(studentService.searchStudentsByNameAndSurename(first.getGroup().getId(), first.getName(), first.getSurename()), is(students));
+		assertThat(studentService.searchStudentsByNameAndSurename(first.getName(), first.getSurename(), first.getGroup().getId()), is(students));
 		//When
-		verify(studentService).searchStudentsByNameAndSurename(first.getGroup().getId(), first.getName(), first.getSurename());
+		verify(studentService).searchStudentsByNameAndSurename(first.getName(), first.getSurename(), first.getGroup().getId());
 	}
 	
 	@Test(expected = NotFoundException.class)
@@ -84,11 +83,11 @@ public class StudentServiceTest extends IntegrationTest{
 		//Given
 		Group group = new Group(1L, "Group");
 		Student first = new Student(1L, "First", "First", group);
-		when(studentService.searchStudentsByNameAndSurename(first.getGroup().getId(), first.getName(), first.getSurename())).thenThrow(new NotFoundException());
+		when(studentService.searchStudentsByNameAndSurename(first.getName(), first.getSurename(), first.getGroup().getId())).thenThrow(new NotFoundException());
 		//Then
-		studentService.searchStudentsByNameAndSurename(first.getGroup().getId(), first.getName(), first.getSurename());
+		studentService.searchStudentsByNameAndSurename(first.getName(), first.getSurename(), first.getGroup().getId());
 		// When
-		verify(studentService).searchStudentsByNameAndSurename(first.getGroup().getId(), first.getName(), first.getSurename());
+		verify(studentService).searchStudentsByNameAndSurename(first.getName(), first.getSurename(), first.getGroup().getId());
 	}
 	
 	@Test
@@ -116,12 +115,10 @@ public class StudentServiceTest extends IntegrationTest{
 	@Test
 	public void deleteStudentById () {
 		// Given
-		Group group = new Group(1L, "Group");
-		Student first = new Student(1L, "First", "First", group);
-		when(studentService.deleteStudentsById(first.getId())).thenReturn(first.getId()+ " Successfully deleted.");
+		long id = 1;
 		//Then
-		assertThat(studentService.deleteStudentsById(first.getId()), is(first.getId()+ " Successfully deleted."));
+		studentService.deleteStudentsById(id);
 		// When
-		verify(studentService).deleteStudentsById(first.getId());
+		verify(studentService).deleteStudentsById(1L);
 	}
 }

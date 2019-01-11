@@ -10,9 +10,7 @@ import com.berzenin.university.model.persons.Student;
 import com.berzenin.university.web.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StudentService {
@@ -28,43 +26,28 @@ public class StudentService {
 				.orElseThrow(NotFoundException::new);
 	}
 	
-	public Student createNewStudent (Student student) {
-		Student empty = new Student();
-		if (searchStudentsByNameAndSurenameForAdd(student)) {
-			save(student);
-			return student;
-		}
-		return empty;	
-	}
-	
 	public boolean searchStudentsByNameAndSurenameForAdd (Student student) {
-			 if (studentRepository.findByNameAndSurename(student.getName(), student.getSurename()).isPresent()) {
+			 if (studentRepository.findByNameAndSurenameAndGroupId(student.getName(), student.getSurename(), student.getGroup().getId()).isPresent()) {
 				 return false;
 			 }
 			 return true;
 	}
 	
-	public List<Student> searchStudentsByNameAndSurename (long id, String nameFoSearch, String surenameFoSearch) {
+	public List<Student> searchStudentsByNameAndSurename (String nameFoSearch, String surenameFoSearch, Long id) {
  		if (nameFoSearch != null && !nameFoSearch.isEmpty()) {
-			 return Arrays.asList(studentRepository.findByNameAndSurename(nameFoSearch, surenameFoSearch)
+			 return Arrays.asList(studentRepository.findByNameAndSurenameAndGroupId(nameFoSearch, surenameFoSearch, id)
 					.orElseThrow(NotFoundException::new));
 		} else {
-				return findAll(id);
+				return Arrays.asList();
 		}
 	}
 	
-	public Student save (Student student) {
+	public Student save(Student student) {
 		return studentRepository.saveAndFlush(student);
 	}
 	
-	public String deleteStudentsById(long id) {
-		try {
+	public void deleteStudentsById(long id) {
 			studentRepository.delete(getStudentIfPresent(id));
-			return id+ " Successfully deleted.";
-		}catch (RuntimeException e) {
-			log.info("Error with delete" + e);
-			return id+ " Dosn't deleted.";
-		}
 	}
 	
 	public Student getStudentIfPresent(long id) {

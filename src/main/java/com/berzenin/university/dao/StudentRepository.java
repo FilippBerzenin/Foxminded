@@ -17,6 +17,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	
 	Optional<Student> findBySurename(String surename);
 	
-	Optional<Student> findByNameAndSurename(String name, String surename);
+	Optional<Student> findByNameAndSurenameAndGroupId(String name, String surename, Long id);
 	
 }

@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -97,24 +98,25 @@ public class StudentViewIntegratinTest extends IntegrationTest  {
 		Long id = 1L;
 		String newName = "First";
 		String newSurename = "Surename";
-		String groupsName = "Second";
-		List<Group> groups = Arrays.asList(new Group (id, "First"));
-		Student studentForUpdate = new Student("First", newSurename);
-		Student studentWithOldParam = new Student("Fir", newSurename);
-		when(studentService.getStudentIfPresent(id)).thenReturn(studentWithOldParam);
-		when(groupService.searchGroupsByName(any())).thenReturn(groups);
+				Group group = new Group (id, "First");
+		List<Group> groups = Arrays.asList(group);
+		Student studentForUpdate = new Student("First", newSurename, group);
+		Student studentWithOldParam = new Student("Fir", newSurename, group);
+		when(groupService.searchGroupsByName(group.getName())).thenReturn(groups);
+		when(studentService.searchStudentsByNameAndSurenameForAdd(studentForUpdate)).thenReturn(false);
+		when(studentService.getStudentIfPresent(1L)).thenReturn(studentWithOldParam);
 		when(studentService.save(studentForUpdate)).thenReturn(studentForUpdate);
 		// Then
 		subject.perform(post("/students/update/{id}", id)
 			.param("newStudentName", newName)
 			.param("newStudentSurename", newSurename)
-			.param("newStudentGroup", groupsName))		
+			.param("newStudentGroup", group.getName()))		
 		.andDo(print())
 			.andExpect(forwardedUrl("students"))
 			.andExpect(view().name("students"))
 			.andExpect(status().isOk());
 		// When
-		verify(studentService).getStudentIfPresent(id);
+		verify(groupService, times(3)).searchGroupsByName(group.getName());
 	}
 
 }

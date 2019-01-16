@@ -4,19 +4,21 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.berzenin.university.model.persons.Student;
@@ -53,43 +55,30 @@ public class StudentServiceTest extends IntegrationTest{
 		// Given		
 		Group group = new Group(1L, "Group");
 		Student first = new Student(1L, "First", "First", group);
-		when(studentService.ifStudentPresent(first)).thenReturn(true);
-		when(studentService.save(first)).thenReturn(first);		
+		when(studentService.ifStudentPresent(first)).thenReturn(false);
 		when(studentRepository.saveAndFlush(first)).thenReturn(first);
-//		when(studentService.createNewStudent(first)).thenReturn(first);
+		when(studentService.addStudent(first, group.getId())).thenReturn(first);
+		when(studentRepository.findByNameAndSurenameAndGroupName(first.getName(), first.getSurename(), first.getGroup().getName())).thenReturn(Optional.empty());
 		//Then
-//		assertThat(studentService.createNewStudent(first)
-//				.getName().equals("First"));
-		assertThat(studentService.save(first), is(first));
+		assertThat(studentService.addStudent(first, group.getId()), is(first));
+		assertThat(studentRepository.saveAndFlush(first), is(first));
 		// When
-		verify(studentService).save(first);
+		verify(studentService).addStudent(first, group.getId());
+		verify(studentRepository).saveAndFlush(first);
 	}
 	
 	@Test
-	public void searchGroupsByNameTest() {
+	public void ifStudentPresentTest() {
 		//Given
 		Group group = new Group(1L, "Group");
 		Student first = new Student(1L, "First", "First", group);
-		List<Student> students = Arrays.asList(first);
-		when(studentService.searchStudentsByNameAndSurename(first.getName(), first.getSurename(), first.getGroup().getId())).thenReturn(students);
+		when(studentService.ifStudentPresent(first)).thenReturn(true);
 		//Then
-		assertThat(studentService.searchStudentsByNameAndSurename(first.getName(), first.getSurename(), first.getGroup().getId()), is(students));
+		assertThat(studentService.ifStudentPresent(first), is(true));
 		//When
-		verify(studentService).searchStudentsByNameAndSurename(first.getName(), first.getSurename(), first.getGroup().getId());
+		verify(studentService).ifStudentPresent(first);
 	}
-	
-	@Test(expected = NotFoundException.class)
-	public void searchGroupsByNameTestNotFoundException() {
-		//Given
-		Group group = new Group(1L, "Group");
-		Student first = new Student(1L, "First", "First", group);
-		when(studentService.searchStudentsByNameAndSurename(first.getName(), first.getSurename(), first.getGroup().getId())).thenThrow(new NotFoundException());
-		//Then
-		studentService.searchStudentsByNameAndSurename(first.getName(), first.getSurename(), first.getGroup().getId());
-		// When
-		verify(studentService).searchStudentsByNameAndSurename(first.getName(), first.getSurename(), first.getGroup().getId());
-	}
-	
+
 	@Test
 	public void findByIdTest() {
 		// Given

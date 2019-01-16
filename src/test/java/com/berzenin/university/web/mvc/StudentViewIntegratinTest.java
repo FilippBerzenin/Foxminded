@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -64,7 +63,7 @@ public class StudentViewIntegratinTest extends IntegrationTest  {
 		String newStudentsSurename = "First";
 		Student studentForAdd = new Student(newStudentsName, newStudentsSurename);
 		when(studentRepository.saveAndFlush(any())).thenReturn(studentForAdd);
-		when(studentService.save(studentForAdd)).thenReturn(studentForAdd);
+		when(studentService.addStudent(studentForAdd, id)).thenReturn(studentForAdd);
 		// Then
 		subject.perform(post("/students/create/{id}", id)
 			.param("studentsName", newStudentsName)
@@ -78,12 +77,12 @@ public class StudentViewIntegratinTest extends IntegrationTest  {
 	}
 
 	@Test
-	public void deleteByIdTest() throws Exception {
+	public void deleteStudentsByIdTest() throws Exception {
 		// Given
 		Long id = 1L;
 		Group group = new Group(1L, "Group");
 		Student studentsForDelete = new Student("name", "surename", group);
-		when(studentService.getStudentIfPresent(id)).thenReturn(studentsForDelete);
+		when(studentService.findById(id)).thenReturn(studentsForDelete);
 		// Then
 		subject.perform(get("/students/delete/{id}", id))
 			.andDo(print())
@@ -98,25 +97,21 @@ public class StudentViewIntegratinTest extends IntegrationTest  {
 		Long id = 1L;
 		String newName = "First";
 		String newSurename = "Surename";
-				Group group = new Group (id, "First");
-		List<Group> groups = Arrays.asList(group);
-		Student studentForUpdate = new Student("First", newSurename, group);
-		Student studentWithOldParam = new Student("Fir", newSurename, group);
-		when(groupService.searchGroupsByName(group.getName())).thenReturn(groups);
-		when(studentService.ifStudentPresent(studentForUpdate)).thenReturn(false);
-		when(studentService.getStudentIfPresent(1L)).thenReturn(studentWithOldParam);
-		when(studentService.save(studentForUpdate)).thenReturn(studentForUpdate);
+		Group group = new Group (id, "First");
+		Student studentForUpdate = new Student(id, newName, newSurename, group);
+		when(studentService.updateStudent(studentForUpdate)).thenReturn(studentForUpdate);
 		// Then
-		subject.perform(post("/students/update/{id}", id)
-			.param("newStudentName", newName)
-			.param("newStudentSurename", newSurename)
-			.param("newStudentGroup", group.getName()))		
+		subject.perform(post("/students/update/{id}", id)			
+			.param("name", newName)
+			.param("surename", newSurename)
+			.param("group.name", group.getName())
+			)		
 		.andDo(print())
 			.andExpect(forwardedUrl("students"))
 			.andExpect(view().name("students"))
 			.andExpect(status().isOk());
 		// When
-		verify(groupService, times(3)).searchGroupsByName(group.getName());
+		verify(studentService).updateStudent(any());
 	}
 
 }

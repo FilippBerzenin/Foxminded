@@ -31,6 +31,12 @@ public class StudentsViewController {
 	private String message = "Something wrong";
 	private List<Student> students;
 	
+	
+	@ModelAttribute("studentFor")
+	public Student getLoginForm () {
+		return new Student();
+	}
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public String getAllStudents(@PathVariable("id") Long id, Model model) {
@@ -59,11 +65,6 @@ public class StudentsViewController {
 		}	
 	}
 	
-	@ModelAttribute("studentFor")
-	public Student getLoginForm () {
-		return new Student();
-	}
-	
 	@RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public String createStudent(
@@ -87,7 +88,7 @@ public class StudentsViewController {
 		}
 	}
 	
-	@RequestMapping(value = "/update/new/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public String updateStudentNew (
 			@PathVariable("id") Long id, 

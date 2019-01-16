@@ -66,7 +66,7 @@
 							<div class="dropdown-menu container form-group">
 							
 							<form:form class="form-inline" method="post"
-									action="/students/update/new/${student.group.id}" modelAttribute="studentFor">
+									action="/students/update/${student.group.id}" modelAttribute="studentFor">
 							<div class="form-group">
 							<form:input type="hidden" path="id" value="${student.id}"/>
 							<font color="red"><form:errors path="name" /></font>

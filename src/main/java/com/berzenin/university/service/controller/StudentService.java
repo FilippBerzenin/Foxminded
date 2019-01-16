@@ -61,10 +61,6 @@ public class StudentService {
 			 return false;
 	}
 	
-	public Student save(Student student) {
-		return studentRepository.saveAndFlush(student);
-	}
-	
 	public void deleteStudentsById(long id) {
 			studentRepository.delete(findById(id));
 	}

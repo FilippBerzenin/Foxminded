@@ -12,15 +12,14 @@ import com.berzenin.university.web.rest.GroupRestEndpointIntegrationTest;
 import com.berzenin.university.web.rest.StudentRestEndpointIntegrationTest;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({
-        GroupServiceTest.class,
-        StudentServiceTest.class,
-        GroupViewIntegrationTest.class,
-        IndexIntegrationTest.class,
-        StudentViewIntegratinTest.class,
-        GroupRestEndpointIntegrationTest.class,
-        StudentRestEndpointIntegrationTest.class
-})
+@Suite.SuiteClasses({ 
+		GroupServiceTest.class, 
+		StudentServiceTest.class, 
+		GroupViewIntegrationTest.class,
+		IndexIntegrationTest.class, 
+		StudentViewIntegratinTest.class, 
+		GroupRestEndpointIntegrationTest.class,
+		StudentRestEndpointIntegrationTest.class })
 public class RunAllTest {
 
 }

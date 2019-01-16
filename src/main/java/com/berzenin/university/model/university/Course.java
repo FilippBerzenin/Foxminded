@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotNull;
 
 import com.berzenin.university.model.persons.Teacher;
 
@@ -26,6 +27,7 @@ public class Course {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NotNull
 	@Column(name = "subject", nullable = false)
 	private String subject;
 	

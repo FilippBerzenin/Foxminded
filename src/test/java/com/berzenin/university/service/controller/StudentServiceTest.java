@@ -53,7 +53,7 @@ public class StudentServiceTest extends IntegrationTest{
 		// Given		
 		Group group = new Group(1L, "Group");
 		Student first = new Student(1L, "First", "First", group);
-		when(studentService.searchStudentsByNameAndSurenameForAdd(first)).thenReturn(true);
+		when(studentService.ifStudentPresent(first)).thenReturn(true);
 		when(studentService.save(first)).thenReturn(first);		
 		when(studentRepository.saveAndFlush(first)).thenReturn(first);
 //		when(studentService.createNewStudent(first)).thenReturn(first);

@@ -98,9 +98,9 @@ public class GroupViewController {
 	@ResponseStatus(HttpStatus.OK)
 	public String updateGroup(@PathVariable("id") Long id, @RequestParam(value="newGroupName") String newGroupName, Model model) {
 		try {
-			Group group = groupService.findById(id);
-			group.setName(newGroupName);
-			groupService.save(group);
+			if (newGroupName != null && newGroupName.length()>0) {
+				groupService.updateName(id, newGroupName);	
+			}
 			groups = groupService.findAll();
 			message = "group was sucessful updated";
 			return "groups";

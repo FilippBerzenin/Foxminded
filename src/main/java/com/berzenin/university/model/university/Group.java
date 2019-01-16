@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.berzenin.university.model.persons.Student;
 
@@ -31,6 +33,7 @@ public class Group {
 	private long id;
 
 	@NonNull
+	@Size(min=1, max=150)
 	private String name;
 
 	@OneToMany

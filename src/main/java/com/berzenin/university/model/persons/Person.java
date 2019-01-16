@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,13 +20,17 @@ public abstract class Person {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	protected long id;
 
+	@NotNull
+	@Size(min=1, max=50)
 	@Column(name = "name", nullable = false)
-	private String name;
+	protected String name;
 
+	@NotNull
+	@Size(min=1, max=50)
 	@Column(name = "surename", nullable = false)
-	private String surename;
+	protected String surename;
 
 	public Person(String name, String surename) {
 		this.name = name;

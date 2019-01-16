@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix='form' uri='http://www.springframework.org/tags/form' %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <!DOCTYPE html "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -19,12 +20,17 @@
 		<div>
 			<h2>Add new student:</h2>
 			<div class="form-group">
-				<form action="/students/create/${group_id}">
-					<input type="text" name="studentsName" placeholder="Students name">
-					<input type="text" name="studentsSurename" placeholder="Students surename"
-						placeholder="Students name">
-					<button type="submit">Add new student</button>
-				</form>
+				<form:form method="post" action="/students/create/${group_id}" modelAttribute="studentFor">
+					<table>
+						<tr>
+							<td><font color="red"><form:errors path="name" /></font></td>
+							<td><form:input path="name" placeholder="Students name"/></td>
+							<td><font color="red"><form:errors path="surename" /></font></td>
+							<td><form:input path="surename" placeholder="Students surename"/></td>
+							<td><button type="submit">Add new student</button></td>
+						</tr>
+					</table>
+				</form:form>
 			</div>
 		</div>
 		<br />
@@ -58,21 +64,32 @@
 							<button type="button" class="btn btn-primary dropdown-toggle"
 								data-toggle="dropdown">Update</button>
 							<div class="dropdown-menu container form-group">
-								<form class="form-inline" method="post"
-									action="/students/update/${student.id}">
-									<div class="form-group">
-										<label for="newStudentName">Enter new student name:</label> <input
-											class="form-control" name="newStudentName"
+							
+							<form:form class="form-inline" method="post"
+									action="/students/update/new/${student.group.id}" modelAttribute="studentFor">
+							<div class="form-group">
+							<form:input type="hidden" path="id" value="${student.id}"/>
+							<font color="red"><form:errors path="name" /></font>
+							<form:input class="form-control" path="name" value="${student.name}"/>
+							<font color="red"><form:errors path="surename" /></font>
+							<form:input class="form-control" path="surename" value="${student.surename}"/>
+							<font color="red"><form:errors path="group.name" /></font>
+							<form:input class="form-control" path="group.name" value="${student.group.name}"/>
+							<button class="form-control" type="submit">Update</button>
+							
+									
+										<%--<label for="newStudentName">Enter new student name:</label>					
+ 										<input class="form-control" name="newStudentName"
 											id="newStudentName" value="${student.name}"> <label
 											for="newStudentSurename">Enter new student surename:</label>
 										<input class="form-control" name="newStudentSurename"
 											id="newStudentSurename" value="${student.surename}">
 										<label for="newStudentGroup">Enter new student group:</label>
 										<input class="form-control" name="newStudentGroup"
-											id="newStudentGroup" value="${student.group.name}">
-										<button type="submit" class="btn btn-primary">Submit</button>
+											id="newStudentGroup" value="${student.group.name}"> --%>
+										<!-- <button type="submit" class="btn btn-primary">Submit</button> -->
 									</div>
-								</form>
+								</form:form>
 							</div>
 						</td>
 					</tr>

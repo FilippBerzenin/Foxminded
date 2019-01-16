@@ -103,7 +103,7 @@ public class StudentViewIntegratinTest extends IntegrationTest  {
 		Student studentForUpdate = new Student("First", newSurename, group);
 		Student studentWithOldParam = new Student("Fir", newSurename, group);
 		when(groupService.searchGroupsByName(group.getName())).thenReturn(groups);
-		when(studentService.searchStudentsByNameAndSurenameForAdd(studentForUpdate)).thenReturn(false);
+		when(studentService.ifStudentPresent(studentForUpdate)).thenReturn(false);
 		when(studentService.getStudentIfPresent(1L)).thenReturn(studentWithOldParam);
 		when(studentService.save(studentForUpdate)).thenReturn(studentForUpdate);
 		// Then

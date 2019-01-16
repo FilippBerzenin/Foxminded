@@ -22,18 +22,15 @@ public class GroupService {
 	}
 	
 	public boolean addNewGroup(String newGroupsName) {
-		if (groupRepository.findByName(newGroupsName)
-				.orElse(new Group("Empty"))
-				.getName().equals("Empty")) {
+		if (groupRepository.findByName(newGroupsName).isPresent()) {
+			return false;
+		}
 			save(Group.builder().name(newGroupsName).build());
 			return true;
-		}
-		return false;
 	}
 	
 	public List<Group> searchGroupsByName (String nameFoSearch) {
-			 return Arrays.asList(groupRepository.findByName(nameFoSearch)
-					.orElseThrow(NotFoundException::new));
+		return groupRepository.findByNameContaining(nameFoSearch);
 	}
 	
 	public Group findById(Long id) {
@@ -44,6 +41,12 @@ public class GroupService {
 	public Group save(Group group) {
 		return groupRepository.save(group);
 		
+	}
+	
+	public Group updateName(long id, String newGroupName) {
+		Group group = this.findById(id);
+		group.setName(newGroupName);
+		return this.save(group);
 	}
 	
 	public void delete(Long id) {

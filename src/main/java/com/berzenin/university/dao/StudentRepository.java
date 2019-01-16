@@ -13,10 +13,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	
 	List<Student> findByGroupId(Long id);
 	
-	Optional<Student> findByName(String name);
+	Optional<Student> findByNameAndSurename(String name, String surename);
 	
-	Optional<Student> findBySurename(String surename);
-	
-	Optional<Student> findByNameAndSurenameAndGroupId(String name, String surename, Long id);
+	Optional<Student> findByNameAndSurenameAndGroupName(String name, String surename, String group);
 	
 }

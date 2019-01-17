@@ -2,26 +2,23 @@ package com.berzenin.university.service.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.model.university.Group;
 import com.berzenin.university.web.exception.NotFoundException;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
-public class GroupService {
-	
-	private final GroupRepository groupRepository;
-	
-	public List<Group> findAll() {
-		return groupRepository.findAll();
+public class GroupService extends GenericServiceImpl<Group, GroupRepository> {
+
+	@Autowired
+	public GroupService(GroupRepository repository) {
+		super(repository);
 	}
-	
+
 	public boolean addNewGroup(String newGroupsName) {
-		if (groupRepository.findByName(newGroupsName).isPresent()) {
+		if (repository.findByName(newGroupsName).isPresent()) {
 			return false;
 		}
 			save(Group.builder().name(newGroupsName).build());
@@ -29,16 +26,16 @@ public class GroupService {
 	}
 	
 	public List<Group> searchGroupsByName (String nameFoSearch) {
-		return groupRepository.findByNameContaining(nameFoSearch);
+		return repository.findByNameContaining(nameFoSearch);
 	}
 	
 	public Group findById(Long id) {
-		return groupRepository.findById(id)
+		return repository.findById(id)
 		.orElseThrow(NotFoundException::new);
 	}
 	
 	public Group save(Group group) {
-		return groupRepository.save(group);
+		return repository.save(group);
 		
 	}
 	
@@ -49,10 +46,10 @@ public class GroupService {
 	}
 	
 	public void delete(Long id) {
-			groupRepository.delete(findById(id));
+			repository.delete(findById(id));
 	}
 	
 	public void delete(Group group) {
-			groupRepository.delete(group);
+			repository.delete(group);
 		}
 }

@@ -3,9 +3,7 @@ package com.berzenin.university.model.persons;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -25,7 +23,7 @@ import lombok.NoArgsConstructor;
 public class Teacher extends Person {
 	
 	@ManyToMany
-	@JoinColumn(name = "courses_id")
+//	@JoinColumn(name = "courses_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Course> courses;
 

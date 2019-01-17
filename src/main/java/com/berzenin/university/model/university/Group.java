@@ -1,5 +1,6 @@
 package com.berzenin.university.model.university;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -26,7 +27,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Table(name= "groups")
 @EqualsAndHashCode(exclude = "students")
-public class Group {
+public class Group implements Serializable {
 
 	@Id
 	@GeneratedValue

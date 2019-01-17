@@ -88,7 +88,7 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 		// When
 		verify(groupService).findById(1L);
 	}
-	//TODO
+
 	@Test
 	public void notFindById() throws Exception {
 		// Given

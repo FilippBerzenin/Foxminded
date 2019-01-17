@@ -3,6 +3,7 @@ package com.berzenin.university.web.mvc;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -126,6 +127,7 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 		Group groupWithOldParam = new Group(id, "Fir", null);
 		when(groupService.findById(id)).thenReturn(groupWithOldParam);
 		when(groupService.save(groupForUpdate)).thenReturn(groupForUpdate);
+		when(groupService.findAll()).thenReturn(Arrays.asList(groupForUpdate));
 		// Then
 		subject.perform(post("/groups/update/{id}", id)
 				.param("newGroupName", newName))
@@ -134,7 +136,6 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 				.andExpect(view().name("groups"))
 				.andExpect(status().isOk());
 		// When
-		verify(groupService).findById(id);
-		verify(groupService).save(new Group(id, "First", null));
+		verify(groupService).findAll();
 	}
 }

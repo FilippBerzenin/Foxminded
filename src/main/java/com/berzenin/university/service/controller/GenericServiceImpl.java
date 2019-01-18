@@ -1,12 +1,12 @@
 package com.berzenin.university.service.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
+
+import com.berzenin.university.web.exception.NotFoundException;
 
 @Service
 public abstract class GenericServiceImpl<E, R extends CrudRepository<E, Long>> implements GenericService<E> {
@@ -18,15 +18,9 @@ public abstract class GenericServiceImpl<E, R extends CrudRepository<E, Long>> i
         this.repository = repository;
     }
 
-//	protected JpaRepository<E, Long> repository;
-//
-//	public GenericServiceImpl(JpaRepository<E, Long> repository) {
-//		this.repository = repository;
-//	}
-
 	@Override
-	public void saveOrUpdate(E entity) {
-		repository.save(entity);
+	public E saveOrUpdate(E entity) {
+		return repository.save(entity);
 	}
 
 	@Override
@@ -35,18 +29,19 @@ public abstract class GenericServiceImpl<E, R extends CrudRepository<E, Long>> i
 	}
 
 	@Override
-	public Optional<E> get(Long id) {
-		return repository.findById(id);
+	public E findById(Long id) {
+		return repository.findById(id)
+				.orElseThrow(NotFoundException::new);
 	}
 
 	@Override
-	public void add(E entity) {
-		repository.save(entity);
+	public E add(E entity) {
+		return repository.save(entity);
 	}
 
 	@Override
-	public void update(E entity) {
-		repository.save(entity);
+	public E update(E entity) {
+		return repository.save(entity);
 	}
 
 	@Override

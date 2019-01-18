@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.dao.StudentRepository;
-import com.berzenin.university.service.controller.AbstractService;
+import com.berzenin.university.service.controller.GroupService;
 import com.berzenin.university.service.controller.StudentService;
 
 @SpringBootTest(classes = UniversityWebServiceTestApplication.class)
@@ -25,7 +25,7 @@ public class IntegrationTest {
 	protected StudentRepository studentRepository;
 	
 	@MockBean
-	protected AbstractService groupService;
+	protected GroupService groupService;
 	
 	@MockBean
 	protected StudentService studentService;

@@ -19,37 +19,19 @@ public class GroupService extends GenericServiceImpl<Group, GroupRepository> {
 
 	public boolean addNewGroup(String newGroupsName) {
 		if (repository.findByName(newGroupsName).isPresent()) {
-			return false;
+			throw new NotFoundException();
 		}
-			save(Group.builder().name(newGroupsName).build());
+			this.saveOrUpdate(Group.builder().name(newGroupsName).build());
 			return true;
 	}
 	
 	public List<Group> searchGroupsByName (String nameFoSearch) {
 		return repository.findByNameContaining(nameFoSearch);
 	}
-	
-	public Group findById(Long id) {
-		return repository.findById(id)
-		.orElseThrow(NotFoundException::new);
-	}
-	
-	public Group save(Group group) {
-		return repository.save(group);
-		
-	}
-	
+
 	public Group updateName(long id, String newGroupName) {
 		Group group = this.findById(id);
 		group.setName(newGroupName);
-		return this.save(group);
+		return this.saveOrUpdate(group);
 	}
-	
-	public void delete(Long id) {
-			repository.delete(findById(id));
-	}
-	
-	public void delete(Group group) {
-			repository.delete(group);
-		}
 }

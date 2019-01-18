@@ -81,7 +81,7 @@ public class GroupViewController {
 	@ResponseStatus(HttpStatus.OK)
 	public String deleteGroup(@PathVariable("id") Long id, Model model) {
 		try {
-			groupService.delete(id);
+			groupService.removeById(id);
 			groups = groupService.findAll();
 			message = id+ " Successfully deleted.";
 			return "groups";

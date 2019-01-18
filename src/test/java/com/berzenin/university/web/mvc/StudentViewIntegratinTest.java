@@ -88,7 +88,7 @@ public class StudentViewIntegratinTest extends IntegrationTest  {
 			.andDo(print())
 			.andExpect(status().isOk());
 		// When
-		verify(studentService).deleteStudentsById(id);
+		verify(studentService).removeById(id);
 	}
 
 	@Test

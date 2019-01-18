@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +61,7 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 	public void testAddNewGroup() throws Exception {
 		// Given
 		Group group = new Group("first"); 
-		when(groupService.save(any())).thenReturn(new Group(2, "first", null));
+		when(groupService.saveOrUpdate(any())).thenReturn(new Group(2, "first", null));
 		// Then
 		subject.perform(post("/api/groups")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -71,7 +72,7 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 				.andExpect(jsonPath("$.id").value(2))
 				.andExpect(jsonPath("$.name").value("first"));
 		// When
-		verify(groupService).save(new Group(0, "first", null));
+		verify(groupService).saveOrUpdate(new Group(0, "first", null));
 	}
 	
 	@Test
@@ -111,7 +112,7 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 		Group groupForUpdate = new Group(id, "First", null);
 		Group groupWithOldParam = new Group(id, "Fir", null);
 		when(groupService.findById(id)).thenReturn(groupWithOldParam);
-		when(groupService.save(any())).thenReturn(groupForUpdate);
+		when(groupService.saveOrUpdate(any())).thenReturn(groupForUpdate);
 		// Then
 		subject.perform(put("/api/groups/1")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -123,7 +124,7 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 				.andReturn();
 		// When
 		verify(groupService).findById(id);
-		verify(groupService).save(new Group(id, "First", null));
+		verify(groupService).saveOrUpdate(new Group(id, "First", null));
 	}
 	
 	@Test

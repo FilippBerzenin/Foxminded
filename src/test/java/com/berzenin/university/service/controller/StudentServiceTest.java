@@ -106,8 +106,8 @@ public class StudentServiceTest extends IntegrationTest{
 		// Given
 		long id = 1;
 		//Then
-		studentService.deleteStudentsById(id);
+		studentService.removeById(id);
 		// When
-		verify(studentService).deleteStudentsById(1L);
+		verify(studentService).removeById(1L);
 	}
 }

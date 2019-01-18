@@ -21,22 +21,19 @@ import com.berzenin.university.service.controller.GroupService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @RequestMapping(value="/api/groups")
-public class GroupController {
+public class GroupController extends GenericControllerImpl<Group, GroupService> {
 	
-	private final GroupService groupService;
-	
-	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseStatus(HttpStatus.OK)
-	public List<Group> getAll() {
-		return groupService.findAll();
+	public GroupController(GroupService service) {
+		super(service);
+		// TODO Auto-generated constructor stub
 	}
 	
 	@PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	Group addGroups(@RequestBody Group newGroup) {
-		return groupService.save(newGroup);
+		return service.saveOrUpdate(newGroup);
 	}
 	
 	@GetMapping(
@@ -63,18 +60,18 @@ public class GroupController {
 	Group updateStudent(@RequestBody Group group, @PathVariable("id") long id) {
 		Group groupForUpdate = returnGroupIfPresent(id);
 		groupForUpdate.setName(group.getName());
-		return groupService.save(groupForUpdate);
+		return service.saveOrUpdate(groupForUpdate);
 	}
 	
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	Group deleteGroupsByEntity (@PathVariable("id") long id) {
 		Group group = returnGroupIfPresent(id);
-		groupService.delete(group);
+		service.remove	(group);
 		return group;
 	}
 	
 	private Group returnGroupIfPresent(long id) {
-		return groupService.findById(id);
+		return service.findById(id);
 	}
 }

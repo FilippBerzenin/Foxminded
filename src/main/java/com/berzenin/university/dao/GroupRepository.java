@@ -13,6 +13,6 @@ public interface GroupRepository extends JpaRepository<Group, Long>  {
 	
 	Optional<Group> findByName(String name);
 	
-	List<Group> findByNameContaining(String name);	
+	List<Group> findByNameContaining(String name);
 
 }

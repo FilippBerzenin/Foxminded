@@ -55,7 +55,7 @@ public class StudentsViewController {
 	public String deleteStudentsById(@PathVariable("id") Long id, Model model) {
 		try {
 			Long group_id = studentService.findById(id).getGroup().getId();
-			studentService.deleteStudentsById(id);
+			studentService.removeById(id);
 			message = "Student deleted";
 			setModelAttribute(group_id, model);
 			return "students";

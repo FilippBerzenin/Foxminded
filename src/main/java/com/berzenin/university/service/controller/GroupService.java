@@ -2,7 +2,6 @@ package com.berzenin.university.service.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.berzenin.university.dao.GroupRepository;
@@ -12,7 +11,6 @@ import com.berzenin.university.web.exception.NotFoundException;
 @Service
 public class GroupService extends GenericServiceImpl<Group, GroupRepository> {
 
-	@Autowired
 	public GroupService(GroupRepository repository) {
 		super(repository);
 	}

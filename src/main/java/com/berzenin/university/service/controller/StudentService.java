@@ -13,15 +13,12 @@ import com.berzenin.university.web.exception.NotFoundException;
 @Service
 public class StudentService extends GenericServiceImpl<Student, StudentRepository> {
 	
-	@Autowired
 	public StudentService(StudentRepository repository) {
 		super(repository);
 	}
 
 	@Autowired
-	private GroupRepository groupRepository;
-	
-	
+	private GroupRepository groupRepository;	
 
 	public List<Student> findAll(long id) {
 		return repository.findByGroupId(id);

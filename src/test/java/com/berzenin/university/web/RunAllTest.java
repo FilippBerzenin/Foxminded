@@ -19,7 +19,8 @@ import com.berzenin.university.web.rest.StudentRestEndpointIntegrationTest;
 		IndexIntegrationTest.class, 
 		StudentViewIntegratinTest.class, 
 		GroupRestEndpointIntegrationTest.class,
-		StudentRestEndpointIntegrationTest.class })
+		StudentRestEndpointIntegrationTest.class
+		})
 public class RunAllTest {
 
 }

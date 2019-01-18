@@ -1,7 +1,5 @@
 package com.berzenin.university.web.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,35 +13,36 @@ import com.berzenin.university.model.university.Group;
 import com.berzenin.university.service.controller.GroupService;
 import com.berzenin.university.web.exception.NotFoundException;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @RequestMapping(value="/groups")
-public class GroupViewController {
-
-	private final GroupService groupService;
+public class GroupViewController extends GenericViewControllerImpl<Group, GroupService> {
 	
-	private String message = "Something wrong";
-	private List<Group> groups;
-
-	@RequestMapping(value="/show/all", method=RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public String getGroupsList(Model model) {
-		message = "All groups";
-		groups = groupService.findAll();
-		setModelAttribute(model);
-		return "groups";
+	public 	GroupViewController(GroupService service) {
+		super(service);
+		page = "groups";
 	}
+
+//	private final GroupService groupService;
+
+//	@RequestMapping(value="/show/all", method=RequestMethod.GET)
+//	@ResponseStatus(HttpStatus.OK)
+//	public String getGroupsList(Model model) {
+//		message = "All groups";
+//		enites = service.findAll();
+//		setModelAttribute(model);
+//		return "groups";
+//	}
 
 	@RequestMapping(value="/search", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public String searchGroupByName(@RequestParam String filter, Model model) {
  		if (filter != null && !filter.isEmpty()) {
  			try {
- 				groups = groupService.searchGroupsByName(filter);
+ 				enites = service.searchGroupsByName(filter);
  				message = "The group was found";
  				setModelAttribute(model);
  				} catch (NotFoundException e) {
@@ -63,9 +62,9 @@ public class GroupViewController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public String addNewGroup(@RequestParam String newGroupsName, Model model) {
 		try {
-			if (newGroupsName != null && newGroupsName.length()>0 && groupService.addNewGroup(newGroupsName)) {
+			if (newGroupsName != null && newGroupsName.length()>0 && service.addNewGroup(newGroupsName)) {
 				message = "New group sucessful created";
-				groups = groupService.findAll();
+				enites = service.findAll();
 				}
 			return "groups";
 		} catch (RuntimeException e) {
@@ -81,8 +80,8 @@ public class GroupViewController {
 	@ResponseStatus(HttpStatus.OK)
 	public String deleteGroup(@PathVariable("id") Long id, Model model) {
 		try {
-			groupService.removeById(id);
-			groups = groupService.findAll();
+			service.removeById(id);
+			enites = service.findAll();
 			message = id+ " Successfully deleted.";
 			return "groups";
 		} catch (RuntimeException e) {
@@ -99,9 +98,9 @@ public class GroupViewController {
 	public String updateGroup(@PathVariable("id") Long id, @RequestParam(value="newGroupName") String newGroupName, Model model) {
 		try {
 			if (newGroupName != null && newGroupName.length()>0) {
-				groupService.updateName(id, newGroupName);	
+				service.updateName(id, newGroupName);	
 			}
-			groups = groupService.findAll();
+			enites = service.findAll();
 			message = "group was sucessful updated";
 			return "groups";
 		} catch (RuntimeException e) {
@@ -111,10 +110,5 @@ public class GroupViewController {
 		} finally {
 			setModelAttribute(model);
 		}
-	}
-	
-	private void setModelAttribute(Model model) {
-		model.addAttribute("message", message);
-		model.addAttribute("groupsList", groups);
-	}
+	}	
 }

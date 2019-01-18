@@ -70,22 +70,22 @@ public class GroupServiceTest extends IntegrationTest{
 		//Given
 		Group first = new Group(1L, "First");
 		List<Group> groups = Arrays.asList(first);
-		when(groupService.searchGroupsByName(first.getName())).thenReturn(groups);
+		when(groupService.searchByName(first.getName())).thenReturn(groups);
 		//Then
-		assertThat(groupService.searchGroupsByName(first.getName()), is(groups));
+		assertThat(groupService.searchByName(first.getName()), is(groups));
 		//When
-		verify(groupService).searchGroupsByName(first.getName());
+		verify(groupService).searchByName(first.getName());
 	}
 	
 	@Test(expected = NotFoundException.class)
 	public void searchGroupsByNameTestNotFoundException() {
 		//Given
 		Group first = new Group(1L, "First");
-		when(groupService.searchGroupsByName(first.getName())).thenThrow(new NotFoundException());
+		when(groupService.searchByName(first.getName())).thenThrow(new NotFoundException());
 		//Then
-		groupService.searchGroupsByName(first.getName());
+		groupService.searchByName(first.getName());
 		// When
-		verify(groupService).searchGroupsByName(first.getName());
+		verify(groupService).searchByName(first.getName());
 	}
 	
 	@Test

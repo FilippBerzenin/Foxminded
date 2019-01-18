@@ -52,6 +52,5 @@ public abstract class GenericServiceImpl<E, R extends CrudRepository<E, Long>> i
 	@Override
 	public void removeById(Long id) {
 		repository.deleteById(id);
-		;
 	}
 }

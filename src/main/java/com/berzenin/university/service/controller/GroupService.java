@@ -23,7 +23,7 @@ public class GroupService extends GenericServiceImpl<Group, GroupRepository> {
 			return true;
 	}
 	
-	public List<Group> searchGroupsByName (String nameFoSearch) {
+	public List<Group> searchByName (String nameFoSearch) {
 		return repository.findByNameContaining(nameFoSearch);
 	}
 

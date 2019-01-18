@@ -54,7 +54,7 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 		long id = 1L;
 		String name = "test";
 		Group group = new Group(id, name);
-		when(groupService.searchGroupsByName(name)).thenReturn(Arrays.asList(group));
+		when(groupService.searchByName(name)).thenReturn(Arrays.asList(group));
 		when(groupService.findAll()).thenReturn(Arrays.asList(group));
 		//Then
 		subject.perform(post("/groups/search")
@@ -66,7 +66,7 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 			.andExpect(model().attributeExists("groupsList"))
 			.andExpect(model().attribute("groupsList", hasSize(1)));
 		//When
-			verify(groupService).searchGroupsByName(name);
+			verify(groupService).searchByName(name);
 	}
 	
 	//TODO

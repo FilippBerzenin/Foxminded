@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 public class GroupViewController extends GenericViewControllerImpl<Group, GroupService> {
 	
 	public 	GroupViewController(GroupService service) {
-		super(service);
 		page = "groups";
 	}
 
@@ -42,7 +41,7 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
 	public String searchGroupByName(@RequestParam String filter, Model model) {
  		if (filter != null && !filter.isEmpty()) {
  			try {
- 				enites = service.searchGroupsByName(filter);
+ 				enites = service.searchByName(filter);
  				message = "The group was found";
  				setModelAttribute(model);
  				} catch (NotFoundException e) {
@@ -75,27 +74,27 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
 			setModelAttribute(model);
 		}
 	}
-	
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public String deleteGroup(@PathVariable("id") Long id, Model model) {
-		try {
-			service.removeById(id);
-			enites = service.findAll();
-			message = id+ " Successfully deleted.";
-			return "groups";
-		} catch (RuntimeException e) {
-			log.info("Delete failed" + e);
-			message = id+ " delete failed.";
-			return "groups";
-		} finally {
-			setModelAttribute(model);
-		}
-	}
+//	
+//	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+//	@ResponseStatus(HttpStatus.OK)
+//	public String deleteGroup(@PathVariable("id") Long id, Model model) {
+//		try {
+//			service.removeById(id);
+//			enites = service.findAll();
+//			message = id+ " Successfully deleted.";
+//			return "groups";
+//		} catch (RuntimeException e) {
+//			log.info("Delete failed" + e);
+//			message = id+ " delete failed.";
+//			return "groups";
+//		} finally {
+//			setModelAttribute(model);
+//		}
+//	}
 
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public String updateGroup(@PathVariable("id") Long id, @RequestParam(value="newGroupName") String newGroupName, Model model) {
+	public String updateEntity(@PathVariable("id") Long id, @RequestParam(value="newGroupName") String newGroupName, Model model) {
 		try {
 			if (newGroupName != null && newGroupName.length()>0) {
 				service.updateName(id, newGroupName);	

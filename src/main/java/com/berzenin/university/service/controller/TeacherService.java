@@ -1,13 +1,15 @@
 package com.berzenin.university.service.controller;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Service;
 
 import com.berzenin.university.dao.TeacherRepository;
 import com.berzenin.university.model.persons.Teacher;
 
-public class TeachersService extends GenericServiceImpl<Teacher, CrudRepository<Teacher,Long>> {
+@Service
+public class TeacherService extends GenericServiceImpl<Teacher, CrudRepository<Teacher,Long>> {
 
-	public TeachersService(TeacherRepository repository) {
+	public TeacherService(TeacherRepository repository) {
 		super(repository);
 	}
 

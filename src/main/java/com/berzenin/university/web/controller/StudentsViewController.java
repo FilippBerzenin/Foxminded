@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.berzenin.university.model.persons.Student;
+import com.berzenin.university.model.university.Group;
+import com.berzenin.university.service.controller.GroupService;
 import com.berzenin.university.service.controller.StudentService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,10 +25,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping(value = "/students")
-@RequiredArgsConstructor
-public class StudentsViewController {
+//@RequiredArgsConstructor
+public class StudentsViewController extends GenericViewControllerImpl<Student, StudentService> {
 	
-	private final StudentService studentService;
+//	private final StudentService studentService;
+	
+	public 	StudentsViewController(StudentService service) {
+		page = "student";
+	}
 	
 	private String message = "Something wrong";
 	private List<Student> students;
@@ -50,12 +56,13 @@ public class StudentsViewController {
 		}
 	}
 	
+	@Override
 	@RequestMapping(value="/delete/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public String deleteStudentsById(@PathVariable("id") Long id, Model model) {
+	public String deleteEntity(@PathVariable("id") Long id, Model model) {
 		try {
-			Long group_id = studentService.findById(id).getGroup().getId();
-			studentService.removeById(id);
+			Long group_id = service.findById(id).getGroup().getId();
+			service.removeById(id);
 			message = "Student deleted";
 			setModelAttribute(group_id, model);
 			return "students";
@@ -78,7 +85,7 @@ public class StudentsViewController {
 			return "students";
 		}
 		try {
-			studentService.addStudent(student, id);
+			service.addStudent(student, id);
 			message = "New student created";
 			setModelAttribute(id, model);
 			return "students";
@@ -100,7 +107,7 @@ public class StudentsViewController {
 				return "students";
 			}
 			try {
-				studentService.updateStudent(student);
+				service.updateStudent(student);
 				message = "Student was successful update";
 				setModelAttribute(id, model);
 				return "students";
@@ -111,7 +118,7 @@ public class StudentsViewController {
 	}
 	
 	private Model setModelAttribute(Long id, Model model) {
-		students = studentService.findAll(id);
+		students = service.findAll(id);
 		model.addAttribute("message", message);
 		model.addAttribute("group_id", id);
 		return model.addAttribute("studentsList", students);
@@ -120,7 +127,25 @@ public class StudentsViewController {
 	private void setModelAttributeWhenthrowException (RuntimeException e, Model model, long id) {
 		log.error("Error "+e);
 		message = "Error "+e;
-		students = studentService.findAll(id);
+		students = service.findAll(id);
 		setModelAttribute(id, model);
+	}
+
+	@Override
+	public String findById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String add(Student entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String update(Student entity) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

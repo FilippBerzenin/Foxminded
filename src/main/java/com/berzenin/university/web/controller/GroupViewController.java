@@ -25,17 +25,6 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
 		page = "groups";
 	}
 
-//	private final GroupService groupService;
-
-//	@RequestMapping(value="/show/all", method=RequestMethod.GET)
-//	@ResponseStatus(HttpStatus.OK)
-//	public String getGroupsList(Model model) {
-//		message = "All groups";
-//		enites = service.findAll();
-//		setModelAttribute(model);
-//		return "groups";
-//	}
-
 	@RequestMapping(value="/search", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public String searchGroupByName(@RequestParam String filter, Model model) {
@@ -44,7 +33,7 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
  				enites = service.searchByName(filter);
  				message = "The group was found";
  				setModelAttribute(model);
- 				} catch (NotFoundException e) {
+ 			} catch (NotFoundException e) {
  				message = "The group wasn't found";
  				return "groups";
  			} finally {
@@ -74,27 +63,10 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
 			setModelAttribute(model);
 		}
 	}
-//	
-//	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-//	@ResponseStatus(HttpStatus.OK)
-//	public String deleteGroup(@PathVariable("id") Long id, Model model) {
-//		try {
-//			service.removeById(id);
-//			enites = service.findAll();
-//			message = id+ " Successfully deleted.";
-//			return "groups";
-//		} catch (RuntimeException e) {
-//			log.info("Delete failed" + e);
-//			message = id+ " delete failed.";
-//			return "groups";
-//		} finally {
-//			setModelAttribute(model);
-//		}
-//	}
 
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public String updateEntity(@PathVariable("id") Long id, @RequestParam(value="newGroupName") String newGroupName, Model model) {
+	public String update(@PathVariable("id") Long id, @RequestParam(value="newGroupName") String newGroupName, Model model) {
 		try {
 			if (newGroupName != null && newGroupName.length()>0) {
 				service.updateName(id, newGroupName);	
@@ -109,5 +81,5 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
 		} finally {
 			setModelAttribute(model);
 		}
-	}	
+	}
 }

@@ -27,12 +27,31 @@ public abstract class GenericViewControllerImpl<E, S extends GenericService<E>> 
 	@Override
 	@RequestMapping(value="/show/all", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public String getAll(Model model) {
-		message = "All groups";
+	public String findAll(Model model) {
+		message = "All entity";
 		enites = service.findAll();
 		setModelAttribute(model);
 		return page;
 	}	
+	
+	@Override
+	public String findById(Long id) {
+		service.findById(id);
+		return page;
+	}
+	
+	@Override
+	public String add(E entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String update(E entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
@@ -53,7 +72,7 @@ public abstract class GenericViewControllerImpl<E, S extends GenericService<E>> 
 	
 	protected void setModelAttribute(Model model) {
 		model.addAttribute("message", message);
-		model.addAttribute("groupsList", enites);
+		model.addAttribute("listOfEntirs", enites);
 	}
 
 

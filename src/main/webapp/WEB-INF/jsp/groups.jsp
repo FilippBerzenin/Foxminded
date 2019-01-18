@@ -49,7 +49,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="group" items="${groupsList}" varStatus="counter">
+				<c:forEach var="group" items="${listOfEntirs}" varStatus="counter">
 					<tr>
 						<td>${counter.count}</td>
 						<td>${group.id}</td>

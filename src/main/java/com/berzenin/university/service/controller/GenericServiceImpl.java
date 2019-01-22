@@ -40,11 +40,6 @@ public abstract class GenericServiceImpl<E, R extends CrudRepository<E, Long>> i
 	}
 
 	@Override
-	public E update(E entity) {
-		return repository.save(entity);
-	}
-
-	@Override
 	public void remove(E entity) {
 		repository.delete(entity);
 	}

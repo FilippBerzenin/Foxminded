@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.berzenin.university.model.university.Group;
 import com.berzenin.university.web.IntegrationTest;
+import com.berzenin.university.web.exception.NotFoundException;
 
 @RunWith(SpringRunner.class)
 public class GroupViewIntegrationTest extends IntegrationTest {
@@ -36,8 +37,7 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 			.andExpect(status().isOk())
 			.andExpect(forwardedUrl("groups"))
 			.andExpect(view().name("groups"))
-			.andExpect(model().attribute("groupsList", hasSize(2)))
-			.andExpect(model().attributeExists("groupsList"));
+ 			.andExpect(model().attributeExists("listOfEntirs"));
 		// When
 		verify(groupService).findAll();
 
@@ -63,28 +63,27 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 			.andExpect(forwardedUrl("groups"))
 			.andExpect(view().name("groups"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("groupsList"))
-			.andExpect(model().attribute("groupsList", hasSize(1)));
+			.andExpect(model().attributeExists("listOfEntirs"))
+			.andExpect(model().attribute("listOfEntirs", hasSize(1)));
 		//When
 			verify(groupService).searchByName(name);
 	}
 	
-	//TODO
-//	@Test
-//	public void notFindById() throws Exception {
-//		// Given
-//		String name = "test";
-//		when(groupService.searchGroupByName(name)).thenThrow(new NotFoundException());
-//		// Then
-//		subject.perform(post("/groups/search")
-//				.param("filter", "test"))
-//				.andExpect(forwardedUrl("error"))
-//				.andExpect(view().name("error"))
-//				.andExpect(status().isNotFound())
-//				.andExpect(status().reason(containsString("Items Not Found")));
-//		// When
-//		verify(groupService).searchGroupByName(name);
-//	}
+//	TODO
+	@Test
+	public void notFindById() throws Exception {
+		// Given
+		String name = "test";
+		when(groupService.searchByName(name)).thenThrow(new NotFoundException());
+		// Then
+		subject.perform(post("/groups/search")
+				.param("filter", "test"))
+				.andExpect(forwardedUrl("groups"))
+				.andExpect(view().name("groups"))
+				.andExpect(status().isOk());
+		// When
+		verify(groupService).searchByName(name);
+	}
 	
 	@Test
 	public void addNewGroupTest() throws Exception {

@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
@@ -28,11 +27,10 @@ public class Course {
 	private Long id;
 	
 	@NotNull
-	@Column(name = "subject", nullable = false)
+	@Column(nullable = false)
 	private String subject;
 	
 	@ManyToMany
-//	@JoinColumn(name = "groups_id")
 	private List<Excercise> excercises;
 	
 	@ManyToMany

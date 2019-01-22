@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 public class Teacher extends Person {
 	
 	@ManyToMany
-//	@JoinColumn(name = "courses_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Course> courses;
 

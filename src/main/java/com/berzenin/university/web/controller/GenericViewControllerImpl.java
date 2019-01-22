@@ -72,7 +72,7 @@ public abstract class GenericViewControllerImpl<E, S extends GenericService<E>> 
 	
 	protected void setModelAttribute(Model model) {
 		model.addAttribute("message", message);
-		model.addAttribute("listOfEntirs", enites);
+		model.addAttribute("listOfEntites", enites);
 	}
 
 

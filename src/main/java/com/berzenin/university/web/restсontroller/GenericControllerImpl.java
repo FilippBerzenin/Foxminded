@@ -23,10 +23,10 @@ public abstract class GenericControllerImpl<E, S extends GenericService<E>> impl
 	@Override
 	public List<E> getAll() {
 		return service.findAll();
-	}
+	}	
 
 	@Override
-	public E addEntity(@RequestBody E entity) {
+	public E addOrUpdate(@RequestBody E entity) {
 		return service.saveOrUpdate(entity);
 	}
 
@@ -37,7 +37,7 @@ public abstract class GenericControllerImpl<E, S extends GenericService<E>> impl
 
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public E deleteEntity (@PathVariable("id") long id) {
+	public E delete (@PathVariable("id") long id) {
 		E entity = service.findById(id);
 		service.remove(entity);
 		return entity;

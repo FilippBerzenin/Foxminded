@@ -37,7 +37,7 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 			.andExpect(status().isOk())
 			.andExpect(forwardedUrl("groups"))
 			.andExpect(view().name("groups"))
- 			.andExpect(model().attributeExists("listOfEntirs"));
+ 			.andExpect(model().attributeExists("listOfEntites"));
 		// When
 		verify(groupService).findAll();
 
@@ -63,8 +63,8 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 			.andExpect(forwardedUrl("groups"))
 			.andExpect(view().name("groups"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("listOfEntirs"))
-			.andExpect(model().attribute("listOfEntirs", hasSize(1)));
+			.andExpect(model().attributeExists("listOfEntites"))
+			.andExpect(model().attribute("listOfEntites", hasSize(1)));
 		//When
 			verify(groupService).searchByName(name);
 	}

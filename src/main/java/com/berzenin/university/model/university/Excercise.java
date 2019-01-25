@@ -17,12 +17,18 @@ public class Excercise {
 	
 	@Id
 	private Long id;
+	
+	@NotNull
+	private String name;
 
 	@NotNull
 	private DayOfWeek dayOfWeek;
 	
 	@NotNull
-	private LocalTime time;
+	private LocalTime timeBegin;
+	
+	@NotNull
+	private LocalTime timeFinish;
 	
 	@ManyToMany
 	private List<Course> course;

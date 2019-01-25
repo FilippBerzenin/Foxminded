@@ -3,11 +3,8 @@ package com.berzenin.university.web.restсontroller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.berzenin.university.service.controller.GenericService;
 
@@ -35,8 +32,7 @@ public abstract class GenericControllerImpl<E, S extends GenericService<E>> impl
 		return service.findById(id);
 	}
 
-	@DeleteMapping(value = "/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Override
 	public E delete (@PathVariable("id") long id) {
 		E entity = service.findById(id);
 		service.remove(entity);

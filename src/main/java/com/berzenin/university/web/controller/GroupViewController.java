@@ -1,8 +1,11 @@
 package com.berzenin.university.web.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-//@RequiredArgsConstructor
 @RequestMapping(value="/groups")
 public class GroupViewController extends GenericViewControllerImpl<Group, GroupService> {
 	
@@ -30,12 +32,12 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
 	public String searchGroupByName(@RequestParam String filter, Model model) {
  		if (filter != null && !filter.isEmpty()) {
  			try {
- 				enites = service.searchByName(filter);
+ 				entites = service.searchByName(filter);
  				message = "The group was found";
  				setModelAttribute(model);
  			} catch (NotFoundException e) {
  				message = "The group wasn't found";
- 				return "groups";
+ 				return page;
  			} finally {
  				setModelAttribute(model);	
  			} 			
@@ -43,7 +45,7 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
  			setModelAttribute(model);
  	 		message = "Wrong parametr for search";
  	 	}
- 		return "groups";
+ 		return page;
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.POST)
@@ -52,13 +54,13 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
 		try {
 			if (newGroupsName != null && newGroupsName.length()>0 && service.addNewGroup(newGroupsName)) {
 				message = "New group sucessful created";
-				enites = service.findAll();
+				entites = service.findAll();
 				}
-			return "groups";
+			return page;
 		} catch (RuntimeException e) {
 			log.info("group was not created" + e);
 			message = newGroupsName+ " group was not created.";
-			return "groups";
+			return page;
 		} finally {
 			setModelAttribute(model);
 		}
@@ -71,15 +73,21 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
 			if (newGroupName != null && newGroupName.length()>0) {
 				service.updateName(id, newGroupName);	
 			}
-			enites = service.findAll();
+			entites = service.findAll();
 			message = "group was sucessful updated";
-			return "groups";
+			return page;
 		} catch (RuntimeException e) {
 			log.info("group was not updated " + e);
 			message = id+ " group was not updated.";
-			return "groups";
+			return page;
 		} finally {
 			setModelAttribute(model);
 		}
+	}
+
+	@Override
+	public String update(@Valid Group entity, BindingResult result, Model model) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

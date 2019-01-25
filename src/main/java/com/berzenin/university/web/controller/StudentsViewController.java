@@ -15,17 +15,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.berzenin.university.model.persons.Student;
-import com.berzenin.university.model.university.Group;
-import com.berzenin.university.service.controller.GroupService;
 import com.berzenin.university.service.controller.StudentService;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
 @RequestMapping(value = "/students")
-//@RequiredArgsConstructor
 public class StudentsViewController extends GenericViewControllerImpl<Student, StudentService> {
 	
 //	private final StudentService studentService;
@@ -52,24 +48,8 @@ public class StudentsViewController extends GenericViewControllerImpl<Student, S
 			return "students";		
 		} catch (RuntimeException e) {
 			this.setModelAttributeWhenthrowException(e, model, id);
-			return "student";
+			return page;
 		}
-	}
-	
-	@Override
-	@RequestMapping(value="/delete/{id}")
-	@ResponseStatus(HttpStatus.OK)
-	public String deleteEntity(@PathVariable("id") Long id, Model model) {
-		try {
-			Long group_id = service.findById(id).getGroup().getId();
-			service.removeById(id);
-			message = "Student deleted";
-			setModelAttribute(group_id, model);
-			return "students";
-		} catch (RuntimeException e) {
-			this.setModelAttributeWhenthrowException(e, model, id);
-			return "student";
-		}	
 	}
 	
 	@RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
@@ -95,6 +75,22 @@ public class StudentsViewController extends GenericViewControllerImpl<Student, S
 		}
 	}
 	
+	@Override
+	@RequestMapping(value="/delete/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public String deleteEntity(@PathVariable("id") Long id, Model model) {
+		try {
+			Long group_id = service.findById(id).getGroup().getId();
+			service.removeById(id);
+			message = "Student deleted";
+			setModelAttribute(group_id, model);
+			return page;
+		} catch (RuntimeException e) {
+			this.setModelAttributeWhenthrowException(e, model, id);
+			return page;
+		}	
+	}	
+
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public String updateStudentNew (
@@ -104,7 +100,7 @@ public class StudentsViewController extends GenericViewControllerImpl<Student, S
 			Model model) {if (result.hasErrors()) {
 				message = "Something wrong with students name, surename or groups name";
 				setModelAttribute(id, model);
-				return "students";
+				return page;
 			}
 			try {
 				service.updateStudent(student);
@@ -113,7 +109,7 @@ public class StudentsViewController extends GenericViewControllerImpl<Student, S
 				return "students";
 			} catch (RuntimeException e) {
 				this.setModelAttributeWhenthrowException(e, model, id);
-				return "students";
+				return page;
 			}
 	}
 	
@@ -124,28 +120,10 @@ public class StudentsViewController extends GenericViewControllerImpl<Student, S
 		return model.addAttribute("studentsList", students);
 	}
 	
-	private void setModelAttributeWhenthrowException (RuntimeException e, Model model, long id) {
+	protected void setModelAttributeWhenthrowException (RuntimeException e, Model model, long id) {
 		log.error("Error "+e);
 		message = "Error "+e;
 		students = service.findAll(id);
 		setModelAttribute(id, model);
-	}
-
-	@Override
-	public String findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String add(Student entity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String update(Student entity) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

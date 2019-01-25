@@ -10,10 +10,12 @@ import com.berzenin.university.dao.CourseRepository;
 import com.berzenin.university.dao.ExcerciseRepository;
 import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.dao.StudentRepository;
+import com.berzenin.university.dao.TeacherRepository;
 import com.berzenin.university.service.controller.CourseService;
 import com.berzenin.university.service.controller.ExcerciseService;
 import com.berzenin.university.service.controller.GroupService;
 import com.berzenin.university.service.controller.StudentService;
+import com.berzenin.university.service.controller.TeacherService;
 
 @SpringBootTest(classes = UniversityWebServiceTestApplication.class)
 @AutoConfigureMockMvc
@@ -34,14 +36,17 @@ public class IntegrationTest {
 	
 	@MockBean
 	protected CourseRepository courseRepository;
-	
-	@MockBean
-	protected ExcerciseRepository excerciseRepository;
-	
-	
 	@MockBean
 	protected CourseService courseService;
 	
+	
+	@MockBean
+	protected ExcerciseRepository excerciseRepository;
 	@MockBean
 	protected ExcerciseService excerciseService;
+	
+	@MockBean
+	protected TeacherRepository teacherRepository;	
+	@MockBean
+	protected TeacherService teacherService;
 }

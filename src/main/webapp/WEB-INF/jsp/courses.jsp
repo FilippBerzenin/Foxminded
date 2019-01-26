@@ -56,28 +56,36 @@
 						<td>${entity.id}</td>
 						<td>${entity.subject}</td>
 						<td>${entity.excercises}</td>
-						<td>${entity.teacher}</td>
+						<td>
+							<tbody>
+						<c:forEach var="teacherFromList" items="${entity.teacher}">
+										<c:out value="${teacherFromList.name}" />
+									</c:forEach>
+								</tbody>
+								</td>
 						<td><a href="${prefix}/${page}/delete/${entity.id}"
 							onclick="return confirm('Are you sure?')">Delete</a></td>
 						<td>
 							<button type="button" class="btn btn-primary dropdown-toggle"
 								data-toggle="dropdown">Update</button>
 							<div class="dropdown-menu container form-group">
-							
-							<form:form class="form-inline" method="post"
+
+								<form:form class="form-inline" method="post"
 									action="/${page}/update/" modelAttribute="entityFor">
-							<div class="form-group">
-							<form:input type="hidden" path="id" value="${entity.id}"/>
-							<font color="red"><form:errors path="subject" /></font>
-							<form:input class="form-control" path="subject" value="${entity.subject}"/>
-<%-- 							<font color="red"><form:errors path="courses.name" /></font>
+									<div class="form-group">
+										<form:input type="hidden" path="id" value="${entity.id}" />
+										<font color="red"><form:errors path="subject" /></font>
+										<form:input class="form-control" path="subject"
+											value="${entity.subject}" />
+										<%-- 							<font color="red"><form:errors path="courses.name" /></font>
 							<form:input class="form-control" path="courses.name" value="${entity.course.name}"/> --%>
-							<button class="form-control" type="submit">Update</button>
+										<button class="form-control" type="submit">Update</button>
 									</div>
 								</form:form>
 							</div>
 						</td>
 					</tr>
+					
 				</c:forEach>
 			</tbody>
 		</table>

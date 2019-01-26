@@ -46,6 +46,7 @@
 					<th>Teachers name</th>
 					<th>Teachers surename</th>
 					<th>Courses list</th>
+					<th>Add new course</th>
 					<th>Delete</th>
 					<th>Update</th>
 				</tr>
@@ -57,25 +58,62 @@
 						<td>${entity.id}</td>
 						<td>${entity.name}</td>
 						<td>${entity.surename}</td>
-						<td>${entity.courses}</td>
+						<td>
+							<table class="table  table-sm">
+								<thead class="table-info">
+									<tr>
+										<th>#</th>
+										<th>ID</th>
+										<th>Course name</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="courseFromList" items="${entity.courses}">
+										<c:out value="${courseFromList.subject}" />
+									</c:forEach>
+								</tbody>
+							</table>
+						<td>
+							<button type="button" class="btn btn-primary dropdown-toggle"
+								data-toggle="dropdown">Add new course</button>
+							<div class="dropdown-menu container form-group">
+								<form:form class="form-inline" method="POST"
+									action="/teachers/addCourse/${entity.id}"
+									modelAttribute="course">
+									<div class="form-group">
+										<table>
+											<tr>
+												<td><form:label path="subject">Add course</form:label></td>
+												<td><form:input path="subject" /></td>
+											</tr>
+											<tr>
+												<td><input type="submit" value="Submit" /></td>
+											</tr>
+										</table>
+									</div>
+								</form:form>
+							</div>
+						</td>
 						<td><a href="${prefix}/teachers/delete/${entity.id}"
 							onclick="return confirm('Are you sure?')">Delete</a></td>
 						<td>
 							<button type="button" class="btn btn-primary dropdown-toggle"
 								data-toggle="dropdown">Update</button>
 							<div class="dropdown-menu container form-group">
-							
-							<form:form class="form-inline" method="post"
+
+								<form:form class="form-inline" method="post"
 									action="/teachers/update/" modelAttribute="entityFor">
-							<div class="form-group">
-							<form:input type="hidden" path="id" value="${entity.id}"/>
-							<font color="red"><form:errors path="name" /></font>
-							<form:input class="form-control" path="name" value="${entity.name}"/>
-							<font color="red"><form:errors path="surename" /></font>
-							<form:input class="form-control" path="surename" value="${entity.surename}"/>
-<%-- 							<font color="red"><form:errors path="courses.name" /></font>
+									<div class="form-group">
+										<form:input type="hidden" path="id" value="${entity.id}" />
+										<font color="red"><form:errors path="name" /></font>
+										<form:input class="form-control" path="name"
+											value="${entity.name}" />
+										<font color="red"><form:errors path="surename" /></font>
+										<form:input class="form-control" path="surename"
+											value="${entity.surename}" />
+										<%-- 							<font color="red"><form:errors path="courses.name" /></font>
 							<form:input class="form-control" path="courses.name" value="${entity.course.name}"/> --%>
-							<button class="form-control" type="submit">Update</button>
+										<button class="form-control" type="submit">Update</button>
 									</div>
 								</form:form>
 							</div>

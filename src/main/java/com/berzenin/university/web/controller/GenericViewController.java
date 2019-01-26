@@ -37,7 +37,4 @@ public interface GenericViewController<E> {
 			@ModelAttribute("entity") @Valid E entity,
 			BindingResult result, 
 			Model model);
-	
-	
-
 }

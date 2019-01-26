@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.berzenin.university.model.persons.Student;
@@ -28,6 +27,8 @@ import lombok.NonNull;
 @Table(name= "groups")
 @EqualsAndHashCode(exclude = "students")
 public class Group implements Serializable {
+
+	private static final long serialVersionUID = -11555498733151025L;
 
 	@Id
 	@GeneratedValue

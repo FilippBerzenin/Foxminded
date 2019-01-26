@@ -1,6 +1,7 @@
 package com.berzenin.university.model.university;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,12 +15,14 @@ import com.berzenin.university.model.persons.Teacher;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "teacher")
 public class Course {
 	
 	@Id
@@ -33,7 +36,6 @@ public class Course {
 	@ManyToMany
 	private List<Excercise> excercises;
 	
-	@ManyToMany
-	private List<Teacher> teacher;
-
+	@ManyToMany(mappedBy = "courses")
+	private Set<Teacher> teacher;
 }

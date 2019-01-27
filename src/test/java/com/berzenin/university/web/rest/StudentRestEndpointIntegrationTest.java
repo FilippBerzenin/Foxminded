@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -79,41 +80,48 @@ public class StudentRestEndpointIntegrationTest extends RestIntegrationTest {
 		// When
 		verify(studentService).findAll();
 	}
-
+	
 	@Test
 	public void testAddStudent() throws Exception {
 		// Given
-		Student student = new Student("Some", "Name");
-		when(studentService.update(any())).thenReturn(new Student(1, "Some", "Name"));
+		Student studentAdd = new Student(2, "Some", "Name");
+//		Group group = new Group("first"); 
+		when(studentService.save(any())).thenReturn(studentAdd);
 		// Then
 		subject.perform(post("/api/students")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-				.content(mapper.writeValueAsBytes(student)))
+				.content(mapper.writeValueAsBytes(studentAdd))
+				)
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andDo(print())
-				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.id").value(1))
+				.andExpect(jsonPath("$.id").value(2))
 				.andExpect(jsonPath("$.name").value("Some"))
 				.andExpect(jsonPath("$.surename").value("Name"));
 		// When
-		verify(studentService).update(new Student("Some", "Name"));
+		verify(studentService).save(studentAdd);
 	}
 	
 	@Test
 	public void testUpdateStudent() throws Exception {
 		// Given
-		Student student = new Student("Some", "Name");
-		when(studentService.update(any())).thenReturn(new Student(1, "Some", "Name"));
+		Long id = 1L;
+		Student studentForUpdate = new Student(id, "Filipp", "Berzenin");
+		Student studentWithOldParam = new Student(id, "Filipp", "Berz");
+		when(studentService.findById(id)).thenReturn(studentWithOldParam);
+		when(studentService.update(any())).thenReturn(studentForUpdate);
 		// Then
-		subject.perform(post("/api/students")
+		subject.perform(put("/api/students/"+id)
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-				.content(mapper.writeValueAsBytes(student)))
+				.content(mapper.writeValueAsBytes(studentForUpdate)))
 				.andDo(print())
-				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.id").value(1))
-				.andExpect(jsonPath("$.name").value("Some"))
-				.andExpect(jsonPath("$.surename").value("Name"));
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(id))
+				.andExpect(jsonPath("$.name").value("Filipp"))
+				.andExpect(jsonPath("$.surename").value("Berzenin"))
+				.andReturn();
 		// When
-		verify(studentService).update(new Student("Some", "Name"));
+		verify(studentService).findById(id);
+		verify(studentService).update(studentForUpdate);
 	}
 
 	@Test

@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 public class StudentsViewController extends GenericViewControllerImpl<Student, StudentService> {
 
 	public StudentsViewController(StudentService service) {
-		page = "student";
+		page = "students";
 	}
 
 	private String message = "Something wrong";

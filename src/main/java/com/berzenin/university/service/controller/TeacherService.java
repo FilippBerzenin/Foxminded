@@ -19,6 +19,7 @@ public class TeacherService extends GenericServiceImpl<Teacher, CrudRepository<T
 		super(repository);
 	}
 	
+	@Override
 	public Teacher update(Teacher entity) {
 		Teacher entityForUpdate = repository.findById(entity.getId()).get();
 		entityForUpdate.setName(entity.getName());
@@ -49,5 +50,4 @@ public class TeacherService extends GenericServiceImpl<Teacher, CrudRepository<T
 			throw new RuntimeException();
 		}
 	}
-
 }

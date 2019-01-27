@@ -19,7 +19,7 @@
 			class="list-group-item">Teachers page</a> <br> <a
 			href="${pageContext.request.contextPath}/courses/show/all"
 			class="list-group-item">Courses page</a> <br> <a
-			href="${pageContext.request.contextPath}/excercises/show/all"
+			href="${pageContext.request.contextPath}/exercises/show/all"
 			class="list-group-item">Exercises page</a> <br>
 	</div>
 	</div>

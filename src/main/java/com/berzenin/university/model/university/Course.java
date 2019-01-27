@@ -33,8 +33,8 @@ public class Course {
 	@Column(nullable = false)
 	private String subject;
 	
-	@ManyToMany
-	private List<Excercise> excercises;
+	@ManyToMany(mappedBy = "courses")
+	private List<Exercise> exercises;
 	
 	@ManyToMany(mappedBy = "courses")
 	private Set<Teacher> teacher;

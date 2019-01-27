@@ -12,29 +12,34 @@
 <script	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <c:set var="prefix" value="${pageContext.request.contextPath}" />
-<title>Teachers page</title>
+<c:set var="page" value="${page}" />
+<title>Exercises page</title>
 </head>
 <body>
 	<div class="container">
 		<a href="${prefix}/">Back</a> <br />
 		<div>
-			<h2>Add new teacher:</h2>
+			<h2>Add new ${page}:</h2>
 			<div class="form-group">
-				<form:form method="post" action="/teachers/create/" modelAttribute="entityFor">
+				<form:form method="post" action="/${page}/create/" modelAttribute="entityFor">
 					<table>
 						<tr>
 							<td><font color="red"><form:errors path="name" /></font></td>
-							<td><form:input path="name" placeholder="Teachers name"/></td>
-							<td><font color="red"><form:errors path="surename" /></font></td>
-							<td><form:input path="surename" placeholder="Teachers surename"/></td>
-							<td><button type="submit">Add new teacher</button></td>
+							<td><form:input class="form-control" type="text" path="name" placeholder="${page} name"/></td>
+							<td><font color="red"><form:errors path="date" /></font></td>
+							<td><form:input class="form-control" type="date" path="date" placeholder="dd-mm-yyyy"/></td>
+							<td><font color="red"><form:errors path="timeBegin" /></font></td>
+							<td><form:input class="form-control" type="time" path="timeBegin" placeholder="Time start (HH-mm)"/></td>
+							<td><font color="red"><form:errors path="timeFinish" /></font></td>
+							<td><form:input class="form-control" type="time" path="timeFinish" placeholder="Time finish (HH-mm)"/></td>
+							<td><button type="submit">Add new ${page}</button></td>
 						</tr>
 					</table>
 				</form:form>
 			</div>
 		</div>
 		<br />
-		<h1>Teachers list</h1>
+		<h1>${page} list</h1>
 				<c:if test="${not empty message}">
 			<div class="alert alert-success">${message}</div>
 		</c:if>
@@ -43,10 +48,12 @@
 				<tr>
 					<th>#</th>
 					<th>ID</th>
-					<th>Teachers name</th>
-					<th>Teachers surename</th>
+					<th>${page} name</th>
+					<th>Date</th>
+					<th>Begin time</th>
+					<th>Finish time</th>
 					<th>Courses list</th>
-					<th>Add new course</th>
+					<th>Add for course</th>
 					<th>Remove course</th>
 					<th>Delete</th>
 					<th>Update</th>
@@ -58,7 +65,9 @@
 						<td>${counter.count}</td>
 						<td>${entity.id}</td>
 						<td>${entity.name}</td>
-						<td>${entity.surename}</td>
+						<td>${entity.date}</td>
+						<td>${entity.timeBegin}</td>
+						<td>${entity.timeFinish}</td>
 						<td>
 							<c:forEach var="courseFromList" items="${entity.courses}">
 								<c:out value="${courseFromList.subject}" />
@@ -68,7 +77,7 @@
 								data-toggle="dropdown">Add new course</button>
 							<div class="dropdown-menu container form-group">
 								<form:form class="form-inline" method="POST"
-									action="/teachers/addCourse/${entity.id}"
+									action="/${page}/addCourse/${entity.id}"
 									modelAttribute="course">
 									<div class="form-group">
 										<table>
@@ -89,7 +98,7 @@
 								data-toggle="dropdown">Remove course</button>
 							<div class="dropdown-menu container form-group">
 								<form:form class="form-inline" method="POST"
-									action="/teachers/removeCourse/${entity.id}"
+									action="/${page}/removeCourse/${entity.id}"
 									modelAttribute="course">
 									<div class="form-group">
 										<table>
@@ -105,27 +114,61 @@
 								</form:form>
 							</div>
 						</td>
-						<td><a href="${prefix}/teachers/delete/${entity.id}"
+						<td><a href="${prefix}/${page}/delete/${entity.id}"
 							onclick="return confirm('Are you sure?')">Delete</a></td>
 						<td>
 							<button type="button" class="btn btn-primary dropdown-toggle"
 								data-toggle="dropdown">Update</button>
 							<div class="dropdown-menu container form-group">
 								<form:form class="form-inline" method="post"
-									action="/teachers/update/" modelAttribute="entityFor">
+									action="/${page}/update/" modelAttribute="entityFor">
 									<div class="form-group">
 										<form:input type="hidden" path="id" value="${entity.id}" />
 										<font color="red"><form:errors path="name" /></font>
-										<form:input class="form-control" path="name"
-											value="${entity.name}" />
-										<font color="red"><form:errors path="surename" /></font>
-										<form:input class="form-control" path="surename"
-											value="${entity.surename}" />
+										<form:input path="name" value="${entity.name}" />
+										<font color="red"><form:errors path="date" /></font>
+										<form:input type="date" path="date" value="${entity.date}"/>
+										<font color="red"><form:errors path="timeBegin" /></font>
+										<form:input type="time" path="timeBegin" value="${entity.timeBegin}"/>
+										<font color="red"><form:errors path="timeFinish" /></font>
+										<form:input type="time" path="timeFinish" value="${entity.timeFinish}"/>									
 										<button class="form-control" type="submit">Update</button>
 									</div>
 								</form:form>
 							</div>
 						</td>
+						<%-- 						<td>
+							<button type="button" class="btn btn-primary dropdown-toggle"
+								data-toggle="dropdown">Update</button>
+							<div class="dropdown-menu container form-group">
+								<form:form class="form-inline" method="post"
+									action="/${page}/update/" modelAttribute="entityFor">
+										<form:input type="hidden" path="id" value="${entity.id}" />
+										<td><font color="red"><form:errors path="name" /></font></td>
+										<td><form:input class="form-control" type="text"
+												path="name" placeholder="${entity.name}" /></td>
+										<td><font color="red"><form:errors path="date" /></font></td>
+										<td><form:input class="form-control" type="date"
+												path="date" placeholder="${entity.date}" /></td>
+										<td><font color="red"><form:errors
+													path="timeBegin" /></font></td>
+										<td><form:input class="form-control" type="time"
+												path="timeBegin" placeholder="${entity.timeBegin}" /></td>
+										<td><font color="red"><form:errors
+													path="timeFinish" /></font></td>
+										<td><form:input class="form-control" type="time"
+												path="timeFinish" placeholder="${entity.timeFinish}" /></td>
+										<form:input type="hidden" path="id" value="${entity.id}" />
+										<font color="red"><form:errors path="subject" /></font>
+										<form:input class="form-control" path="subject"
+											value="${entity.subject}" />
+										<font color="red"><form:errors path="courses.name" /></font>
+										<form:input class="form-control" path="courses.name"
+											value="${entity.course.name}" />
+										<button class="form-control" type="submit">Update</button>
+								</form:form>
+							</div>
+						</td> --%>
 					</tr>
 				</c:forEach>
 			</tbody>

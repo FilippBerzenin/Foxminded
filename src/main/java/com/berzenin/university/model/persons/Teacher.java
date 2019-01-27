@@ -14,12 +14,14 @@ import com.berzenin.university.model.university.Course;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "courses")
 public class Teacher extends Person {
 
 	@ManyToMany

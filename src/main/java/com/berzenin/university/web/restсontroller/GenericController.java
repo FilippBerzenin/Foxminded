@@ -18,7 +18,9 @@ public interface GenericController <E> {
 	@ResponseStatus(HttpStatus.OK)
 	public E getEntityById(@PathVariable("id") long id);
 
-	@PostMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(
+			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
+			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public E addOrUpdate(@RequestBody E entity);
 

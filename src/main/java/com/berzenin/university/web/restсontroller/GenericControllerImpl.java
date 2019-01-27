@@ -24,7 +24,7 @@ public abstract class GenericControllerImpl<E, S extends GenericService<E>> impl
 
 	@Override
 	public E addOrUpdate(@RequestBody E entity) {
-		return service.saveOrUpdate(entity);
+		return service.save(entity);
 	}
 
 	@Override

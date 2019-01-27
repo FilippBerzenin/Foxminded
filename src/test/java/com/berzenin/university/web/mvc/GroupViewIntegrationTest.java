@@ -124,7 +124,7 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 		Group groupForUpdate = new Group(id, "First", null);
 		Group groupWithOldParam = new Group(id, "Fir", null);
 		when(groupService.findById(id)).thenReturn(groupWithOldParam);
-		when(groupService.saveOrUpdate(groupForUpdate)).thenReturn(groupForUpdate);
+		when(groupService.update(groupForUpdate)).thenReturn(groupForUpdate);
 		when(groupService.findAll()).thenReturn(Arrays.asList(groupForUpdate));
 		// Then
 		subject.perform(post("/groups/update/{id}", id)

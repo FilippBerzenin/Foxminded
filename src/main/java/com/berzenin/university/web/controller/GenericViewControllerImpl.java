@@ -1,5 +1,6 @@
 package com.berzenin.university.web.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -41,7 +42,7 @@ public abstract class GenericViewControllerImpl<E, S extends GenericService<E>> 
 	@Override
 	public String findById(Long id, Model model) {
 		try {
-			service.findById(id);
+			entites = Arrays.asList(service.findById(id));
 			setModelAttribute(model);
 			return page;	
 		} catch (RuntimeException e) {
@@ -61,8 +62,9 @@ public abstract class GenericViewControllerImpl<E, S extends GenericService<E>> 
 				return page;
 			}
 			try {
-				service.saveOrUpdate(entity);
+				service.save(entity);
 				message = "Entity was successful save";
+				entites = service.findAll();
 				setModelAttribute(model);
 				return page;
 			} catch (RuntimeException e) {
@@ -89,10 +91,26 @@ public abstract class GenericViewControllerImpl<E, S extends GenericService<E>> 
 			setModelAttribute(model);
 		}
 	}
-	
-	public String update(@Valid E entity, BindingResult result, Model model) {
-		// TODO Auto-generated method stub
-		return null;
+
+	public String update(
+			@ModelAttribute("entity") @Valid E entity,
+			BindingResult result, 
+			Model model) {
+		if (result.hasErrors()) {
+			message = "Something wrong with attributes";
+			setModelAttribute(model);
+			return page;
+		}
+		try {
+			service.update(entity);
+			message = "Entity was successful update";
+			entites = service.findAll();
+			setModelAttribute(model);
+			return page;
+		} catch (RuntimeException e) {
+			this.setModelAttributeWhenthrowException(e, model);
+			return page;
+		}
 	}
 	
 	protected void setModelAttribute(Model model) {

@@ -40,6 +40,6 @@ public class GroupController extends GenericControllerImpl<Group, GroupService> 
 	public Group updateGroup(@RequestBody Group group, @PathVariable("id") long id) {
 		Group groupForUpdate = service.findById(id);
 		groupForUpdate.setName(group.getName());
-		return service.saveOrUpdate(groupForUpdate);
+		return service.update(groupForUpdate);
 	}
 }

@@ -84,7 +84,7 @@ public class StudentRestEndpointIntegrationTest extends RestIntegrationTest {
 	public void testAddStudent() throws Exception {
 		// Given
 		Student student = new Student("Some", "Name");
-		when(studentService.saveOrUpdate(any())).thenReturn(new Student(1, "Some", "Name"));
+		when(studentService.update(any())).thenReturn(new Student(1, "Some", "Name"));
 		// Then
 		subject.perform(post("/api/students")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -95,14 +95,14 @@ public class StudentRestEndpointIntegrationTest extends RestIntegrationTest {
 				.andExpect(jsonPath("$.name").value("Some"))
 				.andExpect(jsonPath("$.surename").value("Name"));
 		// When
-		verify(studentService).saveOrUpdate(new Student("Some", "Name"));
+		verify(studentService).update(new Student("Some", "Name"));
 	}
 	
 	@Test
 	public void testUpdateStudent() throws Exception {
 		// Given
 		Student student = new Student("Some", "Name");
-		when(studentService.saveOrUpdate(any())).thenReturn(new Student(1, "Some", "Name"));
+		when(studentService.update(any())).thenReturn(new Student(1, "Some", "Name"));
 		// Then
 		subject.perform(post("/api/students")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -113,7 +113,7 @@ public class StudentRestEndpointIntegrationTest extends RestIntegrationTest {
 				.andExpect(jsonPath("$.name").value("Some"))
 				.andExpect(jsonPath("$.surename").value("Name"));
 		// When
-		verify(studentService).saveOrUpdate(new Student("Some", "Name"));
+		verify(studentService).update(new Student("Some", "Name"));
 	}
 
 	@Test

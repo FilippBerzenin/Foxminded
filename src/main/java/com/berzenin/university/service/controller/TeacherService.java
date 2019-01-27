@@ -19,11 +19,30 @@ public class TeacherService extends GenericServiceImpl<Teacher, CrudRepository<T
 		super(repository);
 	}
 	
+	public Teacher update(Teacher entity) {
+		Teacher entityForUpdate = repository.findById(entity.getId()).get();
+		entityForUpdate.setName(entity.getName());
+		entityForUpdate.setSurename(entity.getSurename());
+		return repository.save(entityForUpdate);
+	}
+	
 	public Teacher addNewCourseForTeacher(Long teacherId, Course course) {
 		try {
 			Course courseForAdd = courseService.ifCoursePresentByName(course.getSubject());
 			Teacher teacher = repository.findById(teacherId).orElseThrow(NotFoundException::new);
 			teacher.getCourses().add(courseForAdd);
+			repository.save(teacher);
+			return teacher;
+		} catch (RuntimeException e) {
+			throw new RuntimeException();
+		}
+	}
+	
+	public Teacher removeCourseFromTeacher(Long teacherId, Course course) {
+		try {
+			Course removeCourse = courseService.ifCoursePresentByName(course.getSubject());
+			Teacher teacher = repository.findById(teacherId).orElseThrow(NotFoundException::new);
+			teacher.getCourses().remove(removeCourse);
 			repository.save(teacher);
 			return teacher;
 		} catch (RuntimeException e) {

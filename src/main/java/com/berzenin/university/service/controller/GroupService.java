@@ -19,7 +19,7 @@ public class GroupService extends GenericServiceImpl<Group, GroupRepository> {
 		if (repository.findByName(newGroupsName).isPresent()) {
 			throw new NotFoundException();
 		}
-			this.saveOrUpdate(Group.builder().name(newGroupsName).build());
+			this.save(Group.builder().name(newGroupsName).build());
 			return true;
 	}
 	
@@ -30,6 +30,6 @@ public class GroupService extends GenericServiceImpl<Group, GroupRepository> {
 	public Group updateName(long id, String newGroupName) {
 		Group group = this.findById(id);
 		group.setName(newGroupName);
-		return this.saveOrUpdate(group);
+		return this.update(group);
 	}
 }

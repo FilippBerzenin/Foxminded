@@ -56,13 +56,13 @@ public class GroupServiceTest extends IntegrationTest{
 		String newGroupsName = "First";
 		when(groupRepository.findByName(newGroupsName)).thenReturn(Optional.of(new Group("Empty")));
 		when(groupRepository.saveAndFlush(first)).thenReturn(first);
-		when(groupService.saveOrUpdate(first)).thenReturn(first);
+		when(groupService.save(first)).thenReturn(first);
 		//Then
 		assertThat(groupRepository.findByName(newGroupsName).get()
 				.getName().equals("Empty"));
-		assertThat(groupService.saveOrUpdate(first), is(first));
+		assertThat(groupService.save(first), is(first));
 		// When
-		verify(groupService).saveOrUpdate(first);
+		verify(groupService).save(first);
 	}
 	
 	@Test

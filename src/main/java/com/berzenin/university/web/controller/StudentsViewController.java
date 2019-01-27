@@ -23,60 +23,54 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping(value = "/students")
 public class StudentsViewController extends GenericViewControllerImpl<Student, StudentService> {
-	
-//	private final StudentService studentService;
-	
-	public 	StudentsViewController(StudentService service) {
+
+	public StudentsViewController(StudentService service) {
 		page = "student";
 	}
-	
+
 	private String message = "Something wrong";
 	private List<Student> students;
-	
-	
+
 	@ModelAttribute("studentFor")
-	public Student getLoginForm () {
+	public Student getLoginForm() {
 		return new Student();
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public String getAllStudents(@PathVariable("id") Long id, Model model) {
 		try {
 			message = "All students from group";
 			setModelAttribute(id, model);
-			return "students";		
+			return page;
 		} catch (RuntimeException e) {
 			this.setModelAttributeWhenthrowException(e, model, id);
 			return page;
 		}
 	}
-	
+
 	@RequestMapping(value = "/create/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public String createStudent(
-			@PathVariable("id") Long id, 
-			@ModelAttribute("student") @Valid Student student,
-			BindingResult result, 
-			Model model) {
+	public String createStudent(@PathVariable("id") Long id, @ModelAttribute("student") @Valid Student student,
+			BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			message = "Something wrong with new students name or surename";
 			setModelAttribute(id, model);
-			return "students";
+			return page;
 		}
 		try {
 			service.addStudent(student, id);
 			message = "New student created";
 			setModelAttribute(id, model);
-			return "students";
+			return page;
 		} catch (RuntimeException e) {
 			this.setModelAttributeWhenthrowException(e, model, id);
-			return "students";
+			return page;
 		}
 	}
-	
+
 	@Override
-	@RequestMapping(value="/delete/{id}")
+	@RequestMapping(value = "/delete/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public String deleteEntity(@PathVariable("id") Long id, Model model) {
 		try {
@@ -88,41 +82,39 @@ public class StudentsViewController extends GenericViewControllerImpl<Student, S
 		} catch (RuntimeException e) {
 			this.setModelAttributeWhenthrowException(e, model, id);
 			return page;
-		}	
-	}	
+		}
+	}
 
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public String updateStudentNew (
-			@PathVariable("id") Long id, 
-			@ModelAttribute("studentFor") @Valid Student student,
-			BindingResult result, 
-			Model model) {if (result.hasErrors()) {
-				message = "Something wrong with students name, surename or groups name";
-				setModelAttribute(id, model);
-				return page;
-			}
-			try {
-				service.updateStudent(student);
-				message = "Student was successful update";
-				setModelAttribute(id, model);
-				return "students";
-			} catch (RuntimeException e) {
-				this.setModelAttributeWhenthrowException(e, model, id);
-				return page;
-			}
+	public String updateStudentNew(@PathVariable("id") Long id, @ModelAttribute("studentFor") @Valid Student student,
+			BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			message = "Something wrong with students name, surename or groups name";
+			setModelAttribute(id, model);
+			return page;
+		}
+		try {
+			service.updateStudent(student);
+			message = "Student was successful update";
+			setModelAttribute(id, model);
+			return page;
+		} catch (RuntimeException e) {
+			this.setModelAttributeWhenthrowException(e, model, id);
+			return page;
+		}
 	}
-	
+
 	private Model setModelAttribute(Long id, Model model) {
 		students = service.findAll(id);
 		model.addAttribute("message", message);
 		model.addAttribute("group_id", id);
 		return model.addAttribute("studentsList", students);
 	}
-	
-	protected void setModelAttributeWhenthrowException (RuntimeException e, Model model, long id) {
-		log.error("Error "+e);
-		message = "Error "+e;
+
+	protected void setModelAttributeWhenthrowException(RuntimeException e, Model model, long id) {
+		log.error("Error " + e);
+		message = "Error " + e;
 		students = service.findAll(id);
 		setModelAttribute(id, model);
 	}

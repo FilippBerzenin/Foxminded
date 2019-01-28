@@ -19,7 +19,7 @@ public class StudentController extends GenericControllerImpl<Student, StudentSer
 	public StudentController(StudentService service) {
 		super(service);
 	}
-	
+
 	@PutMapping(
 			value = "/{id}",
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 

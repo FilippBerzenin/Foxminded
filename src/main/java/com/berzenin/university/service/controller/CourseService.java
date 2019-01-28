@@ -16,5 +16,4 @@ public class CourseService extends GenericServiceImpl<Course, CourseRepository> 
 	public Course ifCoursePresentByName(String name) {
 		return repository.findBySubjectContaining(name).orElseThrow(NotFoundException::new);
 	}
-
 }

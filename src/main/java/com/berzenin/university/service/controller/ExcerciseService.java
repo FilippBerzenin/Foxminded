@@ -12,9 +12,6 @@ import com.berzenin.university.model.university.Exercise;
 import com.berzenin.university.model.university.TimetableRequest;
 import com.berzenin.university.web.exception.NotFoundException;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class ExcerciseService extends GenericServiceImpl<Exercise, ExcerciseRepository> {
 	

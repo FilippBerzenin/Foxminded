@@ -2,14 +2,19 @@ package com.berzenin.university.service.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.berzenin.university.dao.GroupRepository;
+import com.berzenin.university.model.university.Course;
 import com.berzenin.university.model.university.Group;
 import com.berzenin.university.web.exception.NotFoundException;
 
 @Service
 public class GroupService extends GenericServiceImpl<Group, GroupRepository> {
+	
+	@Autowired
+	private CourseService courseService;
 
 	public GroupService(GroupRepository repository) {
 		super(repository);
@@ -31,5 +36,29 @@ public class GroupService extends GenericServiceImpl<Group, GroupRepository> {
 		Group group = this.findById(id);
 		group.setName(newGroupName);
 		return this.update(group);
+	}
+	
+	public Group addNewCourseForTeacher(Long groupId, Course course) {
+		try {
+			Course courseForAdd = courseService.ifCoursePresentByName(course.getSubject());
+			Group group = repository.findById(groupId).orElseThrow(NotFoundException::new);
+			group.getCourses().add(courseForAdd);
+			repository.save(group);
+			return group;
+		} catch (RuntimeException e) {
+			throw new RuntimeException();
+		}
+	}
+	
+	public Group removeCourseFromTeacher(Long groupId, Course course) {
+		try {
+			Course removeCourse = courseService.ifCoursePresentByName(course.getSubject());
+			Group group = repository.findById(groupId).orElseThrow(NotFoundException::new);
+			group.getCourses().remove(removeCourse);
+			repository.save(group);
+			return group;
+		} catch (RuntimeException e) {
+			throw new RuntimeException();
+		}
 	}
 }

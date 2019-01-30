@@ -2,6 +2,7 @@ package com.berzenin.university.model.persons;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.OnDelete;
@@ -42,8 +43,10 @@ public class Student extends Person {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "groups_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Group group;	
+	@JoinTable(name = "group_student", 
+			joinColumns = { @JoinColumn(name = "student_id") }, 
+			inverseJoinColumns = {@JoinColumn(name = "group_id") })
+	private Group group;
 
 }

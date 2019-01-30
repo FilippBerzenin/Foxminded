@@ -39,8 +39,8 @@ public class StudentRestEndpointIntegrationTest extends RestIntegrationTest {
 	public void testGetAllGroups () throws Exception {
 		// Given
 		when(groupService.findAll()).thenReturn(Arrays.asList(
-				new Group(1, "test", null),
-				new Group(2, "second", null)));
+				new Group(1, "test", null, null),
+				new Group(2, "second", null, null)));
 		// Then
 		subject.perform(get("/api/groups"))
 		.andDo(print())

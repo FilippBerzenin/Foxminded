@@ -47,7 +47,7 @@ public class TeacherViewController extends GenericViewControllerImpl<Teacher, Te
 			return page;
 		}
 		try {
-			service.addNewCourseForTeacher(teacherId, course);;
+			service.addNewCourseForTeacher(teacherId, course);
 			message = "Course was successful added";
 			entites = service.findAll();
 			setModelAttribute(model);

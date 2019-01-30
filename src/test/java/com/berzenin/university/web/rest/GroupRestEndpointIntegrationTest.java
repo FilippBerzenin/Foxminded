@@ -16,6 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,8 +41,8 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 	public void testGetAllGroups () throws Exception {
 		// Given
 		when(groupService.findAll()).thenReturn(Arrays.asList(
-				new Group(1, "test", null),
-				new Group(2, "second", null)));
+				new Group(1, "test", null, null),
+				new Group(2, "second", null, null)));
 		// Then
 		subject.perform(get("/api/groups"))
 		.andDo(print())
@@ -60,7 +62,7 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 	public void testAddNewGroup() throws Exception {
 		// Given
 		Group group = new Group("first"); 
-		when(groupService.save(any())).thenReturn(new Group(2, "first", null));
+		when(groupService.save(any())).thenReturn(new Group(2, "first", null, null));
 		// Then
 		subject.perform(post("/api/groups")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -71,7 +73,7 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 				.andExpect(jsonPath("$.id").value(2))
 				.andExpect(jsonPath("$.name").value("first"));
 		// When
-		verify(groupService).save(new Group(0, "first", null));
+		verify(groupService).save(new Group(0, "first", null, null));
 	}
 	
 	@Test
@@ -108,8 +110,8 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 	public void testUpdateGroup() throws Exception {
 		// Given
 		Long id = 1L;
-		Group groupForUpdate = new Group(id, "First", null);
-		Group groupWithOldParam = new Group(id, "Fir", null);
+		Group groupForUpdate = new Group(id, "First", null, null);
+		Group groupWithOldParam = new Group(id, "Fir", null, null);
 		when(groupService.findById(id)).thenReturn(groupWithOldParam);
 		when(groupService.update(any())).thenReturn(groupForUpdate);
 		// Then
@@ -123,16 +125,17 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 				.andReturn();
 		// When
 		verify(groupService).findById(id);
-		verify(groupService).update(new Group(id, "First", null));
+		verify(groupService).update(new Group(id, "First", null, null));
 	}
 	
 	@Test
 	public void testGetAllStudentsFromGroup () throws Exception {
+		
+		Set<Student> students = new HashSet<>();
+		students.add(new Student(1, "Alex", "Ro", new Group(1L, "test", null, null)));
+		students.add(new Student(2, "Mary", "Bo", new Group(1L, "test", null, null)));
 		// Given
-		when(groupService.findById(1L)).thenReturn(new Group(1L, "test", 
-				Arrays.asList(new Student(1, "Alex", "Ro", new Group(1L, "test", null)), 
-							  new Student(2, "Mary", "Bo", new Group(1L, "test", null)))
-				));
+		when(groupService.findById(1L)).thenReturn(new Group(1L, "test", students, null));
 		// Then
 		subject.perform(get("/api/groups/"+1L+"/students"))
 			.andDo(print())
@@ -154,7 +157,7 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 	public void testDeleteGroupsById() throws Exception {
 		// Given
 		Long id = 1L;
-		Group groupsForDelete = new Group(id, "test", null);
+		Group groupsForDelete = new Group(id, "test", null, null);
 		when(groupService.findById(id)).thenReturn(groupsForDelete);
 		// Then
 		subject.perform(delete("/api/groups/" + id)

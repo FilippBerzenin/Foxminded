@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix='form' uri='http://www.springframework.org/tags/form' %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <!DOCTYPE html "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -46,6 +47,9 @@
 					<th>Delete</th>
 					<th>Update</th>
 					<th>Students page</th>
+					<th>Courses list</th>
+					<th>Add new course</th>
+					<th>Remove course</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -72,6 +76,52 @@
 							</div>
 						</td>
 						<td><a href="${prefix}/students/${group.id}">Students page</a></td>
+						<td>
+							<c:forEach var="courseFromList" items="${group.courses}">
+								<c:out value="${courseFromList.subject}" />
+							</c:forEach>
+						<td>
+							<button type="button" class="btn btn-primary dropdown-toggle"
+								data-toggle="dropdown">Add new course</button>
+							<div class="dropdown-menu container form-group">
+								<form:form class="form-inline" method="POST"
+									action="/groups/addCourse/${group.id}"
+									modelAttribute="course">
+									<div class="form-group">
+										<table>
+											<tr>
+												<td><form:label path="subject">Add course</form:label></td>
+												<td><form:input path="subject" /></td>
+											</tr>
+											<tr>
+												<td><input type="submit" value="Add course" /></td>
+											</tr>
+										</table>
+									</div>
+								</form:form>
+							</div>
+						</td>
+						<td>
+							<button type="button" class="btn btn-primary dropdown-toggle"
+								data-toggle="dropdown">Remove course</button>
+							<div class="dropdown-menu container form-group">
+								<form:form class="form-inline" method="POST"
+									action="/groups/removeCourse/${group.id}"
+									modelAttribute="course">
+									<div class="form-group">
+										<table>
+											<tr>
+												<td><form:label path="subject">Remove course</form:label></td>
+												<td><form:input path="subject" /></td>
+											</tr>
+											<tr>
+												<td><input type="submit" value="Remove course" /></td>
+											</tr>
+										</table>
+									</div>
+								</form:form>
+							</div>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>

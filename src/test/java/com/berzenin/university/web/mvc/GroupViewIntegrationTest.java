@@ -105,7 +105,7 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 	public void deleteById() throws Exception {
 		// Given
 		Long id = 1L;
-		Group groupsForDelete = new Group(id, "test", null);
+		Group groupsForDelete = new Group(id, "test", null, null);
 		when(groupService.findById(id)).thenReturn(groupsForDelete);
 		// Then
 		subject.perform(get("/groups/delete/{id}", id))
@@ -121,8 +121,8 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 		// Given
 		Long id = 1L;
 		String newName = "First";
-		Group groupForUpdate = new Group(id, "First", null);
-		Group groupWithOldParam = new Group(id, "Fir", null);
+		Group groupForUpdate = new Group(id, "First", null, null);
+		Group groupWithOldParam = new Group(id, "Fir", null, null);
 		when(groupService.findById(id)).thenReturn(groupWithOldParam);
 		when(groupService.update(groupForUpdate)).thenReturn(groupForUpdate);
 		when(groupService.findAll()).thenReturn(Arrays.asList(groupForUpdate));

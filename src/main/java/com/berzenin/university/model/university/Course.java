@@ -1,6 +1,5 @@
 package com.berzenin.university.model.university;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -34,7 +33,10 @@ public class Course {
 	private String subject;
 	
 	@ManyToMany(mappedBy = "courses")
-	private List<Exercise> exercises;
+	private Set<Exercise> exercises;
+	
+	@ManyToMany(mappedBy = "courses")
+	private Set<Group> groups;
 	
 	@ManyToMany(mappedBy = "courses")
 	private Set<Teacher> teacher;

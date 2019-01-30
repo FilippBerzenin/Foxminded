@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "courses")
+@EqualsAndHashCode(callSuper = true,exclude = "courses")
 public class Teacher extends Person {
 
 	@ManyToMany

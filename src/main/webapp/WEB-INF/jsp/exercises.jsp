@@ -27,7 +27,7 @@
 							<td><font color="red"><form:errors path="name" /></font></td>
 							<td><form:input class="form-control" type="text" path="name" placeholder="${page} name"/></td>
 							<td><font color="red"><form:errors path="date" /></font></td>
-							<td><form:input class="form-control" type="date" path="date" placeholder="dd-mm-yyyy"/></td>
+							<td><form:input class="form-control" type="date" path="timeBegin" placeholder="dd-mm-yyyy"/></td>
 							<td><font color="red"><form:errors path="timeBegin" /></font></td>
 							<td><form:input class="form-control" type="time" path="timeBegin" placeholder="Time start (HH-mm)"/></td>
 							<td><font color="red"><form:errors path="timeFinish" /></font></td>

@@ -1,6 +1,6 @@
 package com.berzenin.university.web.restсontroller;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,7 +28,7 @@ public class GroupController extends GenericControllerImpl<Group, GroupService> 
 			value = "/{id}/students",
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public List<Student> students(@PathVariable("id") long groupId){
+	public Set<Student> students(@PathVariable("id") long groupId){
     	return getEntityById(groupId).getStudents();
 	}
 	

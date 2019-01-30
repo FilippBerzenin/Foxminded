@@ -1,21 +1,25 @@
 package com.berzenin.university.model.university;
 
-import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.berzenin.university.model.persons.Student;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
@@ -25,10 +29,8 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name= "groups")
-@EqualsAndHashCode(exclude = "students")
-public class Group implements Serializable {
+public class Group {
 
-	private static final long serialVersionUID = -11555498733151025L;
 
 	@Id
 	@GeneratedValue
@@ -38,8 +40,16 @@ public class Group implements Serializable {
 	@Size(min=1, max=150)
 	private String name;
 
-	@OneToMany
-	private List<Student> students;
+	@OneToMany(mappedBy = "group")
+	private Set<Student> students;
+	
+	@ManyToMany
+	@JoinTable(
+			name = "group_course", 
+			joinColumns = { @JoinColumn(name = "group_id") }, 
+			inverseJoinColumns = {@JoinColumn(name = "course_id") })
+		@OnDelete(action = OnDeleteAction.CASCADE)
+	private Set<Course> courses;
 
 	public Group(long id, String name) {
 		this.id = id;
@@ -48,5 +58,12 @@ public class Group implements Serializable {
 	
 	public Group(String name) {
 		this.name = name;
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return "Group [id=" + id + ", name=" + name + "]";
+	}
+	
+	
 }

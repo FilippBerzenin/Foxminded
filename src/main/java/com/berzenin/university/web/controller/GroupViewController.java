@@ -6,12 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.berzenin.university.model.university.Course;
 import com.berzenin.university.model.university.Group;
 import com.berzenin.university.service.controller.GroupService;
 import com.berzenin.university.web.exception.NotFoundException;
@@ -25,6 +27,11 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
 	
 	public 	GroupViewController(GroupService service) {
 		page = "groups";
+	}
+	
+	@ModelAttribute("course")
+	public Course getCourseForm () {
+		return new Course();
 	}
 
 	@RequestMapping(value="/search", method=RequestMethod.POST)
@@ -89,5 +96,53 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
 	public String update(@Valid Group entity, BindingResult result, Model model) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@RequestMapping(value = "/addCourse/{id}", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public String addNewCourseForTeacher(
+			@PathVariable("id") Long teacherId,
+			@Valid @ModelAttribute("course") Course course, 
+			BindingResult result,
+			Model model) {
+		if (result.hasErrors()) {
+			message = "Error";
+			setModelAttribute(model);
+			return page;
+		}
+		try {
+			service.addNewCourseForTeacher(teacherId, course);
+			message = "Course was successful added";
+			entites = service.findAll();
+			setModelAttribute(model);
+			return page;
+		} catch (RuntimeException e) {
+			this.setModelAttributeWhenthrowException(e, model);
+			return page;
+		}
+	}
+	
+	@RequestMapping(value = "/removeCourse/{id}", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public String removeCourseFromTeacher(
+			@PathVariable("id") Long teacherId,
+			@Valid @ModelAttribute("course") Course course, 
+			BindingResult result,
+			Model model) {
+		if (result.hasErrors()) {
+			message = "Error";
+			setModelAttribute(model);
+			return page;
+		}
+		try {
+			service.removeCourseFromTeacher(teacherId, course);;
+			message = "Course was successful remove";
+			entites = service.findAll();
+			setModelAttribute(model);
+			return page;
+		} catch (RuntimeException e) {
+			this.setModelAttributeWhenthrowException(e, model);
+			return page;
+		}
 	}
 }

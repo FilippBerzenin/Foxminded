@@ -15,6 +15,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TimetableRequest extends Person {
 	
+	
+	
+	public TimetableRequest(Long id, String name, String surename, LocalDate dateStartSearch, LocalDate dateFinishSearch) {
+		super(id, name, surename);
+		this.dateStartSearch = dateStartSearch;
+		this.dateFinishSearch = dateFinishSearch;
+	}
+
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private LocalDate dateStartSearch;
 	

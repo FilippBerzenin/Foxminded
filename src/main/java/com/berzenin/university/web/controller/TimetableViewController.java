@@ -13,16 +13,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.berzenin.university.model.university.Exercise;
 import com.berzenin.university.model.university.TimetableRequest;
-import com.berzenin.university.service.controller.ExcerciseService;
+import com.berzenin.university.service.controller.TimetableService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Controller
 @RequestMapping(value="/timetable")
-public class TimetableViewController extends GenericViewControllerImpl<Exercise, ExcerciseService> {
+public class TimetableViewController extends GenericViewControllerImpl<Exercise, TimetableService> {
 	
-	public 	TimetableViewController(ExcerciseService service) {
+	public 	TimetableViewController(TimetableService service) {
 		page = "timetable";
 	}
 	
@@ -37,19 +34,39 @@ public class TimetableViewController extends GenericViewControllerImpl<Exercise,
 		return page;		
 	}
 
-	@RequestMapping(value = "/createRequest/", method = RequestMethod.POST)
+	@RequestMapping(value = "/createRequest/student", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public String createRequest (
+	public String createRequestForStudent (
 	@ModelAttribute("entityFor") @Valid TimetableRequest entity,
 	BindingResult result, 
 	Model model) {
-		log.info("------------------------------"+entity.toString()+" name: "+entity.getName()+" surename: "+entity.getSurename());
 		if (result.hasErrors()) {
 			message = "Error";
 			setModelAttribute(model);
 			return page;
 		} try {
 			entites = service.findAllExercisesBetweenDatesForStudent(entity);
+			message = "Search was finded";
+			setModelAttribute(model);
+			return page;
+		} catch (RuntimeException e) {
+			this.setModelAttributeWhenthrowException(e, model);
+			return page;
+		}		
+	}
+	
+	@RequestMapping(value = "/createRequest/teacher", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
+	public String createRequestForteacher (
+	@ModelAttribute("entityFor") @Valid TimetableRequest entity,
+	BindingResult result, 
+	Model model) {
+		if (result.hasErrors()) {
+			message = "Error";
+			setModelAttribute(model);
+			return page;
+		} try {
+			entites = service.findAllExercisesBetweenDatesForTeacher(entity);
 			message = "Search was finded";
 			setModelAttribute(model);
 			return page;

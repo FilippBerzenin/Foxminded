@@ -24,7 +24,7 @@ public class GroupService extends GenericServiceImpl<Group, GroupRepository> {
 		if (repository.findByName(newGroupsName).isPresent()) {
 			throw new NotFoundException();
 		}
-			this.save(Group.builder().name(newGroupsName).build());
+			this.update(Group.builder().name(newGroupsName).build());
 			return true;
 	}
 	

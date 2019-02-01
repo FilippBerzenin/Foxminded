@@ -62,7 +62,7 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 	public void testAddNewGroup() throws Exception {
 		// Given
 		Group group = new Group("first"); 
-		when(groupService.save(any())).thenReturn(new Group(2, "first", null, null));
+		when(groupService.add(any())).thenReturn(new Group(2, "first", null, null));
 		// Then
 		subject.perform(post("/api/groups")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -73,7 +73,7 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 				.andExpect(jsonPath("$.id").value(2))
 				.andExpect(jsonPath("$.name").value("first"));
 		// When
-		verify(groupService).save(new Group(0, "first", null, null));
+		verify(groupService).add(new Group(0, "first", null, null));
 	}
 	
 	@Test
@@ -143,12 +143,13 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 			.andExpect(jsonPath("$").isArray())
 			.andExpect(jsonPath("$", hasSize(2)))
-			.andExpect(jsonPath("$[0].id").value(1))
-			.andExpect(jsonPath("$[0].name").value("Alex"))
-			.andExpect(jsonPath("$[0].surename").value("Ro"))
-			.andExpect(jsonPath("$[1].id").value(2))
-			.andExpect(jsonPath("$[1].name").value("Mary"))
-			.andExpect(jsonPath("$[1].surename").value("Bo"));
+			.andExpect(jsonPath("$[1].id").value(1))
+			.andExpect(jsonPath("$[1].name").value("Alex"))
+			.andExpect(jsonPath("$[1].surename").value("Ro"))
+			.andExpect(jsonPath("$[0].id").value(2))
+			.andExpect(jsonPath("$[0].name").value("Mary"))
+			.andExpect(jsonPath("$[0].surename").value("Bo"))
+			;
 		// When
 		verify(groupService).findById(1L);
 	}
@@ -163,7 +164,7 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 		subject.perform(delete("/api/groups/" + id)
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andDo(print())
-				.andExpect(status().isNoContent());
+				.andExpect(status().isOk());
 		// When
 		verify(groupService).findById(id);
 	}

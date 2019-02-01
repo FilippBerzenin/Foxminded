@@ -7,15 +7,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.berzenin.university.dao.CourseRepository;
-import com.berzenin.university.dao.ExcerciseRepository;
+import com.berzenin.university.dao.ExerciseRepository;
 import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.dao.StudentRepository;
 import com.berzenin.university.dao.TeacherRepository;
 import com.berzenin.university.service.controller.CourseService;
-import com.berzenin.university.service.controller.ExcerciseService;
+import com.berzenin.university.service.controller.ExerciseService;
 import com.berzenin.university.service.controller.GroupService;
 import com.berzenin.university.service.controller.StudentService;
 import com.berzenin.university.service.controller.TeacherService;
+import com.berzenin.university.service.controller.TimetableService;
 
 @SpringBootTest(classes = UniversityWebServiceTestApplication.class)
 @AutoConfigureMockMvc
@@ -41,12 +42,15 @@ public class IntegrationTest {
 	
 	
 	@MockBean
-	protected ExcerciseRepository excerciseRepository;
+	protected ExerciseRepository exerciseRepository;
 	@MockBean
-	protected ExcerciseService excerciseService;
+	protected ExerciseService exerciseService;
 	
 	@MockBean
 	protected TeacherRepository teacherRepository;	
 	@MockBean
 	protected TeacherService teacherService;
+	
+	@MockBean
+	protected TimetableService timetableService;
 }

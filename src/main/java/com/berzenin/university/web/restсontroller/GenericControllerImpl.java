@@ -23,8 +23,13 @@ public abstract class GenericControllerImpl<E, S extends GenericService<E>> impl
 	}	
 
 	@Override
-	public E addOrUpdate(@RequestBody E entity) {
-		return service.save(entity);
+	public E add(@RequestBody E entity) {
+		return service.add(entity);
+	}
+	
+	@Override
+	public E update(@RequestBody E entity) {
+		return service.update(entity);
 	}
 
 	@Override
@@ -37,5 +42,10 @@ public abstract class GenericControllerImpl<E, S extends GenericService<E>> impl
 		E entity = service.findById(id);
 		service.remove(entity);
 		return entity;
+	}
+	
+	@Override
+	public void delete (@RequestBody E entity) {
+		service.remove(entity);
 	}
 }

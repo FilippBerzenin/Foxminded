@@ -62,7 +62,7 @@ public abstract class GenericViewControllerImpl<E, S extends GenericService<E>> 
 				return page;
 			}
 			try {
-				service.save(entity);
+				service.add(entity);
 				message = "Entity was successful save";
 				entites = service.findAll();
 				setModelAttribute(model);

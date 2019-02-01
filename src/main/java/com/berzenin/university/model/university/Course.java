@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "teacher")
+@EqualsAndHashCode(of = {"id", "subject"})
 public class Course {
 	
 	@Id

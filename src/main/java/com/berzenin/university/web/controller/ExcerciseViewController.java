@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.berzenin.university.model.university.Course;
 import com.berzenin.university.model.university.Exercise;
-import com.berzenin.university.service.controller.ExcerciseService;
+import com.berzenin.university.service.controller.ExerciseService;
 
 @Controller
 @RequestMapping(value="/exercises")
-public class ExcerciseViewController extends GenericViewControllerImpl<Exercise, ExcerciseService> {
+public class ExcerciseViewController extends GenericViewControllerImpl<Exercise, ExerciseService> {
 
-	public 	ExcerciseViewController(ExcerciseService service) {
+	public 	ExcerciseViewController(ExerciseService service) {
 		page = "exercises";
 	}
 	
@@ -46,7 +46,7 @@ public class ExcerciseViewController extends GenericViewControllerImpl<Exercise,
 //				return page;
 //			}
 			try {
-				service.save(entity);
+				service.add(entity);
 				message = "Entity was successful save";
 				entites = service.findAll();
 				setModelAttribute(model);
@@ -93,7 +93,7 @@ public class ExcerciseViewController extends GenericViewControllerImpl<Exercise,
 			return page;
 		}
 		try {
-			service.addNewCourseForTeacher(exerciseId, course);;
+			service.addNewCourseForExercise(exerciseId, course);;
 			message = "Course was successful added";
 			entites = service.findAll();
 			setModelAttribute(model);
@@ -117,7 +117,7 @@ public class ExcerciseViewController extends GenericViewControllerImpl<Exercise,
 			return page;
 		}
 		try {
-			service.removeCourseFromTeacher(exerciseId, course);;
+			service.removeCourseFromExercise(exerciseId, course);;
 			message = "Course was successful remove";
 			entites = service.findAll();
 			setModelAttribute(model);

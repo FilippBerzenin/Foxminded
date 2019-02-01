@@ -86,7 +86,7 @@ public class StudentRestEndpointIntegrationTest extends RestIntegrationTest {
 		// Given
 		Student studentAdd = new Student(2, "Some", "Name");
 //		Group group = new Group("first"); 
-		when(studentService.save(any())).thenReturn(studentAdd);
+		when(studentService.add(any())).thenReturn(studentAdd);
 		// Then
 		subject.perform(post("/api/students")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -98,7 +98,7 @@ public class StudentRestEndpointIntegrationTest extends RestIntegrationTest {
 				.andExpect(jsonPath("$.name").value("Some"))
 				.andExpect(jsonPath("$.surename").value("Name"));
 		// When
-		verify(studentService).save(studentAdd);
+		verify(studentService).add(studentAdd);
 	}
 	
 	@Test
@@ -165,7 +165,7 @@ public class StudentRestEndpointIntegrationTest extends RestIntegrationTest {
 		// Then
 		subject.perform(delete("/api/students/" + id)
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)).andDo(print())
-				.andExpect(status().isNoContent());
+				.andExpect(status().isOk());
 		// When
 		verify(studentService).findById(id);
 	}

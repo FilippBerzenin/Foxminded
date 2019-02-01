@@ -18,15 +18,25 @@ public interface GenericController <E> {
 	@ResponseStatus(HttpStatus.OK)
 	public E getEntityById(@PathVariable("id") long id);
 
+	@PutMapping(
+			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
+			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseStatus(HttpStatus.CREATED)
+	public E update(@RequestBody E entity);
+
+	@DeleteMapping
+	@ResponseStatus(HttpStatus.OK)
+	public void delete (@RequestBody E entity);
+	
+	@DeleteMapping(value = "/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public E delete (@PathVariable("id") long id);
+	
 	@PostMapping(
 			consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public E addOrUpdate(@RequestBody E entity);
-
-	@DeleteMapping(value = "/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public E delete (@PathVariable("id") long id);
+	public E add(@RequestBody E entity);
 
 
 }

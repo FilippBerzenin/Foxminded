@@ -17,11 +17,6 @@ public abstract class GenericServiceImpl<E, R extends CrudRepository<E, Long>> i
     public GenericServiceImpl(R repository) {
         this.repository = repository;
     }
-
-	@Override
-	public E save(E entity) {
-		return repository.save(entity);
-	}
 	
 	@Override
 	public E update(E entity) {

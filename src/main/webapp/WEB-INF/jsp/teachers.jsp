@@ -60,9 +60,10 @@
 						<td>${entity.name}</td>
 						<td>${entity.surename}</td>
 						<td>
-							<c:forEach var="courseFromList" items="${entity.courses}">
-								<c:out value="${courseFromList.subject}" />
+							<c:forEach var="course" items="${entity.courses}">
+								<c:out value="${course.subject}" />
 							</c:forEach>
+						</td>
 						<td>
 							<button type="button" class="btn btn-primary dropdown-toggle"
 								data-toggle="dropdown">Add new course</button>
@@ -106,7 +107,8 @@
 							</div>
 						</td>
 						<td><a href="${prefix}/teachers/delete/${entity.id}"
-							onclick="return confirm('Are you sure?')">Delete</a></td>
+							onclick="return confirm('Are you sure?')">Delete</a>
+						</td>
 						<td>
 							<button type="button" class="btn btn-primary dropdown-toggle"
 								data-toggle="dropdown">Update</button>

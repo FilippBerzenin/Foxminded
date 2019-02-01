@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 public interface GenericService<E> {
-	public E save(@Valid E entity);
 
 	public List<E> findAll();
 

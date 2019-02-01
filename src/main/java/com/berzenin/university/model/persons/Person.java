@@ -10,12 +10,14 @@ import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
+@EqualsAndHashCode
 public abstract class Person {
 
 	@Id

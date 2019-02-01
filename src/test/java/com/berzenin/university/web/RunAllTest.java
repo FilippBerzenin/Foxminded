@@ -10,6 +10,7 @@ import com.berzenin.university.web.mvc.IndexIntegrationTest;
 import com.berzenin.university.web.mvc.StudentViewIntegratinTest;
 import com.berzenin.university.web.rest.GroupRestEndpointIntegrationTest;
 import com.berzenin.university.web.rest.StudentRestEndpointIntegrationTest;
+import com.berzenin.university.web.rest.TeacherRestEndPointIntegrationTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
@@ -19,7 +20,8 @@ import com.berzenin.university.web.rest.StudentRestEndpointIntegrationTest;
 		IndexIntegrationTest.class, 
 		StudentViewIntegratinTest.class, 
 		GroupRestEndpointIntegrationTest.class,
-		StudentRestEndpointIntegrationTest.class
+		StudentRestEndpointIntegrationTest.class,
+		TeacherRestEndPointIntegrationTest.class
 		})
 public class RunAllTest {
 

@@ -1,24 +1,20 @@
 package com.berzenin.university.service.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.berzenin.university.dao.ExcerciseRepository;
-import com.berzenin.university.dao.StudentRepository;
+import com.berzenin.university.dao.ExerciseRepository;
 import com.berzenin.university.model.university.Course;
 import com.berzenin.university.model.university.Exercise;
-import com.berzenin.university.model.university.TimetableRequest;
 import com.berzenin.university.web.exception.NotFoundException;
 
 @Service
-public class ExcerciseService extends GenericServiceImpl<Exercise, ExcerciseRepository> {
+public class ExerciseService extends GenericServiceImpl<Exercise, ExerciseRepository> {
 	
 	@Autowired
 	private CourseService courseService;
 
-	public ExcerciseService(ExcerciseRepository repository) {
+	public ExerciseService(ExerciseRepository repository) {
 		super(repository);
 	}
 	
@@ -39,7 +35,7 @@ public class ExcerciseService extends GenericServiceImpl<Exercise, ExcerciseRepo
 		return repository.save(entityForUpdate);
 	}
 	
-	public Exercise addNewCourseForTeacher(Long exerciseId, Course course) {
+	public Exercise addNewCourseForExercise(Long exerciseId, Course course) {
 		try {
 			Course courseForAdd = courseService.ifCoursePresentByName(course.getSubject());
 			Exercise exercise = repository.findById(exerciseId).orElseThrow(NotFoundException::new);
@@ -51,7 +47,7 @@ public class ExcerciseService extends GenericServiceImpl<Exercise, ExcerciseRepo
 		}
 	}
 	
-	public Exercise removeCourseFromTeacher(Long exerciseId, Course course) {
+	public Exercise removeCourseFromExercise(Long exerciseId, Course course) {
 		try {
 			Course removeCourse = courseService.ifCoursePresentByName(course.getSubject());
 			Exercise exercise = repository.findById(exerciseId).orElseThrow(NotFoundException::new);
@@ -61,15 +57,5 @@ public class ExcerciseService extends GenericServiceImpl<Exercise, ExcerciseRepo
 		} catch (RuntimeException e) {
 			throw new RuntimeException();
 		}
-	}
-	
-	@Autowired
-	private StudentRepository studentRepository;
-	
-	public List<Exercise> findAllExercisesBetweenDatesForStudent (TimetableRequest student) {
-		return repository.findByCourses_Groups_Students_IdAndDateBetween(
-				studentRepository.findByNameAndSurename(student.getName(), student.getSurename()).get().getId(),
-				student.getDateStartSearch(),
-				student.getDateFinishSearch());
 	}
 }

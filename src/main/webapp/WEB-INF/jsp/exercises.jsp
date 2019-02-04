@@ -27,7 +27,7 @@
 							<td><font color="red"><form:errors path="name" /></font></td>
 							<td><form:input class="form-control" type="text" path="name" placeholder="${page} name"/></td>
 							<td><font color="red"><form:errors path="date" /></font></td>
-							<td><form:input class="form-control" type="date" path="timeBegin" placeholder="dd-mm-yyyy"/></td>
+							<td><form:input class="form-control" type="date" path="date" placeholder="dd-mm-yyyy"/></td>
 							<td><font color="red"><form:errors path="timeBegin" /></font></td>
 							<td><form:input class="form-control" type="time" path="timeBegin" placeholder="Time start (HH-mm)"/></td>
 							<td><font color="red"><form:errors path="timeFinish" /></font></td>
@@ -114,8 +114,10 @@
 								</form:form>
 							</div>
 						</td>
-						<td><a href="${prefix}/${page}/delete/${entity.id}"
-							onclick="return confirm('Are you sure?')">Delete</a></td>
+						<td>
+							<form action="${prefix}/${page}/delete/${entity.id}" method='post'>
+   								<button type="submit" name="delete" value="Delete">Delete</button>
+							</form>
 						<td>
 							<button type="button" class="btn btn-primary dropdown-toggle"
 								data-toggle="dropdown">Update</button>
@@ -137,38 +139,6 @@
 								</form:form>
 							</div>
 						</td>
-						<%-- 						<td>
-							<button type="button" class="btn btn-primary dropdown-toggle"
-								data-toggle="dropdown">Update</button>
-							<div class="dropdown-menu container form-group">
-								<form:form class="form-inline" method="post"
-									action="/${page}/update/" modelAttribute="entityFor">
-										<form:input type="hidden" path="id" value="${entity.id}" />
-										<td><font color="red"><form:errors path="name" /></font></td>
-										<td><form:input class="form-control" type="text"
-												path="name" placeholder="${entity.name}" /></td>
-										<td><font color="red"><form:errors path="date" /></font></td>
-										<td><form:input class="form-control" type="date"
-												path="date" placeholder="${entity.date}" /></td>
-										<td><font color="red"><form:errors
-													path="timeBegin" /></font></td>
-										<td><form:input class="form-control" type="time"
-												path="timeBegin" placeholder="${entity.timeBegin}" /></td>
-										<td><font color="red"><form:errors
-													path="timeFinish" /></font></td>
-										<td><form:input class="form-control" type="time"
-												path="timeFinish" placeholder="${entity.timeFinish}" /></td>
-										<form:input type="hidden" path="id" value="${entity.id}" />
-										<font color="red"><form:errors path="subject" /></font>
-										<form:input class="form-control" path="subject"
-											value="${entity.subject}" />
-										<font color="red"><form:errors path="courses.name" /></font>
-										<form:input class="form-control" path="courses.name"
-											value="${entity.course.name}" />
-										<button class="form-control" type="submit">Update</button>
-								</form:form>
-							</div>
-						</td> --%>
 					</tr>
 				</c:forEach>
 			</tbody>

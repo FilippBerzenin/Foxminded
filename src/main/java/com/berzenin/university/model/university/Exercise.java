@@ -3,6 +3,7 @@ package com.berzenin.university.model.university;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,6 +55,6 @@ public class Exercise {
 		joinColumns = { @JoinColumn(name = "exercise_id") }, 
 		inverseJoinColumns = {@JoinColumn(name = "course_id") })
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<Course> courses;
+	private Set<Course> courses;
 	
 }

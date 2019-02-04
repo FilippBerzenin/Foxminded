@@ -58,8 +58,11 @@
 						<td>${counter.count}</td>
 						<td>${group.id}</td>
 						<td>${group.name}</td>
-						<td><a href="${prefix}/groups/delete/${group.id}"
-							onclick="return confirm('Are you sure?')">Delete</a></td>
+						<td>
+							<form action="${prefix}/${page}/delete/${group.id}"
+								method="post">
+								<button type="submit" name="delete" value="Delete">Delete</button>
+							</form>
 						<td>
 							<button type="button" class="btn btn-primary dropdown-toggle"
 								data-toggle="dropdown">Update</button>

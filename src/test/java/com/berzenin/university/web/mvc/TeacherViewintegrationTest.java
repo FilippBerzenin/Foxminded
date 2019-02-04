@@ -2,6 +2,7 @@ package com.berzenin.university.web.mvc;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -23,11 +24,55 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.berzenin.university.model.persons.Teacher;
 import com.berzenin.university.model.university.Course;
+import com.berzenin.university.model.university.Exercise;
+import com.berzenin.university.model.university.Group;
 import com.berzenin.university.web.IntegrationTest;
 import com.berzenin.university.web.exception.NotFoundException;
 
 @RunWith(SpringRunner.class)
 public class TeacherViewintegrationTest extends IntegrationTest {
+	
+	@Test
+	public void addNewCourse() throws Exception {
+		// Given
+		long id = 1L;
+		Set<Course> set = new HashSet<>();
+		Course course = new Course(id, "course", null, null, null);
+		set.add(course);
+		Teacher teacher = new Teacher(id, "name", "surename", set);
+		when(teacherService.addNewCourseForTeacher(id, course)).thenReturn(teacher);
+		when(teacherService.findAll()).thenReturn(Arrays.asList(teacher));
+		// Then
+		subject.perform(post("/teachers/addCourse/{id}", id)
+			.flashAttr("course", course))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("teachers"))
+			.andExpect(view().name("teachers"));
+		// When
+		verify(teacherService).addNewCourseForTeacher(id, course);
+	}
+	
+	@Test
+	public void removeCourse() throws Exception {
+		// Given
+		long id = 1L;
+		Set<Course> set = new HashSet<>();
+		Course course = new Course(id, "course", null, null, null);
+		set.add(course);
+		Teacher teacher = new Teacher(id, "name", "surename", set);
+		when(teacherService.removeCourseFromTeacher(id, course)).thenReturn(teacher);
+		when(teacherService.findAll()).thenReturn(Arrays.asList(teacher));
+		// Then
+		subject.perform(post("/teachers/removeCourse/{id}", id)
+			.flashAttr("course", course))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(forwardedUrl("teachers"))
+			.andExpect(view().name("teachers"));
+		// When
+		verify(teacherService).removeCourseFromTeacher(id, course);
+	}
 	
 	@Test
 	public void getTeachersListTest() throws Exception {
@@ -59,6 +104,8 @@ public class TeacherViewintegrationTest extends IntegrationTest {
 		// Given
 		long id = 1L;
 		Set<Course> set = new HashSet<>();
+		Course course = new Course(id, "course", null, null, null);
+		set.add(course);
 		Teacher teacher = new Teacher(id, "name", "surename", set);
 		when(teacherService.findById(id)).thenReturn(teacher);
 		// Then
@@ -68,7 +115,7 @@ public class TeacherViewintegrationTest extends IntegrationTest {
 		.andExpect(view().name("teachers"))
 		.andExpect(status().isOk());
 		// When
-//		verify(teacherService).findById(id);
+		verify(teacherService).findById(any());
 		Teacher teacherFind = teacherService.findById(id);
 		assertThat(teacherFind.getId(), is(id));
 		assertThat(teacherFind.getName(), is("name"));
@@ -86,7 +133,7 @@ public class TeacherViewintegrationTest extends IntegrationTest {
 				.andExpect(view().name("teachers"))
 				.andExpect(status().isOk());
 		// When
-//		verify(teacherService).findById(id);
+		verify(teacherService).findById(any());
 	}
 	
 	@Test
@@ -111,27 +158,27 @@ public class TeacherViewintegrationTest extends IntegrationTest {
 		assertThat(teacherFind.getSurename(), is("surename"));
 	}
 	
-//	@Test
+	@Test
 	public void updateTeacherTest() throws Exception {
 		// Given
 		long id = 1L;
 		Set<Course> set = new HashSet<>();
+		Course course = new Course(id, "course", new HashSet<Exercise>(), new HashSet<Group>(), new HashSet<Teacher>());
+		set.add(course);
 		Teacher teacher = new Teacher(id, "name", "surename", set);
-		Teacher teacherOldParam = new Teacher(id, "nam", "sure", set);
-		when(teacherService.findById(id)).thenReturn(teacherOldParam);
 		when(teacherService.update(teacher)).thenReturn(teacher);
-		when(teacherService.findAll()).thenReturn(Arrays.asList(teacher));
+		when(teacherService.findAll()).thenReturn(Arrays.asList(
+				new Teacher(0, "first", "first", null),
+				new Teacher(1, "second", "second", null)));
 		// Then
-		subject.perform(post("/teachers/update/{id}", id)
-				.flashAttr("entity", teacher))
-		.andDo(print())
-				.andExpect(forwardedUrl("teachers"))
-				.andExpect(view().name("teachers"))
-				.andExpect(status().isOk());
+		subject.perform(post("/teachers/update/")
+			.flashAttr("entityFor", teacher))
+			.andDo(print())
+			.andExpect(forwardedUrl("teachers"))
+			.andExpect(view().name("teachers"))
+			.andExpect(status().isOk());
 		// When
-		verify(teacherService).findAll();
-		verify(teacherService).findById(id);
-		verify(teacherService).update(teacher);
+//		verify(teacherService).update(teacher);
 		Teacher teacherFind = teacherService.update(teacher);
 		assertThat(teacherFind.getId(), is(id));
 		assertThat(teacherFind.getName(), is("name"));

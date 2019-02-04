@@ -36,15 +36,15 @@ public class ExcerciseViewController extends GenericViewControllerImpl<Exercise,
 	
 	@Override
 	public String add(
-			@ModelAttribute("entity") @Valid Exercise entity,
+			@ModelAttribute("entity") Exercise entity,
 			BindingResult result, 
 			Model model) {
 		 {
-//			 if (result.hasErrors()) {
-//				message = "Something wrong with parameters";
-//				setModelAttribute(model);
-//				return page;
-//			}
+			 if (result.hasErrors()) {
+				message = "Something wrong with parameters";
+				setModelAttribute(model);
+				return page;
+			}
 			try {
 				service.add(entity);
 				message = "Entity was successful save";
@@ -63,11 +63,11 @@ public class ExcerciseViewController extends GenericViewControllerImpl<Exercise,
 			@ModelAttribute("entity") @Valid Exercise entity,
 			BindingResult result, 
 			Model model) {
-//		if (result.hasErrors()) {
-//			message = "Something wrong with attributes";
-//			setModelAttribute(model);
-//			return page;
-//		}
+		if (result.hasErrors()) {
+			message = "Something wrong with attributes";
+			setModelAttribute(model);
+			return page;
+		}
 		try {
 			service.update(entity);
 			message = "Entity was successful update";

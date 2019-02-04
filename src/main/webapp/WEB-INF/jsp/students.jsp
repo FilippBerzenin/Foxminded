@@ -58,24 +58,31 @@
 						<td>${student.name}</td>
 						<td>${student.surename}</td>
 						<td>${student.group.name}</td>
-						<td><a href="${prefix}/students/delete/${student.id}"
-							onclick="return confirm('Are you sure?')">Delete</a></td>
+						<td>
+							<form action="${prefix}/${page}/delete/${student.id}" method="post">
+								<button type="submit" name="delete" value="Delete">Delete</button>
+							</form>
+						</td>
 						<td>
 							<button type="button" class="btn btn-primary dropdown-toggle"
 								data-toggle="dropdown">Update</button>
 							<div class="dropdown-menu container form-group">
-							
-							<form:form class="form-inline" method="post"
-									action="/students/update/${student.group.id}" modelAttribute="studentFor">
-							<div class="form-group">
-							<form:input type="hidden" path="id" value="${student.id}"/>
-							<font color="red"><form:errors path="name" /></font>
-							<form:input class="form-control" path="name" value="${student.name}"/>
-							<font color="red"><form:errors path="surename" /></font>
-							<form:input class="form-control" path="surename" value="${student.surename}"/>
-							<font color="red"><form:errors path="group.name" /></font>
-							<form:input class="form-control" path="group.name" value="${student.group.name}"/>
-							<button class="form-control" type="submit">Update</button>
+
+								<form:form class="form-inline" method="post"
+									action="/students/update/${student.group.id}"
+									modelAttribute="studentFor">
+									<div class="form-group">
+										<form:input type="hidden" path="id" value="${student.id}" />
+										<font color="red"><form:errors path="name" /></font>
+										<form:input class="form-control" path="name"
+											value="${student.name}" />
+										<font color="red"><form:errors path="surename" /></font>
+										<form:input class="form-control" path="surename"
+											value="${student.surename}" />
+										<font color="red"><form:errors path="group.name" /></font>
+										<form:input class="form-control" path="group.name"
+											value="${student.group.name}" />
+										<button class="form-control" type="submit">Update</button>
 									</div>
 								</form:form>
 							</div>

@@ -91,12 +91,6 @@ public class GroupViewController extends GenericViewControllerImpl<Group, GroupS
 			setModelAttribute(model);
 		}
 	}
-
-	@Override
-	public String update(@Valid Group entity, BindingResult result, Model model) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@RequestMapping(value = "/addCourse/{id}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)

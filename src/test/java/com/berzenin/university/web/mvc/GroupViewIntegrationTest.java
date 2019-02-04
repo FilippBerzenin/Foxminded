@@ -69,7 +69,6 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 			verify(groupService).searchByName(name);
 	}
 	
-//	TODO
 	@Test
 	public void notFindById() throws Exception {
 		// Given
@@ -108,9 +107,9 @@ public class GroupViewIntegrationTest extends IntegrationTest {
 		Group groupsForDelete = new Group(id, "test", null, null);
 		when(groupService.findById(id)).thenReturn(groupsForDelete);
 		// Then
-		subject.perform(get("/groups/delete/{id}", id))
-			.andExpect(view().name("groups"))
+		subject.perform(post("/groups/delete/{id}", id))
 			.andDo(print())
+			.andExpect(view().name("groups"))
 			.andExpect(status().isOk());
 		// When
 		verify(groupService).removeById(id);

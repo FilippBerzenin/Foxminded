@@ -54,6 +54,27 @@ public class StudentViewIntegratinTest extends IntegrationTest  {
 		assertThat(students.get(0).getSurename(), is("first"));
 		assertThat(students.get(1).getSurename(), is("second"));
 	}
+	
+	public void getStudentById() throws Exception {
+		// Given
+		Long id = 1L;
+		Group group = new Group(1L, "Group");
+		Student student = new Student("name", "surename", group);
+		when(studentService.findById(id)).thenReturn(student);
+		// Then
+		subject.perform(get("/students/show/{id}"))
+		.andDo(print())
+		.andExpect(forwardedUrl("students"))
+		.andExpect(view().name("students"))
+		.andExpect(status().isOk());
+		// When
+		verify(studentService).findById(id);
+		Student studentFind = studentService.findById(id);
+		assertThat(studentFind.getId(), is(id));
+		assertThat(studentFind.getName(), is("name"));
+		assertThat(studentFind.getSurename(), is("surename"));
+		assertThat(studentFind.getGroup(), is(group));
+	}
 
 	@Test
 	public void addNewStudentTest() throws Exception {

@@ -23,10 +23,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = "courses")
-public class Teacher extends Person {
-	
-	
+//@EqualsAndHashCode(callSuper = true, exclude = "courses")
+public class Teacher extends Person {	
 
 	public Teacher(long id, String name, String surename, Set<Course> courses) {
 		super(id, name, surename);
@@ -35,7 +33,6 @@ public class Teacher extends Person {
 
 	public Teacher(String name, String surename) {
 		super(name, surename);
-		// TODO Auto-generated constructor stub
 	}
 
 	@ManyToMany
@@ -45,4 +42,26 @@ public class Teacher extends Person {
 		inverseJoinColumns = {@JoinColumn(name = "courses_id") })
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<Course> courses;
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Person other = (Person) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (surename == null) {
+			if (other.surename != null)
+				return false;
+		} else if (!surename.equals(other.surename))
+			return false;
+		return true;
+	}
 }

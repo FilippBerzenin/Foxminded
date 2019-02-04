@@ -8,9 +8,13 @@ import com.berzenin.university.service.controller.StudentServiceTest;
 import com.berzenin.university.web.mvc.GroupViewIntegrationTest;
 import com.berzenin.university.web.mvc.IndexIntegrationTest;
 import com.berzenin.university.web.mvc.StudentViewIntegratinTest;
+import com.berzenin.university.web.mvc.TeacherViewintegrationTest;
+import com.berzenin.university.web.rest.CourseRestEndPointIntegrationTest;
+import com.berzenin.university.web.rest.ExerciseRestEndPointIntegrationTest;
 import com.berzenin.university.web.rest.GroupRestEndpointIntegrationTest;
 import com.berzenin.university.web.rest.StudentRestEndpointIntegrationTest;
 import com.berzenin.university.web.rest.TeacherRestEndPointIntegrationTest;
+import com.berzenin.university.web.rest.TimetableRestEndPointIntegrationTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ 
@@ -18,10 +22,14 @@ import com.berzenin.university.web.rest.TeacherRestEndPointIntegrationTest;
 		StudentServiceTest.class, 
 		GroupViewIntegrationTest.class,
 		IndexIntegrationTest.class, 
-		StudentViewIntegratinTest.class, 
+		StudentViewIntegratinTest.class,
+		TeacherViewintegrationTest.class,
 		GroupRestEndpointIntegrationTest.class,
 		StudentRestEndpointIntegrationTest.class,
-		TeacherRestEndPointIntegrationTest.class
+		TeacherRestEndPointIntegrationTest.class,
+		CourseRestEndPointIntegrationTest.class,
+		ExerciseRestEndPointIntegrationTest.class,
+		TimetableRestEndPointIntegrationTest.class
 		})
 public class RunAllTest {
 

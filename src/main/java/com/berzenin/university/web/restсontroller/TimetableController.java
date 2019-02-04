@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.berzenin.university.model.university.Exercise;
-import com.berzenin.university.model.university.TimetableRequest;
+import com.berzenin.university.web.dto.TimetableRequest;
 import com.berzenin.university.service.controller.TimetableService;
 
 @RestController

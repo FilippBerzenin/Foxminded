@@ -9,7 +9,7 @@ import com.berzenin.university.dao.ExerciseRepository;
 import com.berzenin.university.dao.StudentRepository;
 import com.berzenin.university.dao.TeacherRepository;
 import com.berzenin.university.model.university.Exercise;
-import com.berzenin.university.model.university.TimetableRequest;
+import com.berzenin.university.web.dto.TimetableRequest;
 
 @Service
 public class TimetableService extends GenericServiceImpl<Exercise, ExerciseRepository> {

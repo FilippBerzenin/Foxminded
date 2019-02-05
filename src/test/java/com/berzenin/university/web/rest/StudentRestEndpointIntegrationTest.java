@@ -85,7 +85,6 @@ public class StudentRestEndpointIntegrationTest extends RestIntegrationTest {
 	public void testAddStudent() throws Exception {
 		// Given
 		Student studentAdd = new Student(2, "Some", "Name");
-//		Group group = new Group("first"); 
 		when(studentService.add(any())).thenReturn(studentAdd);
 		// Then
 		subject.perform(post("/api/students")

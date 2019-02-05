@@ -15,8 +15,15 @@ import com.berzenin.university.model.persons.Teacher;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+
+@Getter
+@Setter
+@ToString
 @Entity
 @Data
 @AllArgsConstructor

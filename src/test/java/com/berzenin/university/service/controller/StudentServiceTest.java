@@ -52,7 +52,7 @@ public class StudentServiceTest extends IntegrationTest{
 	
 	@Test
 	public void addNewStudentTest() {
-		// Given		
+		//Given		
 		Group group = new Group(1L, "Group");
 		Student first = new Student(1L, "First", "First", group);
 		when(studentService.ifStudentPresent(first)).thenReturn(false);
@@ -62,7 +62,7 @@ public class StudentServiceTest extends IntegrationTest{
 		//Then
 		assertThat(studentService.addStudent(first, group.getId()), is(first));
 		assertThat(studentRepository.saveAndFlush(first), is(first));
-		// When
+		//When
 		verify(studentService).addStudent(first, group.getId());
 		verify(studentRepository).saveAndFlush(first);
 	}

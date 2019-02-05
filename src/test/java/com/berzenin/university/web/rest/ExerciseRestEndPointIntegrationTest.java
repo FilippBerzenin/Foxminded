@@ -24,12 +24,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.berzenin.university.model.university.Exercise;
 import com.berzenin.university.web.exception.NotFoundException;
 
 @RunWith(SpringRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class ExerciseRestEndPointIntegrationTest extends RestIntegrationTest {
 
 	@Before

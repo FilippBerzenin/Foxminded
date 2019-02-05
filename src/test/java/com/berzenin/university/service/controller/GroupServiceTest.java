@@ -114,7 +114,7 @@ public class GroupServiceTest extends IntegrationTest{
 		// Given
 		Group first = new Group(1L, "First");
 		//Then
-	    groupService.remove(new Group(1L, "First"));
+	    groupService.remove(first);
 		// When	  
 	    verify(groupService).remove(first);
 	}

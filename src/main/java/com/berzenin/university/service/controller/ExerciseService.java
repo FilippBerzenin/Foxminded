@@ -1,6 +1,5 @@
 package com.berzenin.university.service.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.berzenin.university.dao.ExerciseRepository;
@@ -10,12 +9,12 @@ import com.berzenin.university.web.exception.NotFoundException;
 
 @Service
 public class ExerciseService extends GenericServiceImpl<Exercise, ExerciseRepository> {
-	
-	@Autowired
-	private CourseService courseService;
 
-	public ExerciseService(ExerciseRepository repository) {
+	private final CourseService courseService;
+
+	public ExerciseService(ExerciseRepository repository, CourseService courseService) {
 		super(repository);
+		this.courseService=courseService;
 	}
 	
 	public Exercise update(Exercise entity) {

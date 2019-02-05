@@ -1,6 +1,5 @@
 package com.berzenin.university.service.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +11,11 @@ import com.berzenin.university.web.exception.NotFoundException;
 @Service
 public class TeacherService extends GenericServiceImpl<Teacher, CrudRepository<Teacher,Long>> {
 	
-	@Autowired
-	private CourseService courseService;
+	private final CourseService courseService;
 
-	public TeacherService(TeacherRepository repository) {
+	public TeacherService(TeacherRepository repository, CourseService courseService) {
 		super(repository);
+		this.courseService=courseService;
 	}
 	
 	@Override

@@ -17,26 +17,23 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.berzenin.university.model.persons.Student;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Builder
+@EqualsAndHashCode
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name= "groups")
 public class Group {
-
 
 	@Id
 	@GeneratedValue
 	private long id;
 
-	@NonNull
 	@Size(min=1, max=150)
 	private String name;
 
@@ -50,20 +47,37 @@ public class Group {
 			inverseJoinColumns = {@JoinColumn(name = "course_id") })
 		@OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<Course> courses;
-
-	public Group(long id, String name) {
-		this.id = id;
-		this.name = name;
+	
+	public Group() {
 	}
 	
 	public Group(String name) {
 		this.name = name;
 	}
+	
+
+	public Group(long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
+	public Group(long id, String name, Set<Student> students, Set<Course> courses) {
+		this.id = id;
+		this.name = name;
+		this.students = students;
+		this.courses = courses;
+	}	
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	@Override
 	public String toString() {
 		return "Group [id=" + id + ", name=" + name + "]";
-	}
-	
-	
+	}	
 }

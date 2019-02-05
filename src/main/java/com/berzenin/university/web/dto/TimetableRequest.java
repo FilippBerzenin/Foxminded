@@ -4,29 +4,34 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.berzenin.university.model.persons.Person;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class TimetableRequest {
+@Getter
+@Setter
+public class TimetableRequest {	
 	
-	private Person person;
+	private long id;
 	
-	public TimetableRequest(Long id, String name, String surename, LocalDate dateStartSearch, LocalDate dateFinishSearch) {
-		super(id, name, surename);
-		this.dateStartSearch = dateStartSearch;
-		this.dateFinishSearch = dateFinishSearch;
-	}
+	private String name;
+	
+	private String surename;
 
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private LocalDate dateStartSearch;
 	
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	private LocalDate dateFinishSearch;
+	
+	public TimetableRequest(Long id, String name, String surename, LocalDate dateStartSearch, LocalDate dateFinishSearch) {
+		this.id=id;
+		this.name=name;
+		this.surename=surename;
+		this.dateStartSearch = dateStartSearch;
+		this.dateFinishSearch = dateFinishSearch;
+	}
+
+	public TimetableRequest() {
+	}
 
 }

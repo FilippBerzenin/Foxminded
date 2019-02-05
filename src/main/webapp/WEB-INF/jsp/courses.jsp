@@ -114,8 +114,11 @@
 								</table>
 							</div>
 						</td>
-						<td><a href="${prefix}/${page}/delete/${entity.id}"
-							onclick="return confirm('Are you sure?')">Delete</a></td>
+						<td>
+							<form action="${prefix}/${page}/delete/${entity.id}" method="post">
+								<button type="submit" name="delete" value="Delete">Delete</button>
+							</form>
+						</td>
 						<td>
 							<button type="button" class="btn btn-primary dropdown-toggle"
 								data-toggle="dropdown">Update</button>

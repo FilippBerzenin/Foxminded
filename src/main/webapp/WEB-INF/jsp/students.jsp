@@ -59,7 +59,7 @@
 						<td>${student.surename}</td>
 						<td>${student.group.name}</td>
 						<td>
-							<form action="${prefix}/${page}/delete/${student.id}" method="post">
+							<form action="/students/delete/${student.id}" method="post">
 								<button type="submit" name="delete" value="Delete">Delete</button>
 							</form>
 						</td>

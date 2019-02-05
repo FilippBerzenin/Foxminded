@@ -1,8 +1,8 @@
 package com.berzenin.university.web.mvc;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,8 +30,8 @@ import com.berzenin.university.web.IntegrationTest;
 import com.berzenin.university.web.exception.NotFoundException;
 
 @RunWith(SpringRunner.class)
-public class ExercsieViewIntegrationTest extends IntegrationTest  {
-
+public class ExercsieViewIntegrationTest extends IntegrationTest   {
+	
 	@Test
 	public void getExercsieListTest() throws Exception {
 		// Given
@@ -185,7 +185,6 @@ public class ExercsieViewIntegrationTest extends IntegrationTest  {
 		long id = 1L;
 		Set<Course> set = new HashSet<>();
 		Course course = new Course(id, "course", null, null, null);
-//		set.add(course);
 		Exercise exercise = new Exercise(id, "first", LocalDate.of(2019, 7, 15), LocalTime.of(12, 00), LocalTime.of(12, 00), set);
 		when(exerciseService.removeCourseFromExercise(id, course)).thenReturn(exercise);
 		when(exerciseService.findAll()).thenReturn(Arrays.asList(exercise));
@@ -199,4 +198,5 @@ public class ExercsieViewIntegrationTest extends IntegrationTest  {
 		// When
 		verify(exerciseService).removeCourseFromExercise(id, course);
 	}
+
 }

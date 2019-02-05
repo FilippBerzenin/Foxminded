@@ -45,13 +45,13 @@
 					<table>
 						<tr>
 							<td><font color="red"><form:errors path="name" /></font></td>
-							<td><form:input class="form-control" type="text" path="name" value="Fil" placeholder="Enter name"/></td>							
+							<td><form:input class="form-control" type="text" path="name" value="Vika" placeholder="Enter name"/></td>							
 							<td><font color="red"><form:errors path="surename" /></font></td>
-							<td><form:input class="form-control" type="text" path="surename" value="Berz" placeholder="Enter surename"/></td>							
+							<td><form:input class="form-control" type="text" path="surename" value="Berzenin" placeholder="Enter surename"/></td>							
 							<td><font color="red"><form:errors path="dateStartSearch" /></font></td>
 							<td><form:input class="form-control" type="date" path="dateStartSearch" value="01-01-2019" placeholder="Time start (HH-mm)"/></td>							
 							<td><font color="red"><form:errors path="dateFinishSearch" /></font></td>
-							<td><form:input class="form-control" type="time" path="dateFinishSearch" value="01-01-2020"  placeholder="Time start (HH-mm)"/></td>
+							<td><form:input class="form-control" type="date" path="dateFinishSearch" value="01-01-2020"  placeholder="Time start (HH-mm)"/></td>
 							<td><button type="submit">Search ${page}</button></td>
 						</tr>
 					</table>

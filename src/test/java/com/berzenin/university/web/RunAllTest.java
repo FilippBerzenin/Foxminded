@@ -5,8 +5,8 @@ import org.junit.runners.Suite;
 
 import com.berzenin.university.service.controller.GroupServiceTest;
 import com.berzenin.university.service.controller.StudentServiceTest;
-import com.berzenin.university.web.controller.ExcerciseViewController;
 import com.berzenin.university.web.mvc.CourseViewIntegrationTest;
+import com.berzenin.university.web.mvc.ExercsieViewIntegrationTest;
 import com.berzenin.university.web.mvc.GroupViewIntegrationTest;
 import com.berzenin.university.web.mvc.IndexIntegrationTest;
 import com.berzenin.university.web.mvc.StudentViewIntegratinTest;
@@ -26,14 +26,14 @@ import com.berzenin.university.web.rest.TimetableRestEndPointIntegrationTest;
 		IndexIntegrationTest.class, 
 		StudentViewIntegratinTest.class,
 		TeacherViewintegrationTest.class,
-		ExcerciseViewController.class,
+		ExercsieViewIntegrationTest.class,
 		CourseViewIntegrationTest.class,
 		GroupRestEndpointIntegrationTest.class,
 		StudentRestEndpointIntegrationTest.class,
 		TeacherRestEndPointIntegrationTest.class,
 		CourseRestEndPointIntegrationTest.class,
 		ExerciseRestEndPointIntegrationTest.class,
-		TimetableRestEndPointIntegrationTest.class
+		TimetableRestEndPointIntegrationTest.class,
 		})
 public class RunAllTest {
 

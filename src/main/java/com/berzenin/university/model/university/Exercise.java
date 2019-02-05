@@ -2,7 +2,6 @@ package com.berzenin.university.model.university;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -18,18 +17,33 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @EqualsAndHashCode(exclude = "courses")
 public class Exercise {
 	
+	public Exercise() {		
+	}
+
+	public Exercise(Long id, @NotNull String name, @NotNull LocalDate date, @NotNull LocalTime timeBegin,
+			@NotNull LocalTime timeFinish, Set<Course> courses) {
+		this.id = id;
+		this.name = name;
+		this.date = date;
+		this.timeBegin = timeBegin;
+		this.timeFinish = timeFinish;
+		this.courses = courses;
+	}
+
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

@@ -25,20 +25,26 @@ import lombok.Setter;
 public class Student extends Person {
 	
 	public Student(String name, String surename) {
-	super(name, surename);
+		this.name=name;
+		this.surename=surename;
 }
 
 	public Student(long id, String name, String surename) {
-		super(id, name, surename);
+		this.id=id;
+		this.name=name;
+		this.surename=surename;
 	}
 
 	public Student(long id, String name, String surename, Group group) {
-		super(id, name, surename);
+		this.id=id;
+		this.name=name;
+		this.surename=surename;
 		this.group = group;
 	}
 	
 	public Student(String name, String surename, Group group) {
-		super(name, surename);
+		this.name=name;
+		this.surename=surename;
 		this.group = group;
 	}
 

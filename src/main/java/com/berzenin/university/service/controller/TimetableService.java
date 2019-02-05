@@ -2,7 +2,6 @@ package com.berzenin.university.service.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.berzenin.university.dao.ExerciseRepository;
@@ -14,14 +13,14 @@ import com.berzenin.university.web.dto.TimetableRequest;
 @Service
 public class TimetableService extends GenericServiceImpl<Exercise, ExerciseRepository> {
 
-	@Autowired
-	private StudentRepository studentRepository;
+	private final StudentRepository studentRepository;
 	
-	@Autowired
-	private TeacherRepository teacherRepository;
+	private final TeacherRepository teacherRepository;
 
-	public TimetableService(ExerciseRepository repository) {
+	public TimetableService(ExerciseRepository repository, StudentRepository studentRepository, TeacherRepository teacherRepository) {
 		super(repository);
+		this.studentRepository=studentRepository;
+		this.teacherRepository=teacherRepository;
 	}
 
 	public List<Exercise> findAllExercisesBetweenDatesForStudent(TimetableRequest student) {
@@ -30,9 +29,9 @@ public class TimetableService extends GenericServiceImpl<Exercise, ExerciseRepos
 				student.getDateStartSearch(), student.getDateFinishSearch());
 	}
 	
-	public List<Exercise> findAllExercisesBetweenDatesForTeacher(TimetableRequest student) {
+	public List<Exercise> findAllExercisesBetweenDatesForTeacher(TimetableRequest teacher) {
 		return repository.findByCourses_Teacher_IdAndDateBetween(
-				teacherRepository.findByNameAndSurename(student.getName(), student.getSurename()).get().getId(),
-				student.getDateStartSearch(), student.getDateFinishSearch());
+				teacherRepository.findByNameAndSurename(teacher.getName(), teacher.getSurename()).get().getId(),
+				teacher.getDateStartSearch(), teacher.getDateFinishSearch());
 	}
 }

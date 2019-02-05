@@ -23,6 +23,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.berzenin.university.model.persons.Student;
@@ -30,6 +32,7 @@ import com.berzenin.university.model.university.Group;
 import com.berzenin.university.web.exception.NotFoundException;
 
 @RunWith(SpringRunner.class)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 
 	@Before
@@ -61,8 +64,8 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 	@Test
 	public void testAddNewGroup() throws Exception {
 		// Given
-		Group group = new Group("first"); 
-		when(groupService.add(any())).thenReturn(new Group(2, "first", null, null));
+		Group group = new Group(1L, "first"); 
+		when(groupService.add(any())).thenReturn(group);
 		// Then
 		subject.perform(post("/api/groups")
 				.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -70,10 +73,11 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 				)
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 				.andDo(print())
-				.andExpect(jsonPath("$.id").value(2))
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.id").value(1))
 				.andExpect(jsonPath("$.name").value("first"));
 		// When
-		verify(groupService).add(new Group(0, "first", null, null));
+		verify(groupService).add(group);
 	}
 	
 	@Test
@@ -125,15 +129,15 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 				.andReturn();
 		// When
 		verify(groupService).findById(id);
-		verify(groupService).update(new Group(id, "First", null, null));
+		verify(groupService).update(groupWithOldParam);
 	}
 	
 	@Test
 	public void testGetAllStudentsFromGroup () throws Exception {
 		
 		Set<Student> students = new HashSet<>();
-		students.add(new Student(1, "Alex", "Ro", new Group(1L, "test", null, null)));
-		students.add(new Student(2, "Mary", "Bo", new Group(1L, "test", null, null)));
+		students.add(new Student(1L, "Alex", "Ro", new Group(1L, "test", null, null)));
+		students.add(new Student(2L, "Mary", "Bo", new Group(1L, "test", null, null)));
 		// Given
 		when(groupService.findById(1L)).thenReturn(new Group(1L, "test", students, null));
 		// Then
@@ -143,12 +147,12 @@ public class GroupRestEndpointIntegrationTest extends RestIntegrationTest  {
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
 			.andExpect(jsonPath("$").isArray())
 			.andExpect(jsonPath("$", hasSize(2)))
-			.andExpect(jsonPath("$[1].id").value(1))
-			.andExpect(jsonPath("$[1].name").value("Alex"))
-			.andExpect(jsonPath("$[1].surename").value("Ro"))
 			.andExpect(jsonPath("$[0].id").value(2))
 			.andExpect(jsonPath("$[0].name").value("Mary"))
 			.andExpect(jsonPath("$[0].surename").value("Bo"))
+			.andExpect(jsonPath("$[1].id").value(1))
+			.andExpect(jsonPath("$[1].name").value("Alex"))
+			.andExpect(jsonPath("$[1].surename").value("Ro"))
 			;
 		// When
 		verify(groupService).findById(1L);

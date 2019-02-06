@@ -19,20 +19,13 @@ public class ExerciseService extends GenericServiceImpl<Exercise, ExerciseReposi
 	
 	//TODO
 	public Exercise update(Exercise entity) {
-		Exercise entityForUpdate = repository.findById(entity.getId()).get();
-		if (entity.getName()!=null) {
-			entityForUpdate.setName(entity.getName());
-		}
-		if (entity.getDate()!=null) {
-			entityForUpdate.setDate(entity.getDate());
-		}
-		if (entity.getTimeBegin()!=null) {
-			entityForUpdate.setTimeBegin(entity.getTimeBegin());
-		}
-		if (entity.getTimeFinish()!=null) {
-			entityForUpdate.setTimeFinish(entity.getTimeFinish());
-		}
-		return repository.save(entityForUpdate);
+//		Exercise entityForUpdate = repository.findById(entity.getId()).get();
+		entity.setCourses(repository.findById(entity.getId()).get().getCourses());
+//			entityForUpdate.setName(entity.getName());
+//			entityForUpdate.setDate(entity.getDate());
+//			entityForUpdate.setTimeBegin(entity.getTimeBegin());
+//			entityForUpdate.setTimeFinish(entity.getTimeFinish());
+		return repository.save(entity);
 	}
 	
 	public Exercise addNewCourseForExercise(Long exerciseId, Course course) {

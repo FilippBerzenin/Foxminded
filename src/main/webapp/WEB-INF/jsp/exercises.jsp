@@ -27,7 +27,7 @@
 							<td><font color="red"><form:errors path="name" /></font></td>
 							<td><form:input class="form-control" type="text" path="name" placeholder="${page} name"/></td>
 							<td><font color="red"><form:errors path="date" /></font></td>
-							<td><form:input class="form-control" type="date" path="date" placeholder="dd-mm-yyyy"/></td>
+							<td><form:input class="form-control" type="date" path="date" placeholder="yyyy-mm-dd"/></td>
 							<td><font color="red"><form:errors path="timeBegin" /></font></td>
 							<td><form:input class="form-control" type="time" path="timeBegin" placeholder="Time start (HH-mm)"/></td>
 							<td><font color="red"><form:errors path="timeFinish" /></font></td>
@@ -135,10 +135,10 @@
 											placeholder="dd-mm-yyyy" value="${entity.date}" />
 										<font color="red"><form:errors path="timeBegin" /></font>
 										<form:input class="form-control" type="time" path="timeBegin"
-											placeholder="Time start (HH-mm)" value="${entity.timeBegin}" />
+											value="${entity.timeBegin}" />
 										<font color="red"><form:errors path="timeFinish" /></font>
 										<form:input class="form-control" type="time" path="timeFinish"
-											placeholder="Time finish (HH-mm)" value="${entity.timeFinish}" />
+											value="${entity.timeFinish}" />
 										<button class="form-control" type="submit">Update</button>
 									</div>
 								</form:form>

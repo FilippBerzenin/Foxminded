@@ -6,8 +6,6 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Mockito.verify;
@@ -28,7 +26,6 @@ import com.berzenin.university.web.exception.NotFoundException;
 @RunWith(SpringRunner.class)
 public class GroupServiceTest extends IntegrationTest{
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void findAllGroupTest() {
 		//Given
@@ -43,10 +40,6 @@ public class GroupServiceTest extends IntegrationTest{
 		assertThat(groupRepository.findAll(), not(hasItem(new Group())));
 		assertNotEquals(groupRepository.findAll(), not(hasItem(first)));
 		assertThat(groupRepository.findAll(), hasSize(2));
-		assertThat(groupRepository.findAll(), contains(
-				hasProperty("name", is("First")),
-				hasProperty("name", is("Second"))
-				));
 	}
 	
 	@Test

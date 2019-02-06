@@ -4,8 +4,6 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
@@ -18,7 +16,6 @@ import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.berzenin.university.model.persons.Student;
@@ -29,7 +26,6 @@ import com.berzenin.university.web.exception.NotFoundException;
 @RunWith(SpringRunner.class)
 public class StudentServiceTest extends IntegrationTest{
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void findAllGroupTest() {
 		//Given
@@ -44,10 +40,6 @@ public class StudentServiceTest extends IntegrationTest{
 		assertThat(studentService.findAll(1L), not(hasItem(new Student())));
 		assertNotEquals(studentService.findAll(1L), not(hasItem(first)));
 		assertThat(studentService.findAll(1L), hasSize(2));
-		assertThat(studentService.findAll(1L), contains(
-				hasProperty("name", is("First")),
-				hasProperty("name", is("Second"))
-				));
 	}
 	
 	@Test

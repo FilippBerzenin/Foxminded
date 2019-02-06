@@ -19,11 +19,6 @@ public abstract class GenericServiceImpl<E, R extends CrudRepository<E, Long>> i
     }
 	
 	@Override
-	public E update(E entity) {
-		return repository.save(entity);
-	}
-
-	@Override
 	public List<E> findAll() {
 		return (List<E>) repository.findAll();
 	}
@@ -38,14 +33,19 @@ public abstract class GenericServiceImpl<E, R extends CrudRepository<E, Long>> i
 	public E add(E entity) {
 		return repository.save(entity);
 	}
-
+	
 	@Override
-	public void remove(E entity) {
-		repository.delete(entity);
+	public E update(E entity) {
+		return repository.save(entity);
 	}
 
 	@Override
 	public void removeById(Long id) {
 		repository.deleteById(id);
+	}
+	
+	@Override
+	public void remove(E entity) {
+		repository.delete(entity);
 	}
 }

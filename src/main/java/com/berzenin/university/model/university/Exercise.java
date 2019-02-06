@@ -41,9 +41,7 @@ public class Exercise {
 		this.timeFinish = timeFinish;
 		this.courses = courses;
 	}
-
-
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -52,7 +50,7 @@ public class Exercise {
 	private String name;	
 	
 	@NotNull
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
 	
 	@NotNull

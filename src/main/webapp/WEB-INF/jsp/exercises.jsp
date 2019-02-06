@@ -68,8 +68,7 @@
 						<td>${entity.date}</td>
 						<td>${entity.timeBegin}</td>
 						<td>${entity.timeFinish}</td>
-						<td>
-							<c:forEach var="courseFromList" items="${entity.courses}">
+						<td><c:forEach var="courseFromList" items="${entity.courses}">
 								<c:out value="${courseFromList.subject}" />
 							</c:forEach>
 						<td>
@@ -115,8 +114,9 @@
 							</div>
 						</td>
 						<td>
-							<form action="${prefix}/${page}/delete/${entity.id}" method='post'>
-   								<button type="submit" name="delete" value="Delete">Delete</button>
+							<form action="${prefix}/${page}/delete/${entity.id}"
+								method='post'>
+								<button type="submit" name="delete" value="Delete">Delete</button>
 							</form>
 						<td>
 							<button type="button" class="btn btn-primary dropdown-toggle"
@@ -125,15 +125,20 @@
 								<form:form class="form-inline" method="post"
 									action="/${page}/update/" modelAttribute="entityFor">
 									<div class="form-group">
-										<form:input type="hidden" path="id" value="${entity.id}" />
+										<form:input class="form-control" type="hidden" path="id"
+											value="${entity.id}" />
 										<font color="red"><form:errors path="name" /></font>
-										<form:input path="name" value="${entity.name}" />
+										<form:input class="form-control" type="text" path="name"
+											placeholder="${page} name" value="${entity.name}" />
 										<font color="red"><form:errors path="date" /></font>
-										<form:input type="date" path="date" value="${entity.date}"/>
+										<form:input class="form-control" type="date" path="date"
+											placeholder="dd-mm-yyyy" value="${entity.date}" />
 										<font color="red"><form:errors path="timeBegin" /></font>
-										<form:input type="time" path="timeBegin" value="${entity.timeBegin}"/>
+										<form:input class="form-control" type="time" path="timeBegin"
+											placeholder="Time start (HH-mm)" value="${entity.timeBegin}" />
 										<font color="red"><form:errors path="timeFinish" /></font>
-										<form:input type="time" path="timeFinish" value="${entity.timeFinish}"/>									
+										<form:input class="form-control" type="time" path="timeFinish"
+											placeholder="Time finish (HH-mm)" value="${entity.timeFinish}" />
 										<button class="form-control" type="submit">Update</button>
 									</div>
 								</form:form>

@@ -1,11 +1,18 @@
 package com.berzenin.university.web.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.validation.Valid;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,6 +85,13 @@ public class ExcerciseViewController extends GenericViewControllerImpl<Exercise,
 			this.setModelAttributeWhenthrowException(e, model);
 			return page;
 		}
+	}
+	
+	@InitBinder
+	public void bindingPreparation(WebDataBinder binder) {
+	  DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	  CustomDateEditor orderDateEditor = new CustomDateEditor(dateFormat, true);
+	  binder.registerCustomEditor(Date.class, orderDateEditor);
 	}
 	
 	@RequestMapping(value = "/addCourse/{id}", method = RequestMethod.POST)

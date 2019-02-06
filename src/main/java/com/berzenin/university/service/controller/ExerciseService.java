@@ -17,7 +17,7 @@ public class ExerciseService extends GenericServiceImpl<Exercise, ExerciseReposi
 		this.courseService=courseService;
 	}
 	
-	//Todo
+	//TODO
 	public Exercise update(Exercise entity) {
 		Exercise entityForUpdate = repository.findById(entity.getId()).get();
 		if (entity.getName()!=null) {

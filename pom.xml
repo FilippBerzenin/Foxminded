@@ -5,25 +5,26 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.berzenin.university</groupId>
-	<artifactId>UniversityWeb-srvice</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
-
-	<name>UniversityWeb-srvice</name>
-	<description></description>
+	<artifactId>UniversityWeb-service</artifactId>
+	<version>1</version>
+	<packaging>war</packaging>
+	<name>UniversityWeb</name>
+	<description>my first app</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.5.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath />
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<start-class>com.berzenin.university.UniversityWebServiceApplication</start-class>
 	</properties>
+
 
 	<dependencies>
 		<dependency>

@@ -1,6 +1,7 @@
 package com.berzenin.university.service.controller;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.berzenin.university.dao.TeacherRepository;
@@ -9,7 +10,7 @@ import com.berzenin.university.model.university.Course;
 import com.berzenin.university.web.exception.NotFoundException;
 
 @Service
-public class TeacherService extends GenericServiceImpl<Teacher, CrudRepository<Teacher,Long>> {
+public class TeacherService extends GenericServiceImpl<Teacher, TeacherRepository> {
 	
 	private final CourseService courseService;
 
@@ -48,5 +49,9 @@ public class TeacherService extends GenericServiceImpl<Teacher, CrudRepository<T
 		} catch (RuntimeException e) {
 			throw new RuntimeException();
 		}
+	}
+	
+	public Optional<Teacher> findByNameAndSurename(String name, String surename) {
+		return repository.findByNameAndSurename(name, surename);		
 	}
 }

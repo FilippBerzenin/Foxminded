@@ -11,7 +11,7 @@
 </head>
 <body>
 	<div class="container">
-		<h2>${message}</h2>
+ 		<h2>${message}</h2>
 		<div class="table-responsive">
 			<a href="${pageContext.request.contextPath}/groups/show/all"
 				class="list-group-item">Groups page</a> <br> <a

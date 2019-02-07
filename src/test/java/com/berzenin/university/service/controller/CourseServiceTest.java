@@ -13,17 +13,29 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.Mock;
 
+import com.berzenin.university.dao.CourseRepository;
 import com.berzenin.university.model.university.Course;
-import com.berzenin.university.web.IntegrationTest;
 import com.berzenin.university.web.exception.NotFoundException;
 
-@RunWith(SpringRunner.class)
-public class CourseServiceTest extends IntegrationTest {
+@RunWith(org.mockito.junit.MockitoJUnitRunner.class)
+public class CourseServiceTest {
+	
+	private CourseService subject;
+	
+	@Mock
+	private CourseRepository courseRepository;
+	
+	@Before
+	public void setUp() {
+		subject = new CourseService(courseRepository);
+	}
 	
 	@Test
 	public void findAllCoursesTest () {
@@ -31,80 +43,80 @@ public class CourseServiceTest extends IntegrationTest {
 		Course first = new Course(0L, "first", null, null, null);
 		Course second = new Course(1L, "second", null, null, null);
 		List<Course> courses = Arrays.asList(first,	second);
-		when(courseService.findAll()).thenReturn(courses);
-		//Then
-		List<Course> coursesFind = (List<Course>) courseService.findAll();
-		assertThat(courseService.findAll(), is(courses));
-		assertThat(courseService.findAll(), hasItem(first));
-		assertThat(courseService.findAll(), hasItems(second, first));
-		assertThat(courseService.findAll(), not(hasItem(new Course())));
-		assertThat(coursesFind, hasSize(2));
-		assertNotEquals(courseService.findAll(), not(hasItem(first)));
+		when(courseRepository.findAll()).thenReturn(courses);
 		//When
-		verify(courseService, times(6)).findAll();
+		List<Course> actual = (List<Course>) subject.findAll();
+		//Then
+		assertThat(actual, is(courses));
+		assertThat(actual, hasItem(first));
+		assertThat(actual, hasItems(second, first));
+		assertThat(actual, not(hasItem(new Course())));
+		assertThat(actual, hasSize(2));
+		assertNotEquals(actual, not(hasItem(first)));
+		verify(courseRepository, times(1)).findAll();
 	}
 	
 	@Test
 	public void findByIdTest() {
-		// Given
+		//Given
 		Course first = new Course(0L, "first", null, null, null);
-		when(courseService.findById(first.getId())).thenReturn(first);
+		when(courseRepository.findById(first.getId())).thenReturn(Optional.of(first));
+		//When
+		assertThat(subject.findById(first.getId()), is(first));
 		//Then
-		assertThat(courseService.findById(first.getId()), is(first));
-		// When
-		verify(courseService).findById(first.getId());
+		verify(courseRepository).findById(first.getId());
 	}
 	
 	@Test(expected = NotFoundException.class)
 	public void searchCourseByNameTestNotFoundException() {
 		//Given
 		Course first = new Course(0L, "first", null, null, null);
-		when(courseService.findById(first.getId())).thenThrow(new NotFoundException());
+		when(courseRepository.findById(first.getId())).thenThrow(new NotFoundException());
+		//When
+		subject.findById(first.getId());
 		//Then
-		courseService.findById(first.getId());
-		// When
-		verify(courseService).findById(first.getId());
+		verify(courseRepository).findById(first.getId());
 	}
 	
 	@Test
 	public void addNewCourseTest() {
-		// Given
+		//Given
 		Course first = new Course(0L, "first", null, null, null);
-		when(courseService.update(first)).thenReturn(first);
+		when(courseRepository.save(first)).thenReturn(first);
+		//When
+		assertThat(subject.update(first), is(first));
 		//Then
-		assertThat(courseService.update(first), is(first));
-		// When
-		verify(courseService).update(first);
+		verify(courseRepository).save(first);
 	}
 	
 	@Test
 	public void deleteCourseById () {
-		// Given
+		//Given
 		Course first = new Course(0L, "first", null, null, null);
+		//When
+		subject.removeById(first.getId());
 		//Then
-		courseService.removeById(first.getId());
-		// When	  
-	    verify(courseService).removeById(first.getId());
+	    verify(courseRepository).deleteById(first.getId());
 	}
 	
 	@Test
 	public void deleteCourseByCourse () {
-		// Given
+		//Given
 		Course first = new Course(0L, "first", null, null, null);
+		//When
+		subject.remove(first);
 		//Then
-		courseService.remove(first);
-		// When	  
-	    verify(courseService).remove(first);
+	    verify(courseRepository).delete(first);
 	}
 	
 	public void ifCoursePresentByNameTest () {
-		// Given
+		//Given
 		String courseName = "first";
 		Course first = new Course(0L, "first", null, null, null);
-		when(courseService.ifCoursePresentByName(courseName)).thenReturn(first);
-		//Then
-		assertThat(courseService.ifCoursePresentByName(courseName), is(first));
-		// When	  
-	    verify(courseService).remove(first);
+		when(courseRepository.findBySubjectContaining(courseName)).thenReturn(Optional.of(first));
+		//When
+		assertThat(subject.ifCoursePresentByName(courseName), is(first));
+		//Then	  
+	    verify(courseRepository).findBySubjectContaining(courseName);
 	}
 }

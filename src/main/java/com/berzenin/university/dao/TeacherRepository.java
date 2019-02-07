@@ -10,6 +10,6 @@ import com.berzenin.university.model.persons.Teacher;
 @Repository
 public interface TeacherRepository extends CrudRepository<Teacher, Long> {
 	
-	Optional<Teacher> findByNameAndSurename(String name, String surename);
+	public Optional<Teacher> findByNameAndSurename(String name, String surename);
 
 }

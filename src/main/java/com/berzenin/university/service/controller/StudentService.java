@@ -1,6 +1,7 @@
 package com.berzenin.university.service.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -55,5 +56,10 @@ public class StudentService extends GenericServiceImpl<Student, StudentRepositor
 				 return true;
 			 }
 			 return false;
+	}
+	
+	public Optional<Student> findByNameAndSurename(String name, String surename) {
+		return repository.findByNameAndSurename(name, surename);
+		
 	}
 }

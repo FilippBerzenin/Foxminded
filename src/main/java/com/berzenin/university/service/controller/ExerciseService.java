@@ -1,5 +1,8 @@
 package com.berzenin.university.service.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.berzenin.university.dao.ExerciseRepository;
@@ -15,17 +18,25 @@ public class ExerciseService extends GenericServiceImpl<Exercise, ExerciseReposi
 	public ExerciseService(ExerciseRepository repository, CourseService courseService) {
 		super(repository);
 		this.courseService=courseService;
+	}	
+
+	public Exercise update(Exercise entity) {
+		entity.setCourses(repository.findById(entity.getId()).get().getCourses());
+		return repository.save(entity);
 	}
 	
-	//TODO
-	public Exercise update(Exercise entity) {
-//		Exercise entityForUpdate = repository.findById(entity.getId()).get();
-		entity.setCourses(repository.findById(entity.getId()).get().getCourses());
-//			entityForUpdate.setName(entity.getName());
-//			entityForUpdate.setDate(entity.getDate());
-//			entityForUpdate.setTimeBegin(entity.getTimeBegin());
-//			entityForUpdate.setTimeFinish(entity.getTimeFinish());
-		return repository.save(entity);
+	public List<Exercise> findByCourses_Teacher_IdAndDateBetween (
+			Long id, 
+			LocalDate publicationTimeStart,
+			LocalDate publicationTimeEnd) {
+		return repository.findByCourses_Teacher_IdAndDateBetween(id, publicationTimeStart, publicationTimeEnd);
+	}
+	
+	public List<Exercise> findByCourses_Groups_Students_IdAndDateBetween(
+			Long id, 
+			LocalDate publicationTimeStart,
+			LocalDate publicationTimeEnd) {
+		return repository.findByCourses_Groups_Students_IdAndDateBetween(id, publicationTimeStart, publicationTimeEnd);
 	}
 	
 	public Exercise addNewCourseForExercise(Long exerciseId, Course course) {

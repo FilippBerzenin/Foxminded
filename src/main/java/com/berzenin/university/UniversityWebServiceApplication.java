@@ -16,4 +16,9 @@ public class UniversityWebServiceApplication extends SpringBootServletInitialize
 	public static void main(String[] args) {
 		SpringApplication.run(UniversityWebServiceApplication.class, args);
 	}
+//	
+//	@Override
+//	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+//		return builder.sources(UniversityWebServiceApplication.class);
+//	}
 }

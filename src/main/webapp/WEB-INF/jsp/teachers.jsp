@@ -20,7 +20,7 @@
 		<div>
 			<h2>Add new teacher:</h2>
 			<div class="form-group">
-				<form:form method="post" action="/teachers/create/" modelAttribute="entityFor">
+				<form:form method="post" action="${prefix}/teachers/create/" modelAttribute="entityFor">
 					<table>
 						<tr>
 							<td><font color="red"><form:errors path="name" /></font></td>
@@ -69,7 +69,7 @@
 								data-toggle="dropdown">Add new course</button>
 							<div class="dropdown-menu container form-group">
 								<form:form class="form-inline" method="POST"
-									action="/teachers/addCourse/${entity.id}"
+									action="${prefix}/teachers/addCourse/${entity.id}"
 									modelAttribute="course">
 									<div class="form-group">
 										<table>
@@ -90,7 +90,7 @@
 								data-toggle="dropdown">Remove course</button>
 							<div class="dropdown-menu container form-group">
 								<form:form class="form-inline" method="POST"
-									action="/teachers/removeCourse/${entity.id}"
+									action="${prefix}/teachers/removeCourse/${entity.id}"
 									modelAttribute="course">
 									<div class="form-group">
 										<table>
@@ -117,7 +117,7 @@
 								data-toggle="dropdown">Update</button>
 							<div class="dropdown-menu container form-group">
 								<form:form class="form-inline" method="post"
-									action="/teachers/update/" modelAttribute="entityFor">
+									action="${prefix}/teachers/update/" modelAttribute="entityFor">
 									<div class="form-group">
 										<form:input type="hidden" path="id" value="${entity.id}" />
 										<font color="red"><form:errors path="name" /></font>

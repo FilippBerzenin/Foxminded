@@ -20,7 +20,7 @@
 		<div>
 			<h2>Add new group:</h2>
 			<div class="form-group">
-				<form action="/groups/create" method="post">
+				<form action="${prefix}/groups/create" method="post">
 					<input type="text" name="newGroupsName" placeholder="Groups name">
 					<button type="submit">Add new group</button>
 				</form>
@@ -28,7 +28,7 @@
 		</div>
 		<br />
 		<div>Search groups by name</div>
-		<form action="/groups/search" method="post">
+		<form action="${prefix}/groups/search" method="post">
 			<input type="text" name="filter" placeholder="Groups name for serch">
 			<button type="submit">Search</button>
 		</form>
@@ -36,7 +36,7 @@
 		<c:if test="${not empty message}">
 			<div class="alert alert-success">${message}</div>
 		</c:if>
-		<a href="${pageContext.request.contextPath}/groups/show/all">Get
+		<a href="${prefix}/groups/show/all">Get
 			all groups</a>
 		<table class="table  table-sm">
 			<thead class="table-info">
@@ -68,7 +68,7 @@
 								data-toggle="dropdown">Update</button>
 							<div class="dropdown-menu container form-group">
 								<form class="form-inline" method="post"
-									action="/groups/update/${group.id}">
+									action="${prefix}/groups/update/${group.id}">
 									<div class="form-group">
 										<label for="newGroupName">Enter new group name:</label> <input
 											class="form-control" name="newGroupName" id="newGroupName"
@@ -88,7 +88,7 @@
 								data-toggle="dropdown">Add new course</button>
 							<div class="dropdown-menu container form-group">
 								<form:form class="form-inline" method="POST"
-									action="/groups/addCourse/${group.id}"
+									action="${prefix}/groups/addCourse/${group.id}"
 									modelAttribute="course">
 									<div class="form-group">
 										<table>
@@ -109,7 +109,7 @@
 								data-toggle="dropdown">Remove course</button>
 							<div class="dropdown-menu container form-group">
 								<form:form class="form-inline" method="POST"
-									action="/groups/removeCourse/${group.id}"
+									action="${prefix}/groups/removeCourse/${group.id}"
 									modelAttribute="course">
 									<div class="form-group">
 										<table>

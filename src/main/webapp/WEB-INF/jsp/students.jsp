@@ -20,7 +20,7 @@
 		<div>
 			<h2>Add new student:</h2>
 			<div class="form-group">
-				<form:form method="post" action="/students/create/${group_id}" modelAttribute="studentFor">
+				<form:form method="post" action="${prefix}/students/create/${group_id}" modelAttribute="studentFor">
 					<table>
 						<tr>
 							<td><font color="red"><form:errors path="name" /></font></td>
@@ -59,7 +59,7 @@
 						<td>${student.surename}</td>
 						<td>${student.group.name}</td>
 						<td>
-							<form action="/students/delete/${student.id}" method="post">
+							<form action="${prefix}/students/delete/${student.id}" method="post">
 								<button type="submit" name="delete" value="Delete">Delete</button>
 							</form>
 						</td>
@@ -69,7 +69,7 @@
 							<div class="dropdown-menu container form-group">
 
 								<form:form class="form-inline" method="post"
-									action="/students/update/${student.group.id}"
+									action="${prefix}/students/update/${student.group.id}"
 									modelAttribute="studentFor">
 									<div class="form-group">
 										<form:input type="hidden" path="id" value="${student.id}" />

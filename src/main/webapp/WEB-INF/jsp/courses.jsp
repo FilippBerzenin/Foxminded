@@ -23,7 +23,7 @@
 		<div>
 			<h2>Add new ${page}:</h2>
 			<div class="form-group">
-				<form:form method="post" action="/${page}/create/"
+				<form:form method="post" action="${prefix}/${page}/create/"
 					modelAttribute="entityFor">
 					<table>
 						<tr>
@@ -124,7 +124,7 @@
 								data-toggle="dropdown">Update</button>
 							<div class="dropdown-menu container form-group">
 								<form:form class="form-inline" method="post"
-									action="/${page}/update/" modelAttribute="entityFor">
+									action="${prefix}/${page}/update/" modelAttribute="entityFor">
 									<div class="form-group">
 										<form:input type="hidden" path="id" value="${entity.id}" />
 										<font color="red"><form:errors path="subject" /></font>

@@ -21,7 +21,7 @@
 		<div>
 			<h2>Search student form:</h2>
 			<div class="form-group">
-				<form:form method="post" action="/timetable/createRequest/student" modelAttribute="entityFor">
+				<form:form method="post" action="${prefix}/timetable/createRequest/student" modelAttribute="entityFor">
 					<table>
 						<tr>
 							<td><font color="red"><form:errors path="name" /></font></td>
@@ -31,7 +31,7 @@
 							<td><font color="red"><form:errors path="dateStartSearch" /></font></td>
 							<td><form:input class="form-control" type="date" path="dateStartSearch" value="01-01-2019" placeholder="Time start (HH-mm)"/></td>							
 							<td><font color="red"><form:errors path="dateFinishSearch" /></font></td>
-							<td><form:input class="form-control" type="time" path="dateFinishSearch" value="01-01-2020"  placeholder="Time start (HH-mm)"/></td>
+							<td><form:input class="form-control" type="date" path="dateFinishSearch" value="01-01-2020"  placeholder="Time start (HH-mm)"/></td>
 							<td><button type="submit">Search ${page}</button></td>
 						</tr>
 					</table>
@@ -41,7 +41,7 @@
 		<div>
 			<h2>Search teacher form:</h2>
 			<div class="form-group">
-				<form:form method="post" action="/timetable/createRequest/teacher" modelAttribute="entityFor">
+				<form:form method="post" action="${prefix}/timetable/createRequest/teacher" modelAttribute="entityFor">
 					<table>
 						<tr>
 							<td><font color="red"><form:errors path="name" /></font></td>

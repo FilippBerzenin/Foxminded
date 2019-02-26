@@ -17,10 +17,10 @@ public class TimetableRequest {
 	
 	private String surename;
 
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateStartSearch;
 	
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateFinishSearch;
 	
 	public TimetableRequest(Long id, String name, String surename, LocalDate dateStartSearch, LocalDate dateFinishSearch) {

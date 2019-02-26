@@ -54,11 +54,11 @@ public class Exercise {
 	private LocalDate date;
 	
 	@NotNull
-	@DateTimeFormat(pattern = "HH-mm")
+	@DateTimeFormat(pattern = "HH:mm")
 	private LocalTime timeBegin;
 	
 	@NotNull
-	@DateTimeFormat(pattern = "HH-mm")
+	@DateTimeFormat(pattern = "HH:mm")
 	private LocalTime timeFinish;
 	
 	@ManyToMany

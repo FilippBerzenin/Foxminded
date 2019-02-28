@@ -20,11 +20,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-//@EqualsAndHashCode
-//@lombok.Value
-//@Builder
 @Entity
-//@EqualsAndHashCode(callSuper = true, exclude = "courses")
 public class Teacher extends Person {
 	
 	public Teacher() {

@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -34,6 +35,7 @@ public class Group {
 	@GeneratedValue
 	private long id;
 
+	@NotNull
 	@Size(min=1, max=150)
 	private String name;
 

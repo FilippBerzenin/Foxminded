@@ -2,6 +2,9 @@ package com.berzenin.university.web.dto;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
@@ -13,14 +16,20 @@ public class TimetableRequest {
 	
 	private long id;
 	
+	@NotNull
+	@Size(min=2, max=50)
 	private String name;
 	
+	@NotNull
+	@Size(min=2, max=50)
 	private String surename;
 
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@NotNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateStartSearch;
 	
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@NotNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateFinishSearch;
 	
 	public TimetableRequest(Long id, String name, String surename, LocalDate dateStartSearch, LocalDate dateFinishSearch) {

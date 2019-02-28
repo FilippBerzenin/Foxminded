@@ -29,9 +29,9 @@
 							<td><font color="red"><form:errors path="surename" /></font></td>
 							<td><form:input class="form-control" type="text" path="surename" value="Fil" placeholder="Enter surename"/></td>							
 							<td><font color="red"><form:errors path="dateStartSearch" /></font></td>
-							<td><form:input class="form-control" type="date" path="dateStartSearch" value="01-01-2019" placeholder="Time start (HH-mm)"/></td>							
+							<td><form:input class="form-control" type="date" path="dateStartSearch" value="01-01-2019" placeholder="Time start (dd-MM-yyyy)"/></td>							
 							<td><font color="red"><form:errors path="dateFinishSearch" /></font></td>
-							<td><form:input class="form-control" type="date" path="dateFinishSearch" value="01-01-2020"  placeholder="Time start (HH-mm)"/></td>
+							<td><form:input class="form-control" type="date" path="dateFinishSearch" value="01-01-2020"  placeholder="Time finish (dd-MM-yyyy)"/></td>
 							<td><button type="submit">Search ${page}</button></td>
 						</tr>
 					</table>
@@ -49,9 +49,9 @@
 							<td><font color="red"><form:errors path="surename" /></font></td>
 							<td><form:input class="form-control" type="text" path="surename" value="Berzenin" placeholder="Enter surename"/></td>							
 							<td><font color="red"><form:errors path="dateStartSearch" /></font></td>
-							<td><form:input class="form-control" type="date" path="dateStartSearch" value="01-01-2019" placeholder="Time start (HH-mm)"/></td>							
+							<td><form:input class="form-control" type="date" path="dateStartSearch" value="01-01-2019" placeholder="Time start (dd-MM-yyyy)"/></td>							
 							<td><font color="red"><form:errors path="dateFinishSearch" /></font></td>
-							<td><form:input class="form-control" type="date" path="dateFinishSearch" value="01-01-2020"  placeholder="Time start (HH-mm)"/></td>
+							<td><form:input class="form-control" type="date" path="dateFinishSearch" value="01-01-2020"  placeholder="Time finish (dd-MM-yyyy)"/></td>
 							<td><button type="submit">Search ${page}</button></td>
 						</tr>
 					</table>

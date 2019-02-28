@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.berzenin.university.model.persons.Teacher;
 
@@ -36,6 +37,7 @@ public class Course {
 	private Long id;
 	
 	@NotNull
+	@Size(min=2, max=50)
 	@Column(nullable = false)
 	private String subject;
 	

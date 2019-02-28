@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -47,6 +48,7 @@ public class Exercise {
 	private Long id;
 	
 	@NotNull
+	@Size(min=2, max=50)
 	private String name;	
 	
 	@NotNull
@@ -54,11 +56,11 @@ public class Exercise {
 	private LocalDate date;
 	
 	@NotNull
-	@DateTimeFormat(pattern = "HH-mm")
+	@DateTimeFormat(pattern = "HH:mm")
 	private LocalTime timeBegin;
 	
 	@NotNull
-	@DateTimeFormat(pattern = "HH-mm")
+	@DateTimeFormat(pattern = "HH:mm")
 	private LocalTime timeFinish;
 	
 	@ManyToMany

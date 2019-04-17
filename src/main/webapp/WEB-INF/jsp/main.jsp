@@ -11,21 +11,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="css/dopstyle.css">
-<c:set var="prefix" value="${pageContext.request.contextPath}" />
 <title>Welcome</title>
 </head>
 <body>
 	<div class="container">
-		<h1>Hello</h1>
-		<form action="@{/logout}" method="post">
-			<input type="submit" value="Sign Out" />
-		</form>
-		<br>
+		<h2>${message}</h2>
 		<div class="table-responsive">
-			<a href="${prefix}/main" class="list-group-item">Main page</a> <br>
-			<a href="${prefix}/login" class="list-group-item">Login page</a> <br>
-			<a href="${prefix}/registration" class="list-group-item">Registration
-				page</a>
+			<a href="${pageContext.request.contextPath}/groups/show/all"
+				class="list-group-item">Groups page</a> <br> <a
+				href="${pageContext.request.contextPath}/teachers/show/all"
+				class="list-group-item">Teachers page</a> <br> <a
+				href="${pageContext.request.contextPath}/courses/show/all"
+				class="list-group-item">Courses page</a> <br> <a
+				href="${pageContext.request.contextPath}/exercises/show/all"
+				class="list-group-item">Exercises page</a> <br> <a
+				href="${pageContext.request.contextPath}/timetable/start"
+				class="list-group-item">Timetable page</a> <br>
 		</div>
 	</div>
 </body>

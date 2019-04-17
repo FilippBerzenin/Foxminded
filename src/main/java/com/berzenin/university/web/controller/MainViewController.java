@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
-public class IndexViewController {
+public class MainViewController {
 	
-	@RequestMapping(value = {"/", "/index" }, method = RequestMethod.GET)
+	@RequestMapping(value = {"/main"}, method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public String index(Model model) {
 		String message = "Abandon hope all ye who enter here";
 		model.addAttribute("message", message);
-		return "index";
+		return "main";
 	}
 }

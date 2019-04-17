@@ -22,6 +22,7 @@
 			<div class="form-group">
 				<form action="${prefix}/groups/create" method="post">
 					<input type="text" name="newGroupsName" placeholder="Groups name">
+					<input type="hidden" name="_csrf" value="${_csrf.token}">
 					<button type="submit">Add new group</button>
 				</form>
 			</div>
@@ -30,6 +31,7 @@
 		<div>Search groups by name</div>
 		<form action="${prefix}/groups/search" method="post">
 			<input type="text" name="filter" placeholder="Groups name for serch">
+			<input type="hidden" name="_csrf" value="${_csrf.token}">
 			<button type="submit">Search</button>
 		</form>
 		<h1>Groups list</h1>
@@ -61,6 +63,7 @@
 						<td>
 							<form action="${prefix}/${page}/delete/${group.id}"
 								method="post">
+								<input type="hidden" name="_csrf" value="${_csrf.token}">
 								<button type="submit" name="delete" value="Delete">Delete</button>
 							</form>
 						<td>
@@ -73,6 +76,7 @@
 										<label for="newGroupName">Enter new group name:</label> <input
 											class="form-control" name="newGroupName" id="newGroupName"
 											value="${group.name}">
+											<input type="hidden" name="_csrf" value="${_csrf.token}">
 										<button type="submit" class="btn btn-primary">Submit</button>
 									</div>
 								</form>
@@ -97,6 +101,7 @@
 												<td><form:input path="subject" /></td>
 											</tr>
 											<tr>
+											<input type="hidden" name="_csrf" value="${_csrf.token}">
 												<td><input type="submit" value="Add course" /></td>
 											</tr>
 										</table>
@@ -118,6 +123,7 @@
 												<td><form:input path="subject" /></td>
 											</tr>
 											<tr>
+											<input type="hidden" name="_csrf" value="${_csrf.token}">
 												<td><input type="submit" value="Remove course" /></td>
 											</tr>
 										</table>

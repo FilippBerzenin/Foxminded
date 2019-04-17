@@ -101,11 +101,11 @@
 												<td><form:input path="subject" /></td>
 											</tr>
 											<tr>
-											<input type="hidden" name="_csrf" value="${_csrf.token}">
 												<td><input type="submit" value="Add course" /></td>
 											</tr>
 										</table>
 									</div>
+									<input type="hidden" name="_csrf" value="${_csrf.token}">
 								</form:form>
 							</div>
 						</td>
@@ -121,13 +121,14 @@
 											<tr>
 												<td><form:label path="subject">Remove course</form:label></td>
 												<td><form:input path="subject" /></td>
+												
 											</tr>
 											<tr>
-											<input type="hidden" name="_csrf" value="${_csrf.token}">
 												<td><input type="submit" value="Remove course" /></td>
 											</tr>
 										</table>
 									</div>
+									<input type="hidden" name="_csrf" value="${_csrf.token}">
 								</form:form>
 							</div>
 						</td>

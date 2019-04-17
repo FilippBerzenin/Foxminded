@@ -11,6 +11,7 @@ import com.berzenin.university.dao.ExerciseRepository;
 import com.berzenin.university.dao.GroupRepository;
 import com.berzenin.university.dao.StudentRepository;
 import com.berzenin.university.dao.TeacherRepository;
+import com.berzenin.university.dao.UserRepository;
 import com.berzenin.university.service.controller.CourseService;
 import com.berzenin.university.service.controller.ExerciseService;
 import com.berzenin.university.service.controller.GroupService;
@@ -53,4 +54,7 @@ public class IntegrationTest {
 	
 	@MockBean
 	protected TimetableService timetableService;
+	
+	@MockBean
+	protected UserRepository userRepository;
 }

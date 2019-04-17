@@ -32,6 +32,8 @@
 							<td><button type="submit">Add new ${page}</button></td>
 						</tr>
 					</table>
+<%-- 					<input type="hidden" name="_csrf"
+						value="${_csrf.token}"> --%>
 				</form:form>
 			</div>
 		</div>
@@ -117,6 +119,8 @@
 						<td>
 							<form action="${prefix}/${page}/delete/${entity.id}" method="post">
 								<button type="submit" name="delete" value="Delete">Delete</button>
+<%-- 								<input type="hidden" name="_csrf"
+						value="${_csrf.token}"> --%>
 							</form>
 						</td>
 						<td>
@@ -132,6 +136,8 @@
 											value="${entity.subject}" />
 										<button class="form-control" type="submit">Update</button>
 									</div>
+<%-- 									<input type="hidden" name="_csrf"
+						value="${_csrf.token}"> --%>
 								</form:form>
 							</div>
 						</td>

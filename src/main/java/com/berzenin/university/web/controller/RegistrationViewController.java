@@ -1,5 +1,6 @@
 package com.berzenin.university.web.controller;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,29 +9,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.berzenin.university.dao.UserRepository;
+import com.berzenin.university.model.security.Role;
 import com.berzenin.university.model.security.User;
 
 @Controller
 public class RegistrationViewController {
-	
 	@Autowired
-	private UserRepository userRepository;
-	
+	private UserRepository userRepo;
+
 	@GetMapping("/registration")
-	public String registration () {
+	public String registration() {
 		return "registration";
 	}
-	
-	@PostMapping ("/registration")
-	public String addNewUser (User user, Map<String, Object> model) {
-		User userFromDb = userRepository.findByUsername(user.getUsername());
+
+	@PostMapping("/registration")
+	public String addUser(User user, Map<String, Object> model) {
+		User userFromDb = userRepo.findByUsername(user.getUsername());
+
 		if (userFromDb != null) {
-			model.put("massage", "Users exists");
+			model.put("message", "User exists!");
 			return "registration";
 		}
+
 		user.setActive(true);
-//		user.setRoles(Collections.singleton(Role.STUDENT));
-		userRepository.save(user);
-		return "redirect:/login";		
+		user.setRoles(Collections.singleton(Role.USER));
+		userRepo.save(user);
+
+		return "redirect:/login";
 	}
 }

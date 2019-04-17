@@ -15,6 +15,9 @@
 </head>
 <body>
 	<div class="container">
+		<div id="formFooter">
+			<a class="underlineHover" href="${prefix}/">Start page</a>
+		</div>
 		<h2>${message}</h2>
 		<div class="table-responsive">
 			<a href="${pageContext.request.contextPath}/groups/show/all"

@@ -30,6 +30,7 @@
 							<td><button type="submit">Add new student</button></td>
 						</tr>
 					</table>
+					<input type="hidden" name="_csrf" value="${_csrf.token}">
 				</form:form>
 			</div>
 		</div>
@@ -60,6 +61,7 @@
 						<td>${student.group.name}</td>
 						<td>
 							<form action="${prefix}/students/delete/${student.id}" method="post">
+								<input type="hidden" name="_csrf" value="${_csrf.token}">
 								<button type="submit" name="delete" value="Delete">Delete</button>
 							</form>
 						</td>
@@ -71,6 +73,7 @@
 								<form:form class="form-inline" method="post"
 									action="${prefix}/students/update/${student.group.id}"
 									modelAttribute="studentFor">
+									<input type="hidden" name="_csrf" value="${_csrf.token}">
 									<div class="form-group">
 										<form:input type="hidden" path="id" value="${student.id}" />
 										<font color="red"><form:errors path="name" /></font>

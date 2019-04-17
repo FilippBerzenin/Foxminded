@@ -21,6 +21,7 @@
 			<h2>Add new teacher:</h2>
 			<div class="form-group">
 				<form:form method="post" action="${prefix}/teachers/create/" modelAttribute="entityFor">
+				<input type="hidden" name="_csrf" value="${_csrf.token}">
 					<table>
 						<tr>
 							<td><font color="red"><form:errors path="name" /></font></td>
@@ -71,6 +72,7 @@
 								<form:form class="form-inline" method="POST"
 									action="${prefix}/teachers/addCourse/${entity.id}"
 									modelAttribute="course">
+									<input type="hidden" name="_csrf" value="${_csrf.token}">
 									<div class="form-group">
 										<table>
 											<tr>
@@ -92,6 +94,7 @@
 								<form:form class="form-inline" method="POST"
 									action="${prefix}/teachers/removeCourse/${entity.id}"
 									modelAttribute="course">
+									<input type="hidden" name="_csrf" value="${_csrf.token}">
 									<div class="form-group">
 										<table>
 											<tr>
@@ -109,6 +112,7 @@
 						<td>
 							<form action="${prefix}/${page}/delete/${entity.id}"
 								method="post">
+								<input type="hidden" name="_csrf" value="${_csrf.token}">
 								<button type="submit" name="delete" value="Delete">Delete</button>
 							</form>
 						</td>
@@ -119,6 +123,7 @@
 								<form:form class="form-inline" method="post"
 									action="${prefix}/teachers/update/" modelAttribute="entityFor">
 									<div class="form-group">
+									<input type="hidden" name="_csrf" value="${_csrf.token}">
 										<form:input type="hidden" path="id" value="${entity.id}" />
 										<font color="red"><form:errors path="name" /></font>
 										<form:input class="form-control" path="name"

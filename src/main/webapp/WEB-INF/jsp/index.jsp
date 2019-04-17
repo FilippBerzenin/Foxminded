@@ -17,7 +17,7 @@
 <body>
 	<div class="container">
 		<h1>Hello</h1>
-		<form action="@{/logout}" method="post">
+		<form action="/logout" method="post">
 			<input type="submit" value="Sign Out" />
 		</form>
 		<br>

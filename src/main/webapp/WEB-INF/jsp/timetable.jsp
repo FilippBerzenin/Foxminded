@@ -22,6 +22,7 @@
 			<h2>Search student form:</h2>
 			<div class="form-group">
 				<form:form method="post" action="${prefix}/timetable/createRequest/student" modelAttribute="entityFor">
+				<input type="hidden" name="_csrf" value="${_csrf.token}">
 					<table>
 						<tr>
 							<td><font color="red"><form:errors path="name" /></font></td>
@@ -42,6 +43,7 @@
 			<h2>Search teacher form:</h2>
 			<div class="form-group">
 				<form:form method="post" action="${prefix}/timetable/createRequest/teacher" modelAttribute="entityFor">
+				<input type="hidden" name="_csrf" value="${_csrf.token}">
 					<table>
 						<tr>
 							<td><font color="red"><form:errors path="name" /></font></td>
